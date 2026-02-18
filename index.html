@@ -38,10 +38,10 @@ tr:hover{background:#12141e}
 .ret-mid{background:rgba(251,191,36,.05)!important}
 .ret-badge{color:#ff5c5c;font-weight:600}
 .margin-bad{color:#ff5c5c} .margin-ok{color:#fbbf24} .margin-good{color:#00e5a0}
-.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tips-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .tip{padding:12px;background:#0e1018;border-radius:10px;border:1px solid #1a1c28;border-left:3px solid #00e5a0}
 .tip-title{font-weight:600;font-size:12px;color:#fff;margin-bottom:4px}
-.tip-text{font-size:11px;color:#888;line-height:1.4}
+.tip-text{font-size:12px;color:#999;line-height:1.6}
 .chart-wrap{position:relative;height:260px}
 .badge{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:.5px}
 .bg{background:rgba(0,229,160,.15);color:#00e5a0}
@@ -50,6 +50,26 @@ tr:hover{background:#12141e}
 .ek-max{color:#fbbf24;font-weight:600}
 .sub-text{color:#555;font-size:10px}
 .section-title{font-size:16px;font-weight:600;color:#fff;margin:24px 0 12px;padding-left:4px;border-left:3px solid #00e5a0;padding-left:12px}
+
+/* === EK-RECHNER === */
+.calc-grid{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
+.calc-label{display:block;font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.calc-select,.calc-input{width:100%;padding:10px 12px;background:#12141e;border:1px solid #1a1c28;border-radius:8px;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border .2s}
+.calc-select:focus,.calc-input:focus{border-color:#00e5a0}
+.calc-select option{background:#12141e;color:#fff}
+.calc-result-area{min-height:160px;display:flex;flex-direction:column;justify-content:center}
+.calc-placeholder{color:#333;font-size:14px;text-align:center;padding:40px}
+.calc-profit-box{background:#0a0d14;border-radius:12px;padding:20px;border:1px solid #1a1c28}
+.calc-profit-num{font-size:42px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
+.calc-profit-label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:1px}
+.calc-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.calc-detail{background:#12141e;border-radius:8px;padding:10px}
+.calc-detail .cd-val{font-size:16px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.calc-detail .cd-lbl{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.calc-bar{height:8px;background:#12141e;border-radius:4px;margin-top:14px;overflow:hidden;position:relative}
+.calc-bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.calc-bar-label{display:flex;justify-content:space-between;font-size:9px;color:#444;margin-top:4px}
+.calc-verdict{margin-top:12px;padding:10px;border-radius:8px;font-size:12px;font-weight:500;text-align:center}
 
 /* === TABS fuer Sektionen === */
 .tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -69,6 +89,8 @@ tr:hover{background:#12141e}
   table{font-size:10px}
   th,td{padding:5px 3px}
   .section-title{font-size:14px}
+  .calc-grid{grid-template-columns:1fr}
+  .calc-profit-num{font-size:32px}
 }
 @media(max-width:400px){
   .kpis{grid-template-columns:1fr 1fr}
@@ -83,7 +105,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>19.02.2026 00:13</span>
+    <span>19.02.2026 00:20</span>
     <span>|</span>
     <span>781 Orders</span>
   </div>
@@ -107,8 +129,28 @@ tr:hover{background:#12141e}
   <div class="tab" onclick="showSection('countries')">Laender</div>
 </div>
 
-<!-- SECTION: EK-PRUEFER (Default!) -->
+<!-- SECTION: EK-RECHNER + PRUEFER (Default!) -->
 <div class="section active" id="sec-ek">
+
+  <!-- EK-RECHNER (interaktiv) -->
+  <div class="card" style="margin-bottom:16px;border-color:rgba(0,229,160,.3)">
+    <h2>EK-Rechner <span>Gib deinen Einkaufspreis ein und sieh den erwarteten Profit</span></h2>
+    <div class="calc-grid">
+      <div class="calc-input-area">
+        <label class="calc-label">Modell waehlen</label>
+        <select id="calcModel" onchange="calcProfit()" class="calc-select">
+          <option value="">-- Modell waehlen --</option>
+        </select>
+        <label class="calc-label" style="margin-top:12px">Dein EK (EUR)</label>
+        <input type="number" id="calcEK" onkeyup="calcProfit()" oninput="calcProfit()" placeholder="z.B. 450" class="calc-input" />
+      </div>
+      <div class="calc-result-area" id="calcResult">
+        <div class="calc-placeholder">Waehle ein Modell und gib deinen EK ein</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EK-PRUEFER Tabelle -->
   <div class="card">
     <h2>EK-Pruefer <span>Max EK = hoechster EK bei dem du noch Profit machst</span></h2>
     <div style="overflow-x:auto">
@@ -556,48 +598,30 @@ tr:hover{background:#12141e}
 <!-- SECTION: KI-TIPPS -->
 <div class="section" id="sec-tips">
   <div class="card" style="border-color:rgba(0,229,160,.2)">
-    <h2>KI-Analyse & Empfehlungen</h2>
-    <div class="tips-grid"><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 20.0% Retourenquote (4/20)</div>
-            <div class="tip-text">Qualitaetskontrolle verschaerfen! Verlust: 168 EUR.</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 14 Pro 128GB: 12.5% Retourenquote (1/8)</div>
-            <div class="tip-text">Qualitaetskontrolle verschaerfen! Verlust: 86 EUR.</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 14 Pro 128GB: Nur -20.7% Marge</div>
-            <div class="tip-text">Avg EK: 444 EUR -> Avg VK: 403 EUR -> Avg Gewinn: -83.47 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 256 GB | Starlight: Nur -3.2% Marge</div>
-            <div class="tip-text">Avg EK: 540 EUR -> Avg VK: 595 EUR -> Avg Gewinn: -19.25 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro 128GB: Nur -1.0% Marge</div>
-            <div class="tip-text">Avg EK: 458 EUR -> Avg VK: 532 EUR -> Avg Gewinn: -5.40 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro Max 512GB: Nur -0.6% Marge</div>
-            <div class="tip-text">Avg EK: 573 EUR -> Avg VK: 664 EUR -> Avg Gewinn: -3.83 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: Nur -0.6% Marge</div>
-            <div class="tip-text">Avg EK: 550 EUR -> Avg VK: 623 EUR -> Avg Gewinn: -4.00 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | blue: Nur -0.3% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 581 EUR -> Avg Gewinn: -1.94 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 14 Pro Max 128GB: Nur -0.1% Marge</div>
-            <div class="tip-text">Avg EK: 408 EUR -> Avg VK: 489 EUR -> Avg Gewinn: -0.65 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | space gray: Nur 0.1% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 571 EUR -> Avg Gewinn: 0.65 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro 256GB: Nur 0.4% Marge</div>
-            <div class="tip-text">Avg EK: 499 EUR -> Avg VK: 588 EUR -> Avg Gewinn: 2.24 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | Starlight: Nur 1.8% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 583 EUR -> Avg Gewinn: 10.21 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 16 Pro Max 256GB: Nur 2.0% Marge</div>
-            <div class="tip-text">Avg EK: 669 EUR -> Avg VK: 798 EUR -> Avg Gewinn: 15.66 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro Max 256GB: Nur 2.1% Marge</div>
-            <div class="tip-text">Avg EK: 509 EUR -> Avg VK: 615 EUR -> Avg Gewinn: 13.09 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#00d4aa">
-            <div class="tip-title">>>> Top-Performer - mehr einkaufen!</div>
-            <div class="tip-text"><b>iPhone 16 Pro 128GB</b> (8,007 EUR, 84x), <b>iPhone 16 Pro 256GB</b> (3,677 EUR, 30x), <b>iPhone 15 Pro Max 256GB</b> (2,460 EUR, 188x)</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro 256GB: 173x verkauft aber nur 2.24 EUR/Stk</div>
-            <div class="tip-text">Marge: 0.4%. EK: 499 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro 128GB: 110x verkauft aber nur -5.40 EUR/Stk</div>
-            <div class="tip-text">Marge: -1.0%. EK: 458 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro Max 512GB: 24x verkauft aber nur -3.83 EUR/Stk</div>
-            <div class="tip-text">Marge: -0.6%. EK: 573 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 20x verkauft aber nur -0.65 EUR/Stk</div>
-            <div class="tip-text">Marge: -0.1%. EK: 408 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: 14x verkauft aber nur -4.00 EUR/Stk</div>
-            <div class="tip-text">Marge: -0.6%. EK: 550 EUR. Optimierung lohnt sich!</div></div></div>
+    <h2>KI-Analyse & Tagesempfehlungen <span>Was du heute tun solltest</span></h2>
+    <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
+            <div class="tip-title">>>> Tages-Check: Laeuft gut!</div>
+            <div class="tip-text">Dein Durchschnitts-Profit liegt bei <b>21.23 EUR/Order</b> - das ist ein starker Wert. Halte dieses Niveau und fokussiere dich auf Volumen-Steigerung bei den profitablen Modellen.</div></div><div class="tip" style="border-left-color:#ff3838">
+            <div class="tip-title">XXX SOFORT STOPPEN: 7 Modelle im Minus</div>
+            <div class="tip-text">Diese Modelle kosten dich Geld bei jedem Verkauf: <b>iPhone 14 Pro 128GB</b> (-83.47 EUR/Stk, 8x), <b>iPad Air (2024) | 13undquot | 256 GB | Starlight</b> (-19.25 EUR/Stk, 5x), <b>iPhone 15 Pro 128GB</b> (-5.40 EUR/Stk, 110x), <b>iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</b> (-4.00 EUR/Stk, 14x), <b>iPhone 15 Pro Max 512GB</b> (-3.83 EUR/Stk, 24x), <b>iPad Air (2024) | 13undquot | 128 GB | blue</b> (-1.94 EUR/Stk, 3x), <b>iPhone 14 Pro Max 128GB</b> (-0.65 EUR/Stk, 20x). <br><b>Aktion:</b> Sofort aus dem Einkauf nehmen! Wenn Lagerbestand vorhanden, VK erhoehen oder Bestand abverkaufen und nicht nachbestellen.</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! Retouren-Alarm: iPhone 14 Pro Max 128GB (20.0%)</div>
+            <div class="tip-text"><b>4 von 20</b> Geraeten wurden retourniert. Das hat dich <b>168 EUR</b> gekostet (Gewinn + Versand). <br><b>Aktion:</b> Qualitaetskontrolle bei diesem Modell verschaerfen! Pruefe: Ist der Zustand korrekt deklariert? Gibt es wiederkehrende Maengel? Kommt ein bestimmter Lieferant haeufiger vor?</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! Retouren-Alarm: iPhone 14 Pro 128GB (12.5%)</div>
+            <div class="tip-text"><b>1 von 8</b> Geraeten wurden retourniert. Das hat dich <b>86 EUR</b> gekostet (Gewinn + Versand). <br><b>Aktion:</b> Qualitaetskontrolle bei diesem Modell verschaerfen! Pruefe: Ist der Zustand korrekt deklariert? Gibt es wiederkehrende Maengel? Kommt ein bestimmter Lieferant haeufiger vor?</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ EK-Warnung: iPad Air (2024) | 13undquot | 128 GB | Starlight - 60% im Minus</div>
+            <div class="tip-text">Durchschnittlich machst du <b>10.21 EUR</b> Gewinn, aber <b>60%</b> deiner Verkaeufe sind im Verlust. Dein Avg EK: <b>500 EUR</b> | Max EK fuer Profit: <b>510 EUR</b>. <br><b>Aktion:</b> Kaufe dieses Modell NUR unter 510 EUR ein. Sortiere Lieferanten nach EK und kaufe nur vom guenstigsten.</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ EK-Warnung: iPhone 15 Pro 256GB - 54% im Minus</div>
+            <div class="tip-text">Durchschnittlich machst du <b>2.24 EUR</b> Gewinn, aber <b>54%</b> deiner Verkaeufe sind im Verlust. Dein Avg EK: <b>499 EUR</b> | Max EK fuer Profit: <b>501 EUR</b>. <br><b>Aktion:</b> Kaufe dieses Modell NUR unter 501 EUR ein. Sortiere Lieferanten nach EK und kaufe nur vom guenstigsten.</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ EK-Warnung: iPhone 15 Pro Max 256GB - 49% im Minus</div>
+            <div class="tip-text">Durchschnittlich machst du <b>13.09 EUR</b> Gewinn, aber <b>49%</b> deiner Verkaeufe sind im Verlust. Dein Avg EK: <b>509 EUR</b> | Max EK fuer Profit: <b>522 EUR</b>. <br><b>Aktion:</b> Kaufe dieses Modell NUR unter 522 EUR ein. Sortiere Lieferanten nach EK und kaufe nur vom guenstigsten.</div></div><div class="tip" style="border-left-color:#00d4aa">
+            <div class="tip-title">>>> Top-Performer: Hier mehr einkaufen!</div>
+            <div class="tip-text">Diese Modelle sind deine Geldmaschinen: <br>&bull; <b>iPhone 16 Pro 128GB</b>: 8,007 EUR Gesamt (84x, 95.32 EUR/Stk, Ret: 7.1%)<br>&bull; <b>iPhone 16 Pro 256GB</b>: 3,677 EUR Gesamt (30x, 122.57 EUR/Stk, Ret: 6.7%)<br>&bull; <b>iPhone 15 Pro Max 256GB</b>: 2,460 EUR Gesamt (188x, 13.09 EUR/Stk, Ret: 9.6%)<br>&bull; <b>iPhone 16 Pro Max 256GB</b>: 987 EUR Gesamt (63x, 15.66 EUR/Stk, Ret: 1.6%)<br>&bull; <b>iPhone 15 256GB</b>: 786 EUR Gesamt (11x, 71.47 EUR/Stk, Ret: 0.0%) <br><b>Aktion:</b> Volumen bei diesen Modellen erhoehen! Kann der Lieferant mehr liefern? Gibt es weitere Quellen?</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ Optimierbar: iPhone 15 Pro Max 256GB (188x, 2.1% Marge)</div>
+            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>509 EUR</b>, Avg VK <b>615 EUR</b>, Gewinn nur <b>13.09 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>940 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ Optimierbar: iPhone 15 Pro 256GB (173x, 0.4% Marge)</div>
+            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>499 EUR</b>, Avg VK <b>588 EUR</b>, Gewinn nur <b>2.24 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>865 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#00d4aa">
+            <div class="tip-title">>>> Hidden Gems: Hoher Profit, wenig Volumen</div>
+            <div class="tip-text">Diese Modelle haben top Margen aber wenig Verkaeufe: <b>iPhone 15 128GB</b> (54.30 EUR/Stk, nur 4x). <br><b>Aktion:</b> Pruefe ob du hier das Volumen erhoehen kannst! Gibt es diese Modelle haeufiger auf dem Markt?</div></div></div>
   </div>
 </div>
 
@@ -750,6 +774,85 @@ function initCharts() {
             scales: { x: { ticks: { callback: v => v+'E' } } }
         }
     });
+}
+
+// ========== EK-RECHNER ==========
+const calcModels = [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 615.22, "avg_ek": 508.75, "avg_dynamic": 8.99, "avg_discount": 8.19, "avg_final": -6.12, "avg_p": 13.09, "max_ek_profit": 522.0, "cnt": 188, "rrate": 9.6}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 587.95, "avg_ek": 499.03, "avg_dynamic": 9.88, "avg_discount": 9.44, "avg_final": -17.32, "avg_p": 2.24, "max_ek_profit": 501.0, "cnt": 173, "rrate": 6.9}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 531.76, "avg_ek": 458.02, "avg_dynamic": 9.1, "avg_discount": 7.54, "avg_final": -23.89, "avg_p": -5.4, "max_ek_profit": 453.0, "cnt": 110, "rrate": 7.3}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 720.99, "avg_ek": 502.65, "avg_dynamic": 12.42, "avg_discount": 10.17, "avg_final": 77.57, "avg_p": 95.32, "max_ek_profit": 598.0, "cnt": 84, "rrate": 7.1}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 797.98, "avg_ek": 669.05, "avg_dynamic": 11.44, "avg_discount": 13.75, "avg_final": -6.65, "avg_p": 15.66, "max_ek_profit": 685.0, "cnt": 63, "rrate": 1.6}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 795.74, "avg_ek": 535.0, "avg_dynamic": 13.28, "avg_discount": 12.93, "avg_final": 102.92, "avg_p": 122.57, "max_ek_profit": 658.0, "cnt": 30, "rrate": 6.7}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 663.55, "avg_ek": 572.85, "avg_dynamic": 10.88, "avg_discount": 11.44, "avg_final": -24.39, "avg_p": -3.83, "max_ek_profit": 569.0, "cnt": 24, "rrate": 8.3}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 488.8, "avg_ek": 407.55, "avg_dynamic": 11.11, "avg_discount": 3.42, "avg_final": -12.96, "avg_p": -0.65, "max_ek_profit": 407.0, "cnt": 20, "rrate": 20.0}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 843.69, "avg_ek": 653.56, "avg_dynamic": 17.4, "avg_discount": 6.3, "avg_final": 39.55, "avg_p": 48.45, "max_ek_profit": 702.0, "cnt": 16, "rrate": 6.2}, {"name": "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "avg_vk": 622.84, "avg_ek": 550.0, "avg_dynamic": 3.14, "avg_discount": 12.76, "avg_final": -33.62, "avg_p": -4.0, "max_ek_profit": 546.0, "cnt": 14, "rrate": 0.0}, {"name": "iPhone 15 256GB", "avg_vk": 435.98, "avg_ek": 289.36, "avg_dynamic": 3.64, "avg_discount": 9.22, "avg_final": 45.89, "avg_p": 71.47, "max_ek_profit": 361.0, "cnt": 11, "rrate": 0.0}, {"name": "iPhone 16 128GB", "avg_vk": 599.18, "avg_ek": 434.5, "avg_dynamic": 2.47, "avg_discount": 5.38, "avg_final": 44.07, "avg_p": 66.98, "max_ek_profit": 501.0, "cnt": 10, "rrate": 10.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 402.65, "avg_ek": 443.75, "avg_dynamic": 2.88, "avg_discount": 5.22, "avg_final": -105.82, "avg_p": -83.47, "max_ek_profit": 360.0, "cnt": 8, "rrate": 12.5}, {"name": "iPad Air (2024) | 13undquot | 256 GB | Starlight", "avg_vk": 594.93, "avg_ek": 540.0, "avg_dynamic": 2.0, "avg_discount": 7.06, "avg_final": -44.31, "avg_p": -19.25, "max_ek_profit": 521.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | Starlight", "avg_vk": 583.43, "avg_ek": 500.0, "avg_dynamic": 0.79, "avg_discount": 12.36, "avg_final": -21.35, "avg_p": 10.21, "max_ek_profit": 510.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | space gray", "avg_vk": 571.17, "avg_ek": 500.0, "avg_dynamic": 2.0, "avg_discount": 11.62, "avg_final": -28.97, "avg_p": 0.65, "max_ek_profit": 501.0, "cnt": 5, "rrate": 0.0}, {"name": "iPhone 15 128GB", "avg_vk": 390.19, "avg_ek": 266.25, "avg_dynamic": 10.76, "avg_discount": 14.13, "avg_final": 30.93, "avg_p": 54.3, "max_ek_profit": 321.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | blue", "avg_vk": 580.99, "avg_ek": 500.0, "avg_dynamic": 0.99, "avg_discount": 0.0, "avg_final": -20.95, "avg_p": -1.94, "max_ek_profit": 498.0, "cnt": 3, "rrate": 0.0}];
+const pauschal = 20;
+
+// Dropdown befuellen
+(function() {
+    const sel = document.getElementById('calcModel');
+    calcModels.sort((a,b) => b.cnt - a.cnt);
+    calcModels.forEach((m, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = m.name + ' (' + m.cnt + 'x, Avg VK: ' + Math.round(m.avg_vk) + ' EUR)';
+        sel.appendChild(opt);
+    });
+})();
+
+function calcProfit() {
+    const sel = document.getElementById('calcModel');
+    const ekInput = document.getElementById('calcEK');
+    const box = document.getElementById('calcResult');
+
+    if (sel.value === '' || !ekInput.value) {
+        box.innerHTML = '<div class="calc-placeholder">Waehle ein Modell und gib deinen EK ein</div>';
+        return;
+    }
+
+    const m = calcModels[parseInt(sel.value)];
+    const ek = parseFloat(ekInput.value);
+    if (isNaN(ek) || ek <= 0) {
+        box.innerHTML = '<div class="calc-placeholder">Bitte gueltigen EK eingeben</div>';
+        return;
+    }
+
+    // Profit-Formel: final_email + (pauschal - dynamic) + discount
+    // final_email haengt von VK und EK ab: final = VK - EK (vereinfacht: avg_final skaliert)
+    // Genauere Formel: Bei gleichem Modell aendert sich final proportional zum EK-Unterschied
+    // profit = avg_final + (avg_ek - ek) + (pauschal - avg_dynamic) + avg_discount
+    const ekDiff = m.avg_ek - ek;
+    const dynDiff = pauschal - m.avg_dynamic;
+    const expectedFinal = m.avg_final + ekDiff;
+    const expectedProfit = expectedFinal + dynDiff + m.avg_discount;
+    const maxEK = m.max_ek_profit;
+
+    // Farbe bestimmen
+    let color, bg, verdict;
+    if (expectedProfit >= 15) {
+        color = '#00e5a0'; bg = 'rgba(0,229,160,.1)';
+        verdict = 'Guter Deal! Solider Profit erwartet.';
+    } else if (expectedProfit >= 5) {
+        color = '#fbbf24'; bg = 'rgba(251,191,36,.1)';
+        verdict = 'Knapper Profit. Evtl. EK verhandeln oder anderen Lieferanten suchen.';
+    } else if (expectedProfit >= 0) {
+        color = '#ff9f43'; bg = 'rgba(255,159,67,.1)';
+        verdict = 'Kaum Profit. Nur kaufen wenn du den EK druecken kannst!';
+    } else {
+        color = '#ff5c5c'; bg = 'rgba(255,92,92,.1)';
+        verdict = 'ACHTUNG: Verlust erwartet! Finger weg bei diesem EK.';
+    }
+
+    // Balken: wo liegt EK relativ zum Max-EK?
+    const barPct = maxEK > 0 ? Math.min(100, Math.max(0, (ek / maxEK) * 100)) : 0;
+    const barColor = barPct > 90 ? '#ff5c5c' : barPct > 70 ? '#fbbf24' : '#00e5a0';
+
+    box.innerHTML = `
+        <div class="calc-profit-box">
+            <div class="calc-profit-label">Erwarteter Profit pro Stueck</div>
+            <div class="calc-profit-num" style="color:${color}">${expectedProfit >= 0 ? '+' : ''}${expectedProfit.toFixed(2)} EUR</div>
+            <div class="calc-details">
+                <div class="calc-detail"><div class="cd-val" style="color:#00b4d8">${Math.round(m.avg_vk)} EUR</div><div class="cd-lbl">Avg Verkaufspreis</div></div>
+                <div class="calc-detail"><div class="cd-val" style="color:#a78bfa">${Math.round(maxEK)} EUR</div><div class="cd-lbl">Max EK (Breakeven)</div></div>
+                <div class="calc-detail"><div class="cd-val">${m.avg_dynamic.toFixed(1)} EUR</div><div class="cd-lbl">Avg Dynamic Comm.</div></div>
+                <div class="calc-detail"><div class="cd-val">${m.avg_discount.toFixed(1)} EUR</div><div class="cd-lbl">Avg Discount</div></div>
+            </div>
+            <div class="calc-bar"><div class="calc-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
+            <div class="calc-bar-label"><span>0 EUR</span><span>Dein EK: ${ek} EUR</span><span>Max: ${Math.round(maxEK)} EUR</span></div>
+            <div class="calc-verdict" style="background:${bg};color:${color}">${verdict}</div>
+        </div>`;
 }
 </script>
 </div></body></html>
