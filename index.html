@@ -1,144 +1,317 @@
 <!DOCTYPE html>
 <html lang="de"><head>
-<meta charset="utf-8"><meta http-equiv="refresh" content="300">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="300">
 <title>Handysparkauf Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Outfit',sans-serif;background:#080810;color:#c8cad0;min-height:100vh}
-.wrap{max-width:1440px;margin:0 auto;padding:24px}
-.hdr{display:flex;justify-content:space-between;align-items:center;padding:24px 0;margin-bottom:24px;border-bottom:1px solid #1a1c28}
-.hdr h1{font-size:24px;font-weight:600;color:#fff}
+body{font-family:'Outfit',sans-serif;background:#080810;color:#c8cad0;min-height:100vh;-webkit-text-size-adjust:100%}
+.wrap{max-width:1440px;margin:0 auto;padding:16px}
+.hdr{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:16px;border-bottom:1px solid #1a1c28;gap:8px}
+.hdr h1{font-size:20px;font-weight:600;color:#fff}
 .hdr h1 b{background:linear-gradient(135deg,#00e5a0,#00b4d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hdr .meta{color:#555;font-size:13px;display:flex;align-items:center;gap:12px}
+.hdr .meta{color:#555;font-size:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hdr .live{display:inline-block;width:8px;height:8px;background:#00e5a0;border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-select{background:#12141e;color:#fff;border:1px solid #1a1c28;padding:6px 12px;border-radius:8px;font-family:'Outfit';cursor:pointer}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
-.kpi{background:#0e1018;border-radius:12px;padding:20px;border:1px solid #1a1c28}
-.kpi .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#555;margin-bottom:8px}
-.kpi .val{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace}
-.kpi .sub{font-size:12px;color:#444;margin-top:6px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.kpi{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28}
+.kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
+.kpi .val{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.kpi .sub{font-size:11px;color:#444;margin-top:4px}
 .kpi.g .val{color:#00e5a0} .kpi.r .val{color:#ff5c5c} .kpi.b .val{color:#00b4d8}
 .kpi.y .val{color:#fbbf24} .kpi.p .val{color:#a78bfa}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
-.g3{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:24px}
-.card{background:#0e1018;border-radius:12px;padding:20px;border:1px solid #1a1c28}
-.card h2{font-size:15px;font-weight:600;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card h2 span{color:#555;font-weight:400;font-size:12px}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th{text-align:left;padding:10px 8px;color:#444;font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:.5px;border-bottom:1px solid #1a1c28}
-td{padding:8px;border-bottom:1px solid #12141e}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
+.card{background:#0e1018;border-radius:12px;padding:16px;border:1px solid #1a1c28}
+.card h2{font-size:14px;font-weight:600;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card h2 span{color:#555;font-weight:400;font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{text-align:left;padding:8px 6px;color:#444;font-weight:500;text-transform:uppercase;font-size:9px;letter-spacing:.5px;border-bottom:1px solid #1a1c28;white-space:nowrap}
+td{padding:6px;border-bottom:1px solid #12141e}
 tr:hover{background:#12141e}
 .num{text-align:right;font-family:'JetBrains Mono',monospace}
-.money{color:#00e5a0}
-.model-name{font-weight:500;color:#e0e0e0}
+.money{color:#00e5a0} .loss{color:#ff5c5c}
+.model-name{font-weight:500;color:#e0e0e0;white-space:nowrap}
 .ret-high{background:rgba(255,92,92,.08)!important}
 .ret-mid{background:rgba(251,191,36,.05)!important}
 .ret-badge{color:#ff5c5c;font-weight:600}
 .margin-bad{color:#ff5c5c} .margin-ok{color:#fbbf24} .margin-good{color:#00e5a0}
 .tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tip{padding:14px 16px;background:#0e1018;border-radius:10px;border:1px solid #1a1c28;border-left:3px solid #00e5a0}
-.tip-title{font-weight:600;font-size:13px;color:#fff;margin-bottom:4px}
-.tip-text{font-size:12px;color:#888;line-height:1.5}
-.chart-wrap{position:relative;height:280px}
+.tip{padding:12px;background:#0e1018;border-radius:10px;border:1px solid #1a1c28;border-left:3px solid #00e5a0}
+.tip-title{font-weight:600;font-size:12px;color:#fff;margin-bottom:4px}
+.tip-text{font-size:11px;color:#888;line-height:1.4}
+.chart-wrap{position:relative;height:260px}
+.badge{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:.5px}
+.bg{background:rgba(0,229,160,.15);color:#00e5a0}
+.by{background:rgba(251,191,36,.15);color:#fbbf24}
+.br{background:rgba(255,92,92,.15);color:#ff5c5c}
+.ek-max{color:#fbbf24;font-weight:600}
+.sub-text{color:#555;font-size:10px}
+.section-title{font-size:16px;font-weight:600;color:#fff;margin:24px 0 12px;padding-left:4px;border-left:3px solid #00e5a0;padding-left:12px}
+
+/* === TABS fuer Sektionen === */
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:6px 14px;background:#12141e;border:1px solid #1a1c28;border-radius:8px;color:#888;font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.tab.active{background:#00e5a0;color:#080810;border-color:#00e5a0;font-weight:600}
+.section{display:none}.section.active{display:block}
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .wrap{padding:10px}
+  .hdr h1{font-size:16px}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  .kpi .val{font-size:18px}
+  .g2,.g3{grid-template-columns:1fr}
+  .tips-grid{grid-template-columns:1fr}
+  .chart-wrap{height:200px}
+  table{font-size:10px}
+  th,td{padding:5px 3px}
+  .section-title{font-size:14px}
+}
+@media(max-width:400px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:10px}
+  .kpi .val{font-size:16px}
+  .hdr h1{font-size:14px}
+}
 </style></head><body>
 <div class="wrap">
 
 <div class="hdr">
-  <h1><b>Handysparkauf</b> Business Dashboard</h1>
+  <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>Aktualisiert 18.02.2026 23:40</span>
+    <span>18.02.2026 23:49</span>
     <span>|</span>
     <span>779 Orders</span>
   </div>
 </div>
 
+<!-- KPIs -->
 <div class="kpis">
-  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val">EUR 12,621</div><div class="sub">nach Retouren & Versand</div></div>
-  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val">EUR 15,361</div><div class="sub">Avg EUR 19.72 pro Order</div></div>
-  <div class="kpi p"><div class="lbl">Orders</div><div class="val">779</div><div class="sub">479 gescrapt</div></div>
-  <div class="kpi r"><div class="lbl">Retouren</div><div class="val">38</div><div class="sub">4.9% Quote</div></div>
-  <div class="kpi y"><div class="lbl">Retour-Verlust</div><div class="val">EUR 2,740</div><div class="sub">Gewinn -EUR 2,510 | Versand -EUR 230</div></div>
+  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val">EUR 13,008</div><div class="sub">nach Retouren</div></div>
+  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val">EUR 15,639</div><div class="sub">EUR 20.08/Order</div></div>
+  <div class="kpi p"><div class="lbl">Orders</div><div class="val">779</div><div class="sub">599 gescrapt</div></div>
+  <div class="kpi r"><div class="lbl">Retouren</div><div class="val">43</div><div class="sub">5.5%</div></div>
+  <div class="kpi y"><div class="lbl">Ret-Verlust</div><div class="val">EUR 2,631</div><div class="sub">Gewinn + Versand</div></div>
 </div>
 
-<!-- MONATSVERGLEICH -->
-<div class="card" style="margin-bottom:24px">
-  <h2>Monatsvergleich <span>Profit & Orders ueber Zeit</span></h2>
-  <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
+<!-- NAVIGATION TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showSection('ek')">EK-Pruefer</div>
+  <div class="tab" onclick="showSection('overview')">Uebersicht</div>
+  <div class="tab" onclick="showSection('models')">Modelle</div>
+  <div class="tab" onclick="showSection('tips')">KI-Tipps</div>
+  <div class="tab" onclick="showSection('countries')">Laender</div>
 </div>
 
-<!-- KI EMPFEHLUNGEN -->
-<div class="card" style="margin-bottom:24px;border-color:rgba(0,229,160,.2)">
-  <h2>KI-Analyse & Empfehlungen</h2>
-  <div class="tips-grid"><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 15.0% Retourenquote (3/20)</div>
-            <div class="tip-text">Qualitaetskontrolle verschaerfen! Verlust: 212 EUR.</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 14 Pro 128GB: Nur -21.3% Marge</div>
-            <div class="tip-text">Avg EK: 444 EUR -> Avg VK: 403 EUR -> Avg Gewinn: -85.82 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 256 GB | Starlight: Nur -3.1% Marge</div>
-            <div class="tip-text">Avg EK: 540 EUR -> Avg VK: 595 EUR -> Avg Gewinn: -18.45 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: Nur -1.9% Marge</div>
-            <div class="tip-text">Avg EK: 550 EUR -> Avg VK: 623 EUR -> Avg Gewinn: -11.61 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | space gray: Nur -1.9% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 571 EUR -> Avg Gewinn: -10.57 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro Max 512GB: Nur -1.2% Marge</div>
-            <div class="tip-text">Avg EK: 573 EUR -> Avg VK: 664 EUR -> Avg Gewinn: -7.98 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro 128GB: Nur -0.9% Marge</div>
-            <div class="tip-text">Avg EK: 457 EUR -> Avg VK: 532 EUR -> Avg Gewinn: -4.53 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | blue: Nur -0.3% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 581 EUR -> Avg Gewinn: -1.94 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 14 Pro Max 128GB: Nur 0.0% Marge</div>
-            <div class="tip-text">Avg EK: 408 EUR -> Avg VK: 489 EUR -> Avg Gewinn: 0.04 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro 256GB: Nur 0.1% Marge</div>
-            <div class="tip-text">Avg EK: 499 EUR -> Avg VK: 588 EUR -> Avg Gewinn: 0.81 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | Starlight: Nur 0.8% Marge</div>
-            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 583 EUR -> Avg Gewinn: 4.60 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 16 Pro Max 256GB: Nur 1.4% Marge</div>
-            <div class="tip-text">Avg EK: 669 EUR -> Avg VK: 798 EUR -> Avg Gewinn: 11.47 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
-            <div class="tip-title">$$$ iPhone 15 Pro Max 256GB: Nur 1.8% Marge</div>
-            <div class="tip-text">Avg EK: 509 EUR -> Avg VK: 615 EUR -> Avg Gewinn: 10.95 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#00d4aa">
-            <div class="tip-title">>>> Top-Performer - mehr einkaufen!</div>
-            <div class="tip-text"><b>iPhone 16 Pro 128GB</b> (7,975 EUR, 84x), <b>iPhone 16 Pro 256GB</b> (3,677 EUR, 30x), <b>iPhone 15 Pro Max 256GB</b> (2,059 EUR, 188x)</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro 256GB: 172x verkauft aber nur 0.81 EUR/Stk</div>
-            <div class="tip-text">Marge: 0.1%. EK: 499 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro 128GB: 109x verkauft aber nur -4.53 EUR/Stk</div>
-            <div class="tip-text">Marge: -0.9%. EK: 457 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 15 Pro Max 512GB: 24x verkauft aber nur -7.98 EUR/Stk</div>
-            <div class="tip-text">Marge: -1.2%. EK: 573 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 20x verkauft aber nur 0.04 EUR/Stk</div>
-            <div class="tip-text">Marge: 0.0%. EK: 408 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: 14x verkauft aber nur -11.61 EUR/Stk</div>
-            <div class="tip-text">Marge: -1.9%. EK: 550 EUR. Optimierung lohnt sich!</div></div></div>
-</div>
-
-<!-- CHARTS -->
-<div class="g2">
+<!-- SECTION: EK-PRUEFER (Default!) -->
+<div class="section active" id="sec-ek">
   <div class="card">
-    <h2>Gewinn nach Modell</h2>
-    <div class="chart-wrap"><canvas id="profitChart"></canvas></div>
-  </div>
-  <div class="card">
-    <h2>EK-Pruefer <span>Avg EK vs Avg VK vs Avg Gewinn</span></h2>
-    <div class="chart-wrap"><canvas id="ekChart"></canvas></div>
+    <h2>EK-Pruefer <span>Max EK = hoechster EK bei dem du noch Profit machst</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Modell</th><th>Stk</th><th>Avg EK</th><th>Max EK</th><th>Avg VK</th><th>Avg Gewinn</th><th>Status</th><th>Detail</th></tr>
+      <tr>
+            <td class="model-name">iPhone 14 Pro 128GB</td>
+            <td class="num">8</td>
+            <td class="num">EUR 444</td>
+            <td class="num ek-max">EUR 358</td>
+            <td class="num">EUR 403</td>
+            <td class="num loss">EUR -85.82</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">100% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPad Air (2024) | 13undquot | 256 GB | Starlight</td>
+            <td class="num">5</td>
+            <td class="num">EUR 540</td>
+            <td class="num ek-max">EUR 522</td>
+            <td class="num">EUR 595</td>
+            <td class="num loss">EUR -18.45</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">80% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro Max 512GB</td>
+            <td class="num">24</td>
+            <td class="num">EUR 573</td>
+            <td class="num ek-max">EUR 565</td>
+            <td class="num">EUR 664</td>
+            <td class="num loss">EUR -7.41</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">67% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</td>
+            <td class="num">14</td>
+            <td class="num">EUR 550</td>
+            <td class="num ek-max">EUR 543</td>
+            <td class="num">EUR 623</td>
+            <td class="num loss">EUR -7.39</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">29% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro 128GB</td>
+            <td class="num">109</td>
+            <td class="num">EUR 457</td>
+            <td class="num ek-max">EUR 452</td>
+            <td class="num">EUR 532</td>
+            <td class="num loss">EUR -5.11</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">55% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPad Air (2024) | 13undquot | 128 GB | blue</td>
+            <td class="num">3</td>
+            <td class="num">EUR 500</td>
+            <td class="num ek-max">EUR 498</td>
+            <td class="num">EUR 581</td>
+            <td class="num loss">EUR -1.94</td>
+            <td><span class="badge br">MINUS</span></td>
+            <td class="num sub-text">100% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 14 Pro Max 128GB</td>
+            <td class="num">20</td>
+            <td class="num">EUR 408</td>
+            <td class="num ek-max">EUR 408</td>
+            <td class="num">EUR 489</td>
+            <td class="num money">EUR 0.04</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">45% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPad Air (2024) | 13undquot | 128 GB | space gray</td>
+            <td class="num">5</td>
+            <td class="num">EUR 500</td>
+            <td class="num ek-max">EUR 501</td>
+            <td class="num">EUR 571</td>
+            <td class="num money">EUR 0.65</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">40% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro 256GB</td>
+            <td class="num">172</td>
+            <td class="num">EUR 499</td>
+            <td class="num ek-max">EUR 500</td>
+            <td class="num">EUR 588</td>
+            <td class="num money">EUR 1.06</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">55% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPad Air (2024) | 13undquot | 128 GB | Starlight</td>
+            <td class="num">5</td>
+            <td class="num">EUR 500</td>
+            <td class="num ek-max">EUR 510</td>
+            <td class="num">EUR 583</td>
+            <td class="num money">EUR 10.21</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">60% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro Max 256GB</td>
+            <td class="num">188</td>
+            <td class="num">EUR 509</td>
+            <td class="num ek-max">EUR 520</td>
+            <td class="num">EUR 615</td>
+            <td class="num money">EUR 11.36</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">50% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro Max 256GB</td>
+            <td class="num">63</td>
+            <td class="num">EUR 669</td>
+            <td class="num ek-max">EUR 681</td>
+            <td class="num">EUR 798</td>
+            <td class="num money">EUR 11.65</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">46% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro Max 512GB</td>
+            <td class="num">16</td>
+            <td class="num">EUR 654</td>
+            <td class="num ek-max">EUR 700</td>
+            <td class="num">EUR 844</td>
+            <td class="num money">EUR 46.73</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">38% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 128GB</td>
+            <td class="num">4</td>
+            <td class="num">EUR 266</td>
+            <td class="num ek-max">EUR 317</td>
+            <td class="num">EUR 390</td>
+            <td class="num money">EUR 50.48</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">25% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 128GB</td>
+            <td class="num">10</td>
+            <td class="num">EUR 434</td>
+            <td class="num ek-max">EUR 499</td>
+            <td class="num">EUR 599</td>
+            <td class="num money">EUR 64.56</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">30% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 256GB</td>
+            <td class="num">11</td>
+            <td class="num">EUR 289</td>
+            <td class="num ek-max">EUR 361</td>
+            <td class="num">EUR 436</td>
+            <td class="num money">EUR 71.84</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">9% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro 128GB</td>
+            <td class="num">84</td>
+            <td class="num">EUR 503</td>
+            <td class="num ek-max">EUR 598</td>
+            <td class="num">EUR 721</td>
+            <td class="num money">EUR 95.48</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">6% im Minus</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro 256GB</td>
+            <td class="num">30</td>
+            <td class="num">EUR 535</td>
+            <td class="num ek-max">EUR 658</td>
+            <td class="num">EUR 796</td>
+            <td class="num money">EUR 122.57</td>
+            <td><span class="badge bg">PROFIT</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr>
+    </table>
+    </div>
   </div>
 </div>
 
-<div class="g2">
-  <div class="card">
-    <h2>Retourenquote nach Modell</h2>
-    <div class="chart-wrap"><canvas id="retChart"></canvas></div>
+<!-- SECTION: UEBERSICHT -->
+<div class="section" id="sec-overview">
+  <div class="card" style="margin-bottom:16px">
+    <h2>Monatsvergleich</h2>
+    <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
   </div>
-  <div class="card">
-    <h2>Gewinn nach Land</h2>
-    <div class="chart-wrap"><canvas id="countryChart"></canvas></div>
+  <div class="g2">
+    <div class="card">
+      <h2>Gewinn nach Modell</h2>
+      <div class="chart-wrap"><canvas id="profitChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>EK vs VK vs Gewinn</h2>
+      <div class="chart-wrap"><canvas id="ekChart"></canvas></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h2>Retourenquote</h2>
+      <div class="chart-wrap"><canvas id="retChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Gewinn nach Land</h2>
+      <div class="chart-wrap"><canvas id="countryChart"></canvas></div>
+    </div>
   </div>
 </div>
 
-<!-- TABELLEN -->
-<div class="g3">
+<!-- SECTION: MODELLE -->
+<div class="section" id="sec-models">
   <div class="card">
     <h2>Alle Modelle <span>sortiert nach Volumen</span></h2>
     <div style="overflow-x:auto">
@@ -147,38 +320,38 @@ tr:hover{background:#12141e}
       <tr class="ret-mid">
             <td class="model-name">iPhone 15 Pro Max 256GB</td>
             <td class="num">188</td>
-            <td class="num money">EUR 2,059</td>
-            <td class="num">EUR 10.95</td>
+            <td class="num money">EUR 2,135</td>
+            <td class="num">EUR 11.36</td>
             <td class="num">EUR 509</td>
             <td class="num">EUR 615</td>
             <td class="num margin-bad">1.8%</td>
-            <td class="num">16</td>
-            <td class="num ">8.5%</td>
+            <td class="num">17</td>
+            <td class="num ">9.0%</td>
         </tr><tr class="">
             <td class="model-name">iPhone 15 Pro 256GB</td>
             <td class="num">172</td>
-            <td class="num money">EUR 140</td>
-            <td class="num">EUR 0.81</td>
+            <td class="num money">EUR 182</td>
+            <td class="num">EUR 1.06</td>
             <td class="num">EUR 499</td>
             <td class="num">EUR 588</td>
-            <td class="num margin-bad">0.1%</td>
-            <td class="num">6</td>
-            <td class="num ">3.5%</td>
+            <td class="num margin-bad">0.2%</td>
+            <td class="num">7</td>
+            <td class="num ">4.1%</td>
         </tr><tr class="">
             <td class="model-name">iPhone 15 Pro 128GB</td>
             <td class="num">109</td>
-            <td class="num money">EUR -494</td>
-            <td class="num">EUR -4.53</td>
+            <td class="num money">EUR -557</td>
+            <td class="num">EUR -5.11</td>
             <td class="num">EUR 457</td>
             <td class="num">EUR 532</td>
-            <td class="num margin-bad">-0.9%</td>
-            <td class="num">3</td>
-            <td class="num ">2.8%</td>
+            <td class="num margin-bad">-1.0%</td>
+            <td class="num">5</td>
+            <td class="num ">4.6%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 16 Pro 128GB</td>
             <td class="num">84</td>
-            <td class="num money">EUR 7,975</td>
-            <td class="num">EUR 94.94</td>
+            <td class="num money">EUR 8,021</td>
+            <td class="num">EUR 95.48</td>
             <td class="num">EUR 503</td>
             <td class="num">EUR 721</td>
             <td class="num margin-good">13.2%</td>
@@ -187,13 +360,13 @@ tr:hover{background:#12141e}
         </tr><tr class="">
             <td class="model-name">iPhone 16 Pro Max 256GB</td>
             <td class="num">63</td>
-            <td class="num money">EUR 722</td>
-            <td class="num">EUR 11.47</td>
+            <td class="num money">EUR 734</td>
+            <td class="num">EUR 11.65</td>
             <td class="num">EUR 669</td>
             <td class="num">EUR 798</td>
-            <td class="num margin-bad">1.4%</td>
-            <td class="num">0</td>
-            <td class="num ">0.0%</td>
+            <td class="num margin-bad">1.5%</td>
+            <td class="num">1</td>
+            <td class="num ">1.6%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 16 Pro 256GB</td>
             <td class="num">30</td>
@@ -207,11 +380,11 @@ tr:hover{background:#12141e}
         </tr><tr class="">
             <td class="model-name">iPhone 15 Pro Max 512GB</td>
             <td class="num">24</td>
-            <td class="num money">EUR -192</td>
-            <td class="num">EUR -7.98</td>
+            <td class="num money">EUR -178</td>
+            <td class="num">EUR -7.41</td>
             <td class="num">EUR 573</td>
             <td class="num">EUR 664</td>
-            <td class="num margin-bad">-1.2%</td>
+            <td class="num margin-bad">-1.1%</td>
             <td class="num">1</td>
             <td class="num ">4.2%</td>
         </tr><tr class="ret-high">
@@ -227,21 +400,21 @@ tr:hover{background:#12141e}
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 16 Pro Max 512GB</td>
             <td class="num">16</td>
-            <td class="num money">EUR 763</td>
-            <td class="num">EUR 47.66</td>
+            <td class="num money">EUR 748</td>
+            <td class="num">EUR 46.73</td>
             <td class="num">EUR 654</td>
             <td class="num">EUR 844</td>
-            <td class="num margin-ok">5.6%</td>
+            <td class="num margin-ok">5.5%</td>
             <td class="num">1</td>
             <td class="num ">6.2%</td>
         </tr><tr class="">
             <td class="model-name">iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</td>
             <td class="num">14</td>
-            <td class="num money">EUR -163</td>
-            <td class="num">EUR -11.61</td>
+            <td class="num money">EUR -104</td>
+            <td class="num">EUR -7.39</td>
             <td class="num">EUR 550</td>
             <td class="num">EUR 623</td>
-            <td class="num margin-bad">-1.9%</td>
+            <td class="num margin-bad">-1.2%</td>
             <td class="num">0</td>
             <td class="num ">0.0%</td>
         </tr><tr class="">
@@ -257,11 +430,11 @@ tr:hover{background:#12141e}
         </tr><tr class="">
             <td class="model-name">iPhone 16 128GB</td>
             <td class="num">10</td>
-            <td class="num money">EUR 651</td>
-            <td class="num">EUR 65.12</td>
+            <td class="num money">EUR 646</td>
+            <td class="num">EUR 64.56</td>
             <td class="num">EUR 434</td>
             <td class="num">EUR 599</td>
-            <td class="num margin-good">10.9%</td>
+            <td class="num margin-good">10.8%</td>
             <td class="num">0</td>
             <td class="num ">0.0%</td>
         </tr><tr class="">
@@ -287,21 +460,21 @@ tr:hover{background:#12141e}
         </tr><tr class="">
             <td class="model-name">iPad Air (2024) | 13undquot | 128 GB | Starlight</td>
             <td class="num">5</td>
-            <td class="num money">EUR 23</td>
-            <td class="num">EUR 4.60</td>
+            <td class="num money">EUR 51</td>
+            <td class="num">EUR 10.21</td>
             <td class="num">EUR 500</td>
             <td class="num">EUR 583</td>
-            <td class="num margin-bad">0.8%</td>
+            <td class="num margin-bad">1.8%</td>
             <td class="num">0</td>
             <td class="num ">0.0%</td>
         </tr><tr class="">
             <td class="model-name">iPad Air (2024) | 13undquot | 128 GB | space gray</td>
             <td class="num">5</td>
-            <td class="num money">EUR -53</td>
-            <td class="num">EUR -10.57</td>
+            <td class="num money">EUR 3</td>
+            <td class="num">EUR 0.65</td>
             <td class="num">EUR 500</td>
             <td class="num">EUR 571</td>
-            <td class="num margin-bad">-1.9%</td>
+            <td class="num margin-bad">0.1%</td>
             <td class="num">0</td>
             <td class="num ">0.0%</td>
         </tr><tr class="">
@@ -327,11 +500,11 @@ tr:hover{background:#12141e}
         </tr><tr class="">
             <td class="model-name">iPhone 14 Pro 256GB</td>
             <td class="num">2</td>
-            <td class="num money">EUR 114</td>
-            <td class="num">EUR 57.06</td>
+            <td class="num money">EUR 142</td>
+            <td class="num">EUR 71.09</td>
             <td class="num">EUR 453</td>
             <td class="num">EUR 615</td>
-            <td class="num margin-good">9.3%</td>
+            <td class="num margin-good">11.6%</td>
             <td class="num">0</td>
             <td class="num ">0.0%</td>
         </tr><tr class="">
@@ -378,32 +551,82 @@ tr:hover{background:#12141e}
     </table>
     </div>
   </div>
+</div>
+
+<!-- SECTION: KI-TIPPS -->
+<div class="section" id="sec-tips">
+  <div class="card" style="border-color:rgba(0,229,160,.2)">
+    <h2>KI-Analyse & Empfehlungen</h2>
+    <div class="tips-grid"><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 15.0% Retourenquote (3/20)</div>
+            <div class="tip-text">Qualitaetskontrolle verschaerfen! Verlust: 212 EUR.</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 14 Pro 128GB: Nur -21.3% Marge</div>
+            <div class="tip-text">Avg EK: 444 EUR -> Avg VK: 403 EUR -> Avg Gewinn: -85.82 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 256 GB | Starlight: Nur -3.1% Marge</div>
+            <div class="tip-text">Avg EK: 540 EUR -> Avg VK: 595 EUR -> Avg Gewinn: -18.45 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: Nur -1.2% Marge</div>
+            <div class="tip-text">Avg EK: 550 EUR -> Avg VK: 623 EUR -> Avg Gewinn: -7.39 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 15 Pro Max 512GB: Nur -1.1% Marge</div>
+            <div class="tip-text">Avg EK: 573 EUR -> Avg VK: 664 EUR -> Avg Gewinn: -7.41 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 15 Pro 128GB: Nur -1.0% Marge</div>
+            <div class="tip-text">Avg EK: 457 EUR -> Avg VK: 532 EUR -> Avg Gewinn: -5.11 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | blue: Nur -0.3% Marge</div>
+            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 581 EUR -> Avg Gewinn: -1.94 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 14 Pro Max 128GB: Nur 0.0% Marge</div>
+            <div class="tip-text">Avg EK: 408 EUR -> Avg VK: 489 EUR -> Avg Gewinn: 0.04 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | space gray: Nur 0.1% Marge</div>
+            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 571 EUR -> Avg Gewinn: 0.65 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 15 Pro 256GB: Nur 0.2% Marge</div>
+            <div class="tip-text">Avg EK: 499 EUR -> Avg VK: 588 EUR -> Avg Gewinn: 1.06 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 16 Pro Max 256GB: Nur 1.5% Marge</div>
+            <div class="tip-text">Avg EK: 669 EUR -> Avg VK: 798 EUR -> Avg Gewinn: 11.65 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPhone 15 Pro Max 256GB: Nur 1.8% Marge</div>
+            <div class="tip-text">Avg EK: 509 EUR -> Avg VK: 615 EUR -> Avg Gewinn: 11.36 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-title">$$$ iPad Air (2024) | 13undquot | 128 GB | Starlight: Nur 1.8% Marge</div>
+            <div class="tip-text">Avg EK: 500 EUR -> Avg VK: 583 EUR -> Avg Gewinn: 10.21 EUR/Stk. EK senken oder VK erhoehen!</div></div><div class="tip" style="border-left-color:#00d4aa">
+            <div class="tip-title">>>> Top-Performer - mehr einkaufen!</div>
+            <div class="tip-text"><b>iPhone 16 Pro 128GB</b> (8,021 EUR, 84x), <b>iPhone 16 Pro 256GB</b> (3,677 EUR, 30x), <b>iPhone 15 Pro Max 256GB</b> (2,135 EUR, 188x)</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPhone 15 Pro 256GB: 172x verkauft aber nur 1.06 EUR/Stk</div>
+            <div class="tip-text">Marge: 0.2%. EK: 499 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPhone 15 Pro 128GB: 109x verkauft aber nur -5.11 EUR/Stk</div>
+            <div class="tip-text">Marge: -1.0%. EK: 457 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPhone 15 Pro Max 512GB: 24x verkauft aber nur -7.41 EUR/Stk</div>
+            <div class="tip-text">Marge: -1.1%. EK: 573 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPhone 14 Pro Max 128GB: 20x verkauft aber nur 0.04 EUR/Stk</div>
+            <div class="tip-text">Marge: 0.0%. EK: 408 EUR. Optimierung lohnt sich!</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d: 14x verkauft aber nur -7.39 EUR/Stk</div>
+            <div class="tip-text">Marge: -1.2%. EK: 550 EUR. Optimierung lohnt sich!</div></div></div>
+  </div>
+</div>
+
+<!-- SECTION: LAENDER -->
+<div class="section" id="sec-countries">
   <div class="card">
     <h2>Laender</h2>
     <table>
       <tr><th>Land</th><th>Orders</th><th>Gewinn</th><th>Ret</th><th>Ret%</th></tr>
       <tr><td>Deutschland</td><td class="num">461</td>
-            <td class="num money">EUR 9,833</td>
-            <td class="num">28</td><td class="num">6.1%</td></tr><tr><td>Italien</td><td class="num">54</td>
+            <td class="num money">EUR 9,952</td>
+            <td class="num">31</td><td class="num">6.7%</td></tr><tr><td>Italien</td><td class="num">54</td>
             <td class="num money">EUR 1,881</td>
             <td class="num">3</td><td class="num">5.6%</td></tr><tr><td>Österreich</td><td class="num">79</td>
-            <td class="num money">EUR 1,069</td>
-            <td class="num">3</td><td class="num">3.8%</td></tr><tr><td>Irland</td><td class="num">37</td>
-            <td class="num money">EUR 943</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Schweden</td><td class="num">38</td>
-            <td class="num money">EUR 927</td>
-            <td class="num">2</td><td class="num">5.3%</td></tr><tr><td>Belgien</td><td class="num">21</td>
-            <td class="num money">EUR 439</td>
+            <td class="num money">EUR 1,114</td>
+            <td class="num">4</td><td class="num">5.1%</td></tr><tr><td>Schweden</td><td class="num">38</td>
+            <td class="num money">EUR 1,002</td>
+            <td class="num">2</td><td class="num">5.3%</td></tr><tr><td>Irland</td><td class="num">37</td>
+            <td class="num money">EUR 926</td>
+            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Belgien</td><td class="num">21</td>
+            <td class="num money">EUR 433</td>
             <td class="num">1</td><td class="num">4.8%</td></tr><tr><td>Frankreich</td><td class="num">7</td>
             <td class="num money">EUR 244</td>
             <td class="num">1</td><td class="num">14.3%</td></tr><tr><td>Gesamt Brutto: 580,99</td><td class="num">1</td>
             <td class="num money">EUR 100</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Tschechische Republik</td><td class="num">10</td>
-            <td class="num money">EUR 66</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 772,99</td><td class="num">1</td>
             <td class="num money">EUR 56</td>
+            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Tschechische Republik</td><td class="num">10</td>
+            <td class="num money">EUR 55</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Niederlande</td><td class="num">7</td>
-            <td class="num money">EUR 31</td>
+            <td class="num money">EUR 40</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 722,99</td><td class="num">1</td>
             <td class="num money">EUR 26</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 741,99</td><td class="num">1</td>
@@ -419,100 +642,112 @@ tr:hover{background:#12141e}
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 615,99</td><td class="num">1</td>
             <td class="num money">EUR -50</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Dänemark</td><td class="num">50</td>
-            <td class="num money">EUR -181</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr>
+            <td class="num money">EUR -117</td>
+            <td class="num">1</td><td class="num">2.0%</td></tr>
     </table>
   </div>
 </div>
 
 <script>
+// Tab Navigation
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('sec-'+id).classList.add('active');
+    event.target.classList.add('active');
+    // Charts muessen nach Sichtbarwerden gerendert werden
+    if (id === 'overview' && !window._chartsInit) { initCharts(); window._chartsInit = true; }
+}
+
 Chart.defaults.color = '#555';
 Chart.defaults.borderColor = '#1a1c28';
 Chart.defaults.font.family = 'Outfit';
 
-// Monatsvergleich
-new Chart(document.getElementById('monthChart'), {
-    type: 'bar',
-    data: {
-        labels: ["2026-02"],
-        datasets: [
-            { label: 'Brutto-Gewinn', data: [15360.84], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4, yAxisID:'y' },
-            { label: 'Netto-Gewinn', data: [12620.98], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4, yAxisID:'y' },
-            { label: 'Orders', data: [779], type:'line', borderColor:'#a78bfa', backgroundColor:'transparent', yAxisID:'y1', tension:.3, pointRadius:4 },
-        ]
-    },
-    options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-            y: { ticks: { callback: v => 'EUR '+v } },
-            y1: { position:'right', grid:{display:false}, ticks: { color:'#a78bfa' } }
+function initCharts() {
+    // Monatsvergleich
+    new Chart(document.getElementById('monthChart'), {
+        type: 'bar',
+        data: {
+            labels: ["2026-02"],
+            datasets: [
+                { label: 'Brutto', data: [15639.07], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4, yAxisID:'y' },
+                { label: 'Netto', data: [13008.1], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4, yAxisID:'y' },
+                { label: 'Orders', data: [779], type:'line', borderColor:'#a78bfa', backgroundColor:'transparent', yAxisID:'y1', tension:.3, pointRadius:4 },
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                y: { ticks: { callback: v => v+'E' } },
+                y1: { position:'right', grid:{display:false}, ticks: { color:'#a78bfa' } }
+            }
         }
-    }
-});
+    });
 
-// Gewinn nach Modell
-new Chart(document.getElementById('profitChart'), {
-    type: 'bar',
-    data: {
-        labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
-        datasets: [{ label: 'Gewinn EUR', data: [2059.19, 139.61, -494.28, 7974.8, 722.41, 3677.02, -191.53, 0.78, 762.59, -162.57, 790.22, 651.25, -686.55, -92.25, 23.01],
-            backgroundColor: [2059.19, 139.61, -494.28, 7974.8, 722.41, 3677.02, -191.53, 0.78, 762.59, -162.57, 790.22, 651.25, -686.55, -92.25, 23.01].map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
-            borderRadius: 4 }]
-    },
-    options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { ticks: { maxRotation:45, font:{size:10} } }, y: { ticks: { callback: v => 'EUR '+v } } }
-    }
-});
+    // Gewinn nach Modell
+    new Chart(document.getElementById('profitChart'), {
+        type: 'bar',
+        data: {
+            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
+            datasets: [{ label: 'Gewinn', data: [2135.33, 182.37, -557.19, 8020.71, 734.26, 3677.02, -177.83, 0.86, 747.69, -103.52, 790.22, 645.58, -686.55, -92.25, 51.07],
+                backgroundColor: [2135.33, 182.37, -557.19, 8020.71, 734.26, 3677.02, -177.83, 0.86, 747.69, -103.52, 790.22, 645.58, -686.55, -92.25, 51.07].map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
+                borderRadius: 4 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
+        }
+    });
 
-// EK-Pruefer
-new Chart(document.getElementById('ekChart'), {
-    type: 'bar',
-    data: {
-        labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
-        datasets: [
-            { label: 'Avg EK', data: [508.75, 499.14, 457.02, 502.65, 669.05, 535.0, 572.85, 407.55, 653.56, 550.0, 289.36, 434.5, 443.75, 540.0, 500.0], backgroundColor:'rgba(255,92,92,.6)', borderRadius:4 },
-            { label: 'Avg VK', data: [615.22, 587.74, 532.27, 720.99, 797.98, 795.74, 663.55, 488.8, 843.69, 622.84, 435.98, 599.18, 402.65, 594.93, 583.43], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4 },
-            { label: 'Avg Gewinn', data: [10.95, 0.81, -4.53, 94.94, 11.47, 122.57, -7.98, 0.04, 47.66, -11.61, 71.84, 65.12, -85.82, -18.45, 4.6], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
-        ]
-    },
-    options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: { x: { ticks: { maxRotation:45, font:{size:10} } }, y: { ticks: { callback: v => 'EUR '+v } } }
-    }
-});
+    // EK-Pruefer Chart
+    new Chart(document.getElementById('ekChart'), {
+        type: 'bar',
+        data: {
+            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
+            datasets: [
+                { label: 'Avg EK', data: [508.75, 499.14, 457.02, 502.65, 669.05, 535.0, 572.85, 407.55, 653.56, 550.0, 289.36, 434.5, 443.75, 540.0, 500.0], backgroundColor:'rgba(255,92,92,.6)', borderRadius:4 },
+                { label: 'Avg VK', data: [615.22, 587.74, 532.27, 720.99, 797.98, 795.74, 663.55, 488.8, 843.69, 622.84, 435.98, 599.18, 402.65, 594.93, 583.43], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4 },
+                { label: 'Avg Gewinn', data: [11.36, 1.06, -5.11, 95.48, 11.65, 122.57, -7.41, 0.04, 46.73, -7.39, 71.84, 64.56, -85.82, -18.45, 10.21], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
+        }
+    });
 
-// Retourenquote
-new Chart(document.getElementById('retChart'), {
-    type: 'bar',
-    data: {
-        labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
-        datasets: [{ label: 'Retourenquote %', data: [8.5, 3.5, 2.8, 7.1, 0.0, 6.7, 4.2, 15.0, 6.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            backgroundColor: [8.5, 3.5, 2.8, 7.1, 0.0, 6.7, 4.2, 15.0, 6.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0].map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
-            borderRadius:4 }]
-    },
-    options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display:false } },
-        scales: { x: { ticks: { maxRotation:45, font:{size:10} } }, y: { ticks: { callback: v => v+'%' } } }
-    }
-});
+    // Retourenquote
+    new Chart(document.getElementById('retChart'), {
+        type: 'bar',
+        data: {
+            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
+            datasets: [{ label: 'Retourenquote %', data: [9.0, 4.1, 4.6, 7.1, 1.6, 6.7, 4.2, 15.0, 6.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                backgroundColor: [9.0, 4.1, 4.6, 7.1, 1.6, 6.7, 4.2, 15.0, 6.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0].map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
+                borderRadius:4 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display:false } },
+            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'%' } } }
+        }
+    });
 
-// Laender
-new Chart(document.getElementById('countryChart'), {
-    type: 'bar',
-    data: {
-        labels: ["Deutschland", "Schweden", "Italien", "Irland", "\u00d6sterreich", "D\u00e4nemark", "Frankreich", "Belgien", "Niederlande", "Gesamt Brutto: 580,99", "Tschechische Republik", "Spanien", "Gesamt Brutto: 772,99", "Gesamt Brutto: 722,99", "Gesamt Brutto: 741,99", "Gesamt Brutto: 572,99", "Gesamt Brutto: 557,99", "Gesamt Brutto: 642,99", "Gesamt Brutto: 615,99"],
-        datasets: [{ label: 'Gewinn EUR', data: [9833.47, 927.01, 1881.31, 942.71, 1069.05, -181.47, 244.24, 438.86, 30.84, 99.7, 66.36, -8.76, 55.57, 25.65, 15.41, -7.86, -10.32, -11.4, -49.53],
-            backgroundColor: 'rgba(0,180,216,.7)', borderRadius: 4 }]
-    },
-    options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display:false } },
-        indexAxis: 'y',
-        scales: { x: { ticks: { callback: v => 'EUR '+v } } }
-    }
-});
+    // Laender
+    new Chart(document.getElementById('countryChart'), {
+        type: 'bar',
+        data: {
+            labels: ["Deutschland", "Schweden", "Italien", "Irland", "\u00d6sterreich", "D\u00e4nemark", "Frankreich", "Belgien", "Niederlande", "Gesamt Brutto: 580,99", "Tschechische Republik", "Spanien", "Gesamt Brutto: 772,99", "Gesamt Brutto: 722,99", "Gesamt Brutto: 741,99", "Gesamt Brutto: 572,99", "Gesamt Brutto: 557,99", "Gesamt Brutto: 642,99", "Gesamt Brutto: 615,99"],
+            datasets: [{ label: 'Gewinn', data: [9951.77, 1001.54, 1881.31, 925.95, 1114.43, -116.59, 244.24, 432.86, 39.69, 99.7, 55.41, -8.76, 55.57, 25.65, 15.41, -7.86, -10.32, -11.4, -49.53],
+                backgroundColor: 'rgba(0,180,216,.7)', borderRadius: 4 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display:false } },
+            indexAxis: 'y',
+            scales: { x: { ticks: { callback: v => v+'E' } } }
+        }
+    });
+}
 </script>
 </div></body></html>
