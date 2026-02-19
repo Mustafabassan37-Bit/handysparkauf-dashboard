@@ -15,6 +15,13 @@ body{font-family:'Outfit',sans-serif;background:#080810;color:#c8cad0;min-height
 .hdr .meta{color:#555;font-size:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hdr .live{display:inline-block;width:8px;height:8px;background:#00e5a0;border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Daily Bar */
+.daily-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.daily-col{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28;text-align:center}
+.daily-today{border-color:rgba(0,229,160,.3);background:linear-gradient(135deg,rgba(0,229,160,.05),rgba(0,180,216,.05))}
+.daily-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
+.daily-profit{font-size:22px;font-weight:700;color:#00e5a0;font-family:'JetBrains Mono',monospace}
+.daily-meta{font-size:10px;color:#444;margin-top:4px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
 .kpi{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28}
 .kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
@@ -81,6 +88,8 @@ tr:hover{background:#12141e}
 @media(max-width:768px){
   .wrap{padding:10px}
   .hdr h1{font-size:16px}
+  .daily-bar{grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .daily-profit{font-size:16px}
   .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
   .kpi .val{font-size:18px}
   .g2,.g3{grid-template-columns:1fr}
@@ -134,13 +143,29 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>19.02.2026 02:23</span>
+    <span>19.02.2026 02:25</span>
     <span>|</span>
     <span>781 Orders</span>
     <span>|</span>
     <span>Letzter Verkauf: 19.02.2026 00:03</span>
   </div>
 </div>
+
+<!-- TAGES-UMSATZ (letzte 3 Tage) -->
+<div class="daily-bar">
+<div class="daily-col daily-today">
+  <div class="daily-label">Heute</div>
+  <div class="daily-profit">EUR 72.38</div>
+  <div class="daily-meta">1 Orders | EUR 623 Umsatz</div>
+</div><div class="daily-col">
+  <div class="daily-label">Gestern</div>
+  <div class="daily-profit">EUR 17.20</div>
+  <div class="daily-meta">11 Orders | EUR 6,286 Umsatz</div>
+</div><div class="daily-col">
+  <div class="daily-label">Tue 17.02</div>
+  <div class="daily-profit">EUR 825.38</div>
+  <div class="daily-meta">45 Orders | EUR 26,758 Umsatz</div>
+</div></div>
 
 <!-- KPIs -->
 <div class="kpis">
@@ -1042,7 +1067,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '19.02.2026 02:23';
+    const now = '19.02.2026 02:25';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
