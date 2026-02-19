@@ -105,7 +105,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>19.02.2026 01:29</span>
+    <span>19.02.2026 01:32</span>
     <span>|</span>
     <span>781 Orders</span>
   </div>
@@ -329,22 +329,68 @@ tr:hover{background:#12141e}
 <div class="section" id="sec-returns">
   <div class="g2">
     <div class="card">
-      <h2>Retouren-Gruende <span>56 Retouren analysiert</span></h2>
+      <h2>Retouren-Gruende <span>56 Retouren analysiert via Zendesk</span></h2>
       <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
     </div>
     <div class="card">
-      <h2>QC vs Kein QC <span>Technische Probleme vs Widerruf/Storno</span></h2>
+      <h2>QC vs Kein QC <span>Vermeidbar vs Kundenentscheidung</span></h2>
       <div class="chart-wrap"><canvas id="qcChart"></canvas></div>
     </div>
   </div>
-  <div class="card" style="margin-top:16px">
-    <h2>Modell x Retouren-Grund <span>Welches Modell hat welches Problem?</span></h2>
-    <div style="overflow-x:auto">
-    <table>
-      <tr><th>Modell</th><th>Ret</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Akku/Batteri</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Display/Bild</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Face ID</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Falsche Ware</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Gehaeuse/Opt</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Kamera</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Ladeanschlus</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Sonstiges</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Stornierung</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">WLAN/Netz/Si</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Widerruf/Kei</th></tr>
-      <tr><td class="model-name">iPhone 15 Pro Max 256GB</td><td class="num">18</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">1</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="background:#34d39933;color:#34d399;font-weight:600">1</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">5</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#6b728033;color:#6b7280;font-weight:600">2</td><td class="num" style="background:#60a5fa33;color:#60a5fa;font-weight:600">1</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">4</td></tr><tr><td class="model-name">iPhone 15 Pro 256GB</td><td class="num">12</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">1</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">3</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">1</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">3</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#6b728033;color:#6b7280;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">2</td></tr><tr><td class="model-name">iPhone 15 Pro 128GB</td><td class="num">8</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">2</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="background:#2dd4bf33;color:#2dd4bf;font-weight:600">1</td><td class="num" style="background:#47556933;color:#475569;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro 128GB</td><td class="num">6</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 14 Pro Max 128GB</td><td class="num">4</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#47556933;color:#475569;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">2</td></tr><tr><td class="model-name">iPhone 15 Pro Max 512GB</td><td class="num">2</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 16 Pro 256GB</td><td class="num">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro Max 512GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro Max 256GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 16 128GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 14 Pro 128GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr>
-    </table>
-    </div>
+  <div class="card" style="margin-top:16px;border-color:rgba(0,229,160,.2)">
+    <h2>KI Retouren-Analyse <span>Konkrete QC-Massnahmen basierend auf Kundenkommunikation</span></h2>
+    <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
+            <div class="tip-title">>>> Retouren-Zusammenfassung</div>
+            <div class="tip-text">
+                Von <b>56 Retouren</b> sind <b>40 (71%)</b> durch technische Maengel verursacht
+                und <b>14</b> durch Kundenentscheidungen (Widerruf/Storno).
+                <br>Technische Retouren kosten dich ca. <b>1,420 EUR</b> - dieses Geld kannst du durch bessere QC zurueckgewinnen!
+            </div></div><div class="tip" style="border-left-color:#ff9f43">
+            <div class="tip-title" style="color:#ff9f43">11x Gehaeuse/Optik (20%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 256GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (5x), <b>iPhone 15 Pro 256GB</b> (1x), <b>iPhone 15 Pro 128GB</b> (2x), <b>iPhone 16 128GB</b> (1x)
+                <br><b>Optik-Check:</b> 360-Grad Inspektion bei Tageslicht. Rueckseite auf Haarrisse pruefen. Rahmen auf Dellen/Beulen abtasten. Zustandsbewertung ehrlich vergeben - lieber eine Stufe tiefer als Retoure riskieren.
+            </div></div><div class="tip" style="border-left-color:#a78bfa">
+            <div class="tip-title" style="color:#a78bfa">9x Kamera (16%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (2x), <b>iPhone 15 Pro 256GB</b> (3x), <b>iPhone 15 Pro 128GB</b> (2x)
+                <br><b>Kamera-Check:</b> Beide Linsen testen: Foto + Video. Autofokus-Test (nah + fern). OIS pruefen (wackelt das Bild?). Blitz + Taschenlampe testen. Kameramodul auf Wackler pruefen.
+            </div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title" style="color:#ff6b6b">9x Display/Bildschirm (16%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (2x), <b>iPhone 15 Pro Max 512GB</b> (1x), <b>iPhone 16 Pro Max 512GB</b> (1x), <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (3x)
+                <br><b>Display-Check:</b> Pixel-Test bei voller Helligkeit auf schwarzem UND weissem Hintergrund. Touch-Responsivitaet in allen Ecken testen. Auf Kratzer bei Gegenlicht pruefen.
+            </div></div><div class="tip" style="border-left-color:#fb923c">
+            <div class="tip-title" style="color:#fb923c">4x Falsche Ware/Lieferung (7%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (1x), <b>iPhone 14 Pro Max 128GB</b> (1x), <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (1x)
+                <br><b>Versand-Check:</b> Vor Versand: Modell, Farbe, Speicher mit Bestellung abgleichen. Original-Bauteile pruefen (Einstellungen > Allgemein > Info). Barcode/IMEI scannen.
+            </div></div><div class="tip" style="border-left-color:#fbbf24">
+            <div class="tip-title" style="color:#fbbf24">4x Akku/Batterie (7%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (1x), <b>iPhone 15 Pro 128GB</b> (2x)
+                <br><b>Akku-Check:</b> Battery-Health in Einstellungen pruefen (min. 80%). 30-Min Ladetest: laedt das Geraet gleichmaessig? Akku-Drain Test: 10 Min Video schauen, max 3% Verlust.
+            </div></div><div class="tip" style="border-left-color:#60a5fa">
+            <div class="tip-title" style="color:#60a5fa">1x WLAN/Netz/Signal (2%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x)
+                <br><b>Netzwerk-Check:</b> WLAN verbinden und Speedtest machen. SIM-Karte einlegen und Empfang pruefen. Bluetooth mit Kopfhoerer pairen.
+            </div></div><div class="tip" style="border-left-color:#34d399">
+            <div class="tip-title" style="color:#34d399">1x Face ID (2%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x)
+                <br><b>Face-ID Check:</b> Face ID Registrierung komplett durchfuehren. TrueDepth-Sensor reinigen. Bei Ausfall: NICHT verkaufen oder als Defekt deklarieren.
+            </div></div><div class="tip" style="border-left-color:#2dd4bf">
+            <div class="tip-title" style="color:#2dd4bf">1x Ladeanschluss/Port (2%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro 128GB</b> (1x)
+                <br><b>Ladeanschluss-Check:</b> Mit Original-Kabel testen. Stecker muss fest sitzen ohne Wackeln. Schnellladen testen (Blitz-Symbol).
+            </div></div><div class="tip" style="border-left-color:#94a3b8">
+            <div class="tip-title" style="color:#94a3b8">Kein QC-Problem: 14x (Widerruf/Kein Bedarf: 11x, Stornierung: 3x)</div>
+            <div class="tip-text">
+                Diese Retouren sind Kundenentscheidungen und nicht vermeidbar durch bessere QC.
+                Bei hoher Widerrufsquote: Produktbeschreibungen und Fotos pruefen - stimmen die Erwartungen?
+            </div></div></div>
   </div>
 </div>
 
