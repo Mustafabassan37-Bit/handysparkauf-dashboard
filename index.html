@@ -98,6 +98,14 @@ tr:hover{background:#12141e}
   .kpi .val{font-size:16px}
   .hdr h1{font-size:14px}
 }
+
+/* PDF Button */
+.pdf-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:linear-gradient(135deg,#00e5a0,#00b4d8);color:#080810;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:transform .15s,opacity .15s;letter-spacing:.3px}
+.pdf-btn:hover{transform:scale(1.03);opacity:.9}
+.pdf-btn svg{width:14px;height:14px}
+
+/* Print verstecken */
+@media print{.pdf-btn{display:none!important}}
 </style></head><body>
 <div class="wrap">
 
@@ -105,7 +113,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>19.02.2026 01:32</span>
+    <span>19.02.2026 01:39</span>
     <span>|</span>
     <span>781 Orders</span>
   </div>
@@ -327,6 +335,13 @@ tr:hover{background:#12141e}
 
 <!-- SECTION: RETOUREN-ANALYSE -->
 <div class="section" id="sec-returns">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:11px;color:#555">Basierend auf Zendesk-Kundenkommunikation | 56 Retouren analysiert</div>
+    <button class="pdf-btn" onclick="printSection('returns')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      QC-Report als PDF
+    </button>
+  </div>
   <div class="g2">
     <div class="card">
       <h2>Retouren-Gruende <span>56 Retouren analysiert via Zendesk</span></h2>
@@ -667,6 +682,12 @@ tr:hover{background:#12141e}
 
 <!-- SECTION: KI-TIPPS -->
 <div class="section" id="sec-tips">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+    <button class="pdf-btn" onclick="printSection('tips')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      KI-Tipps als PDF
+    </button>
+  </div>
   <div class="card" style="border-color:rgba(0,229,160,.2)">
     <h2>KI-Analyse & Tagesempfehlungen <span>Was du heute tun solltest</span></h2>
     <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
@@ -974,6 +995,61 @@ function calcProfit() {
             <div class="calc-bar-label"><span>0 EUR</span><span>Dein EK: ${ek} EUR</span><span>Max: ${Math.round(maxEK)} EUR</span></div>
             <div class="calc-verdict" style="background:${bg};color:${color}">${verdict}</div>
         </div>`;
+}
+// ========== PDF EXPORT ==========
+function printSection(secId) {
+    const titles = {
+        'returns': 'QC-Report: Retouren-Analyse',
+        'tips': 'KI-Tipps & Handlungsempfehlungen',
+    };
+    const title = titles[secId] || 'Report';
+    const sec = document.getElementById('sec-' + secId);
+    if (!sec) return;
+
+    // Nur die Tip-Karten sammeln (keine Charts)
+    const tips = sec.querySelectorAll('.tip');
+    let cardsHtml = '';
+    tips.forEach(tip => {
+        const t = tip.querySelector('.tip-title');
+        const b = tip.querySelector('.tip-text');
+        const borderColor = tip.style.borderLeftColor || '#00e5a0';
+        cardsHtml += `<div style="background:#f8f9fa;border:1px solid #e0e0e0;border-left:4px solid ${borderColor};border-radius:8px;padding:10px 14px;margin-bottom:8px;page-break-inside:avoid">
+            <div style="font-weight:700;font-size:12px;color:#1a1a1a;margin-bottom:3px">${t ? t.innerHTML : ''}</div>
+            <div style="font-size:11px;color:#333;line-height:1.6">${b ? b.innerHTML : ''}</div>
+        </div>`;
+    });
+
+    const now = '19.02.2026 01:39';
+    const w = window.open('', '_blank');
+    w.document.write(`<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <title>${title} - Handysparkauf</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+            *{margin:0;padding:0;box-sizing:border-box}
+            body{font-family:'Outfit',sans-serif;background:#fff;color:#1a1a1a;padding:30px 40px;max-width:800px;margin:0 auto}
+            .header{border-bottom:2px solid #00a876;padding-bottom:10px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end}
+            .header h1{font-size:20px;color:#1a1a1a}
+            .header h1 b{color:#00a876}
+            .header .meta{font-size:11px;color:#888}
+            .subtitle{font-size:14px;color:#666;margin-bottom:16px;font-weight:500}
+            @media print{
+                body{padding:0}
+                @page{size:A4;margin:15mm 18mm}
+            }
+        </style>
+    </head><body>
+        <div class="header">
+            <h1><b>Handysparkauf</b> ${title}</h1>
+            <div class="meta">${now} | 781 Orders</div>
+        </div>
+        ${cardsHtml}
+        <div style="margin-top:20px;text-align:center;font-size:9px;color:#aaa">
+            Automatisch generiert von Handysparkauf Profit Bot
+        </div>
+    </body></html>`);
+    w.document.close();
+    setTimeout(() => { w.print(); }, 500);
 }
 </script>
 </div></body></html>
