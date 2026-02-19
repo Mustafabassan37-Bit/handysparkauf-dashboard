@@ -105,7 +105,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>19.02.2026 00:20</span>
+    <span>19.02.2026 01:29</span>
     <span>|</span>
     <span>781 Orders</span>
   </div>
@@ -123,6 +123,7 @@ tr:hover{background:#12141e}
 <!-- NAVIGATION TABS -->
 <div class="tabs">
   <div class="tab active" onclick="showSection('ek')">EK-Pruefer</div>
+  <div class="tab" onclick="showSection('returns')">Retouren</div>
   <div class="tab" onclick="showSection('overview')">Uebersicht</div>
   <div class="tab" onclick="showSection('models')">Modelle</div>
   <div class="tab" onclick="showSection('tips')">KI-Tipps</div>
@@ -319,6 +320,29 @@ tr:hover{background:#12141e}
             <td><span class="badge bg">PROFIT</span></td>
             <td class="num sub-text">alle OK</td>
         </tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: RETOUREN-ANALYSE -->
+<div class="section" id="sec-returns">
+  <div class="g2">
+    <div class="card">
+      <h2>Retouren-Gruende <span>56 Retouren analysiert</span></h2>
+      <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>QC vs Kein QC <span>Technische Probleme vs Widerruf/Storno</span></h2>
+      <div class="chart-wrap"><canvas id="qcChart"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h2>Modell x Retouren-Grund <span>Welches Modell hat welches Problem?</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Modell</th><th>Ret</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Akku/Batteri</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Display/Bild</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Face ID</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Falsche Ware</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Gehaeuse/Opt</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Kamera</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Ladeanschlus</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Sonstiges</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Stornierung</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">WLAN/Netz/Si</th><th style="writing-mode:vertical-lr;text-align:center;padding:4px 2px;font-size:8px;max-width:30px">Widerruf/Kei</th></tr>
+      <tr><td class="model-name">iPhone 15 Pro Max 256GB</td><td class="num">18</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">1</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="background:#34d39933;color:#34d399;font-weight:600">1</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">5</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#6b728033;color:#6b7280;font-weight:600">2</td><td class="num" style="background:#60a5fa33;color:#60a5fa;font-weight:600">1</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">4</td></tr><tr><td class="model-name">iPhone 15 Pro 256GB</td><td class="num">12</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">1</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">3</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">1</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">3</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#6b728033;color:#6b7280;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">2</td></tr><tr><td class="model-name">iPhone 15 Pro 128GB</td><td class="num">8</td><td class="num" style="background:#fbbf2433;color:#fbbf24;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">2</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="background:#2dd4bf33;color:#2dd4bf;font-weight:600">1</td><td class="num" style="background:#47556933;color:#475569;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro 128GB</td><td class="num">6</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#a78bfa33;color:#a78bfa;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 14 Pro Max 128GB</td><td class="num">4</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#fb923c33;color:#fb923c;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#47556933;color:#475569;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">2</td></tr><tr><td class="model-name">iPhone 15 Pro Max 512GB</td><td class="num">2</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 16 Pro 256GB</td><td class="num">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">2</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro Max 512GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 16 Pro Max 256GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#94a3b833;color:#94a3b8;font-weight:600">1</td></tr><tr><td class="model-name">iPhone 16 128GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff9f4333;color:#ff9f43;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr><tr><td class="model-name">iPhone 14 Pro 128GB</td><td class="num">1</td><td class="num" style="color:#222">-</td><td class="num" style="background:#ff6b6b33;color:#ff6b6b;font-weight:600">1</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td><td class="num" style="color:#222">-</td></tr>
     </table>
     </div>
   </div>
@@ -621,7 +645,9 @@ tr:hover{background:#12141e}
             <div class="tip-title">$$$ Optimierbar: iPhone 15 Pro 256GB (173x, 0.4% Marge)</div>
             <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>499 EUR</b>, Avg VK <b>588 EUR</b>, Gewinn nur <b>2.24 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>865 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#00d4aa">
             <div class="tip-title">>>> Hidden Gems: Hoher Profit, wenig Volumen</div>
-            <div class="tip-text">Diese Modelle haben top Margen aber wenig Verkaeufe: <b>iPhone 15 128GB</b> (54.30 EUR/Stk, nur 4x). <br><b>Aktion:</b> Pruefe ob du hier das Volumen erhoehen kannst! Gibt es diese Modelle haeufiger auf dem Markt?</div></div></div>
+            <div class="tip-text">Diese Modelle haben top Margen aber wenig Verkaeufe: <b>iPhone 15 128GB</b> (54.30 EUR/Stk, nur 4x). <br><b>Aktion:</b> Pruefe ob du hier das Volumen erhoehen kannst! Gibt es diese Modelle haeufiger auf dem Markt?</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! QC-Analyse: 40 technische Retouren - Top: Gehaeuse/Optik (11x)</div>
+            <div class="tip-text">Basierend auf der Zendesk-Kommunikation mit Kunden: <br>&bull; <b>Gehaeuse/Optik</b>: 11x (28%) - 360-Grad Inspektion bei Tageslicht, Zustandsbewertung nochmal pruefen, evtl. Zustand herunterstufen<br>&bull; <b>Kamera</b>: 9x (22%) - Beide Linsen testen (Foto+Video), Autofokus, OIS-Test, Blitz-Funktion<br>&bull; <b>Display/Bildschirm</b>: 9x (22%) - Pixel-Test bei voller Helligkeit, Touch-Responsivitaet, Dead-Pixel Check auf schwarzem/weissem Hintergrund<br>&bull; <b>Falsche Ware/Lieferung</b>: 4x (10%) - Doppelt-Check bei Versand: Modell, Farbe, Speicher mit Bestellung abgleichen<br>&bull; <b>Akku/Batterie</b>: 4x (10%) - Battery-Health pruefen (min. 80%), 30-Min Ladetest durchfuehren<br><br><b>Aktion:</b> QC-Checkliste um diese Punkte erweitern! Der haeufigste Grund <b>Gehaeuse/Optik</b> sollte bei JEDEM Geraet geprueft werden.</div></div></div>
   </div>
 </div>
 
@@ -683,6 +709,7 @@ function showSection(id) {
     event.target.classList.add('active');
     // Charts muessen nach Sichtbarwerden gerendert werden
     if (id === 'overview' && !window._chartsInit) { initCharts(); window._chartsInit = true; }
+    if (id === 'returns' && !window._retChartsInit) { initRetCharts(); window._retChartsInit = true; }
 }
 
 Chart.defaults.color = '#555';
@@ -772,6 +799,54 @@ function initCharts() {
             plugins: { legend: { display:false } },
             indexAxis: 'y',
             scales: { x: { ticks: { callback: v => v+'E' } } }
+        }
+    });
+}
+
+// ========== RETOUREN-CHARTS ==========
+function initRetCharts() {
+    // Donut: Retouren-Gruende
+    const reasonLabels = ["Kamera", "Widerruf/Kein Bedarf", "Gehaeuse/Optik", "Display/Bildschirm", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Sonstiges", "Face ID", "Stornierung", "Akku/Batterie", "Ladeanschluss/Port"];
+    const reasonValues = [9, 11, 11, 9, 4, 1, 2, 1, 3, 4, 1];
+    const reasonColors = ["#a78bfa", "#94a3b8", "#ff9f43", "#ff6b6b", "#fb923c", "#60a5fa", "#475569", "#34d399", "#6b7280", "#fbbf24", "#2dd4bf"];
+
+    new Chart(document.getElementById('reasonChart'), {
+        type: 'doughnut',
+        data: {
+            labels: reasonLabels,
+            datasets: [{ data: reasonValues, backgroundColor: reasonColors, borderWidth: 0 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { font: { size: 10 }, padding: 8, usePointStyle: true, pointStyleWidth: 8 } }
+            },
+            cutout: '55%'
+        }
+    });
+
+    // QC vs Nicht-QC
+    const qcLabels = ['QC-Probleme', 'Widerruf/Storno', 'Sonstiges'];
+    const qcData = [0, 0, 0];
+    const noQC = ['Widerruf/Kein Bedarf', 'Stornierung'];
+    const other = ['Sonstiges', 'Unbekannt'];
+    for (let i = 0; i < reasonLabels.length; i++) {
+        if (noQC.includes(reasonLabels[i])) qcData[1] += reasonValues[i];
+        else if (other.includes(reasonLabels[i])) qcData[2] += reasonValues[i];
+        else qcData[0] += reasonValues[i];
+    }
+    new Chart(document.getElementById('qcChart'), {
+        type: 'doughnut',
+        data: {
+            labels: qcLabels,
+            datasets: [{ data: qcData, backgroundColor: ['#ff6b6b', '#94a3b8', '#475569'], borderWidth: 0 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { font: { size: 11 }, padding: 10, usePointStyle: true } }
+            },
+            cutout: '55%'
         }
     });
 }
