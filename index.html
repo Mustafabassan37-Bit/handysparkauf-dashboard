@@ -143,7 +143,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>20.02.2026 21:10</span>
+    <span>21.02.2026 00:33</span>
     <span>|</span>
     <span>834 Orders</span>
     <span>|</span>
@@ -155,25 +155,25 @@ tr:hover{background:#12141e}
 <div class="daily-bar">
 <div class="daily-col daily-today">
   <div class="daily-label">Heute</div>
+  <div class="daily-profit">EUR 0.00</div>
+  <div class="daily-meta">0 Orders | EUR 0 Umsatz</div>
+</div><div class="daily-col">
+  <div class="daily-label">Gestern</div>
   <div class="daily-profit">EUR 2,371.33</div>
   <div class="daily-meta">40 Orders | EUR 25,135 Umsatz</div>
 </div><div class="daily-col">
-  <div class="daily-label">Gestern</div>
+  <div class="daily-label">Thu 19.02</div>
   <div class="daily-profit">EUR 308.06</div>
   <div class="daily-meta">14 Orders | EUR 8,201 Umsatz</div>
-</div><div class="daily-col">
-  <div class="daily-label">Wed 18.02</div>
-  <div class="daily-profit">EUR 17.20</div>
-  <div class="daily-meta">11 Orders | EUR 6,286 Umsatz</div>
 </div></div>
 
 <!-- KPIs -->
 <div class="kpis">
-  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val">EUR 17,201</div><div class="sub">nach Retouren</div></div>
-  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val">EUR 19,189</div><div class="sub">EUR 23.01/Order</div></div>
+  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val">EUR 15,928</div><div class="sub">nach Retouren</div></div>
+  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val">EUR 19,195</div><div class="sub">EUR 23.02/Order</div></div>
   <div class="kpi p"><div class="lbl">Orders</div><div class="val">834</div><div class="sub">832 gescrapt</div></div>
-  <div class="kpi r"><div class="lbl">Retouren</div><div class="val">56</div><div class="sub">6.7%</div></div>
-  <div class="kpi y"><div class="lbl">Ret-Verlust</div><div class="val">EUR 1,988</div><div class="sub">Gewinn + Versand</div></div>
+  <div class="kpi r"><div class="lbl">Retouren</div><div class="val">74</div><div class="sub">8.9%</div></div>
+  <div class="kpi y"><div class="lbl">Ret-Verlust</div><div class="val">EUR 3,266</div><div class="sub">Gewinn + Versand</div></div>
 </div>
 
 <!-- NAVIGATION TABS -->
@@ -319,7 +319,7 @@ tr:hover{background:#12141e}
             <td class="num">EUR 506</td>
             <td class="num ek-max">EUR 520</td>
             <td class="num">EUR 613</td>
-            <td class="num money">EUR 13.96</td>
+            <td class="num money">EUR 13.95</td>
             <td><span class="badge bg">PROFIT</span></td>
             <td class="num sub-text">49% im Minus</td>
         </tr><tr>
@@ -382,7 +382,7 @@ tr:hover{background:#12141e}
             <td class="num">EUR 535</td>
             <td class="num ek-max">EUR 658</td>
             <td class="num">EUR 796</td>
-            <td class="num money">EUR 122.57</td>
+            <td class="num money">EUR 122.81</td>
             <td><span class="badge bg">PROFIT</span></td>
             <td class="num sub-text">alle OK</td>
         </tr>
@@ -394,7 +394,7 @@ tr:hover{background:#12141e}
 <!-- SECTION: RETOUREN-ANALYSE -->
 <div class="section" id="sec-returns">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <div style="font-size:11px;color:#555">Basierend auf Zendesk-Kundenkommunikation | 56 Retouren analysiert</div>
+    <div style="font-size:11px;color:#555">Basierend auf Zendesk-Kundenkommunikation | 74 Retouren analysiert</div>
     <button class="pdf-btn" onclick="printSection('returns')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       QC-Report als PDF
@@ -402,7 +402,7 @@ tr:hover{background:#12141e}
   </div>
   <div class="g2">
     <div class="card">
-      <h2>Retouren-Gruende <span>56 Retouren analysiert via Zendesk</span></h2>
+      <h2>Retouren-Gruende <span>74 Retouren analysiert via Zendesk</span></h2>
       <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
     </div>
     <div class="card">
@@ -415,51 +415,51 @@ tr:hover{background:#12141e}
     <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
             <div class="tip-title">>>> Retouren-Zusammenfassung</div>
             <div class="tip-text">
-                Von <b>56 Retouren</b> sind <b>40 (71%)</b> durch technische Maengel verursacht
-                und <b>14</b> durch Kundenentscheidungen (Widerruf/Storno).
-                <br>Technische Retouren kosten dich ca. <b>1,420 EUR</b> - dieses Geld kannst du durch bessere QC zurueckgewinnen!
-            </div></div><div class="tip" style="border-left-color:#ff9f43">
-            <div class="tip-title" style="color:#ff9f43">11x Gehaeuse/Optik (20%)</div>
+                Von <b>74 Retouren</b> sind <b>49 (66%)</b> durch technische Maengel verursacht
+                und <b>18</b> durch Kundenentscheidungen (Widerruf/Storno).
+                <br>Technische Retouren kosten dich ca. <b>2,163 EUR</b> - dieses Geld kannst du durch bessere QC zurueckgewinnen!
+            </div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title" style="color:#ff6b6b">14x Display/Bildschirm (19%)</div>
             <div class="tip-text">
-                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 256GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (5x), <b>iPhone 15 Pro 256GB</b> (1x), <b>iPhone 15 Pro 128GB</b> (2x), <b>iPhone 16 128GB</b> (1x)
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (5x), <b>iPhone 15 Pro Max 512GB</b> (1x), <b>iPhone 16 Pro Max 512GB</b> (1x), <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (4x)
+                <br><b>Display-Check:</b> Pixel-Test bei voller Helligkeit auf schwarzem UND weissem Hintergrund. Touch-Responsivitaet in allen Ecken testen. Auf Kratzer bei Gegenlicht pruefen.
+            </div></div><div class="tip" style="border-left-color:#ff9f43">
+            <div class="tip-title" style="color:#ff9f43">13x Gehaeuse/Optik (18%)</div>
+            <div class="tip-text">
+                <b>Betroffene Modelle:</b> <b>iPhone 16 128GB</b> (1x), <b>iPhone 16 Pro 256GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (5x), <b>iPhone 15 Pro 256GB</b> (2x), <b>iPhone 15 Pro 128GB</b> (2x)
                 <br><b>Optik-Check:</b> 360-Grad Inspektion bei Tageslicht. Rueckseite auf Haarrisse pruefen. Rahmen auf Dellen/Beulen abtasten. Zustandsbewertung ehrlich vergeben - lieber eine Stufe tiefer als Retoure riskieren.
             </div></div><div class="tip" style="border-left-color:#a78bfa">
-            <div class="tip-title" style="color:#a78bfa">9x Kamera (16%)</div>
+            <div class="tip-title" style="color:#a78bfa">10x Kamera (14%)</div>
             <div class="tip-text">
-                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (2x), <b>iPhone 15 Pro 256GB</b> (3x), <b>iPhone 15 Pro 128GB</b> (2x)
+                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (2x), <b>iPhone 15 Pro Max 256GB</b> (2x), <b>iPhone 15 Pro 256GB</b> (3x), <b>iPhone 15 Pro 128GB</b> (3x)
                 <br><b>Kamera-Check:</b> Beide Linsen testen: Foto + Video. Autofokus-Test (nah + fern). OIS pruefen (wackelt das Bild?). Blitz + Taschenlampe testen. Kameramodul auf Wackler pruefen.
-            </div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title" style="color:#ff6b6b">9x Display/Bildschirm (16%)</div>
+            </div></div><div class="tip" style="border-left-color:#fbbf24">
+            <div class="tip-title" style="color:#fbbf24">5x Akku/Batterie (7%)</div>
             <div class="tip-text">
-                <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (2x), <b>iPhone 15 Pro Max 512GB</b> (1x), <b>iPhone 16 Pro Max 512GB</b> (1x), <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (3x)
-                <br><b>Display-Check:</b> Pixel-Test bei voller Helligkeit auf schwarzem UND weissem Hintergrund. Touch-Responsivitaet in allen Ecken testen. Auf Kratzer bei Gegenlicht pruefen.
+                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (2x), <b>iPhone 15 Pro 128GB</b> (2x)
+                <br><b>Akku-Check:</b> Battery-Health in Einstellungen pruefen (min. 80%). 30-Min Ladetest: laedt das Geraet gleichmaessig? Akku-Drain Test: 10 Min Video schauen, max 3% Verlust.
             </div></div><div class="tip" style="border-left-color:#fb923c">
-            <div class="tip-title" style="color:#fb923c">4x Falsche Ware/Lieferung (7%)</div>
+            <div class="tip-title" style="color:#fb923c">4x Falsche Ware/Lieferung (5%)</div>
             <div class="tip-text">
                 <b>Betroffene Modelle:</b> <b>iPhone 16 Pro 128GB</b> (1x), <b>iPhone 14 Pro Max 128GB</b> (1x), <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (1x)
                 <br><b>Versand-Check:</b> Vor Versand: Modell, Farbe, Speicher mit Bestellung abgleichen. Original-Bauteile pruefen (Einstellungen > Allgemein > Info). Barcode/IMEI scannen.
-            </div></div><div class="tip" style="border-left-color:#fbbf24">
-            <div class="tip-title" style="color:#fbbf24">4x Akku/Batterie (7%)</div>
-            <div class="tip-text">
-                <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x), <b>iPhone 15 Pro 256GB</b> (1x), <b>iPhone 15 Pro 128GB</b> (2x)
-                <br><b>Akku-Check:</b> Battery-Health in Einstellungen pruefen (min. 80%). 30-Min Ladetest: laedt das Geraet gleichmaessig? Akku-Drain Test: 10 Min Video schauen, max 3% Verlust.
             </div></div><div class="tip" style="border-left-color:#60a5fa">
-            <div class="tip-title" style="color:#60a5fa">1x WLAN/Netz/Signal (2%)</div>
+            <div class="tip-title" style="color:#60a5fa">1x WLAN/Netz/Signal (1%)</div>
             <div class="tip-text">
                 <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x)
                 <br><b>Netzwerk-Check:</b> WLAN verbinden und Speedtest machen. SIM-Karte einlegen und Empfang pruefen. Bluetooth mit Kopfhoerer pairen.
             </div></div><div class="tip" style="border-left-color:#34d399">
-            <div class="tip-title" style="color:#34d399">1x Face ID (2%)</div>
+            <div class="tip-title" style="color:#34d399">1x Face ID (1%)</div>
             <div class="tip-text">
                 <b>Betroffene Modelle:</b> <b>iPhone 15 Pro Max 256GB</b> (1x)
                 <br><b>Face-ID Check:</b> Face ID Registrierung komplett durchfuehren. TrueDepth-Sensor reinigen. Bei Ausfall: NICHT verkaufen oder als Defekt deklarieren.
             </div></div><div class="tip" style="border-left-color:#2dd4bf">
-            <div class="tip-title" style="color:#2dd4bf">1x Ladeanschluss/Port (2%)</div>
+            <div class="tip-title" style="color:#2dd4bf">1x Ladeanschluss/Port (1%)</div>
             <div class="tip-text">
                 <b>Betroffene Modelle:</b> <b>iPhone 15 Pro 128GB</b> (1x)
                 <br><b>Ladeanschluss-Check:</b> Mit Original-Kabel testen. Stecker muss fest sitzen ohne Wackeln. Schnellladen testen (Blitz-Symbol).
             </div></div><div class="tip" style="border-left-color:#94a3b8">
-            <div class="tip-title" style="color:#94a3b8">Kein QC-Problem: 14x (Widerruf/Kein Bedarf: 11x, Stornierung: 3x)</div>
+            <div class="tip-title" style="color:#94a3b8">Kein QC-Problem: 18x (Widerruf/Kein Bedarf: 15x, Stornierung: 3x)</div>
             <div class="tip-text">
                 Diese Retouren sind Kundenentscheidungen und nicht vermeidbar durch bessere QC.
                 Bei hoher Widerrufsquote: Produktbeschreibungen und Fotos pruefen - stimmen die Erwartungen?
@@ -505,13 +505,13 @@ tr:hover{background:#12141e}
       <tr class="ret-mid">
             <td class="model-name">iPhone 15 Pro Max 256GB</td>
             <td class="num">200</td>
-            <td class="num money">EUR 2,792</td>
-            <td class="num">EUR 13.96</td>
+            <td class="num money">EUR 2,791</td>
+            <td class="num">EUR 13.95</td>
             <td class="num">EUR 506</td>
             <td class="num">EUR 613</td>
             <td class="num margin-bad">2.3%</td>
-            <td class="num">18</td>
-            <td class="num ">9.0%</td>
+            <td class="num">19</td>
+            <td class="num ">9.5%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 15 Pro 256GB</td>
             <td class="num">190</td>
@@ -520,8 +520,8 @@ tr:hover{background:#12141e}
             <td class="num">EUR 495</td>
             <td class="num">EUR 587</td>
             <td class="num margin-bad">1.0%</td>
-            <td class="num">12</td>
-            <td class="num ">6.3%</td>
+            <td class="num">18</td>
+            <td class="num ">9.5%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 15 Pro 128GB</td>
             <td class="num">115</td>
@@ -530,8 +530,8 @@ tr:hover{background:#12141e}
             <td class="num">EUR 455</td>
             <td class="num">EUR 530</td>
             <td class="num margin-bad">-0.7%</td>
-            <td class="num">8</td>
-            <td class="num ">7.0%</td>
+            <td class="num">11</td>
+            <td class="num ">9.6%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 16 Pro 128GB</td>
             <td class="num">92</td>
@@ -540,8 +540,8 @@ tr:hover{background:#12141e}
             <td class="num">EUR 502</td>
             <td class="num">EUR 718</td>
             <td class="num margin-good">13.2%</td>
-            <td class="num">6</td>
-            <td class="num ">6.5%</td>
+            <td class="num">9</td>
+            <td class="num ">9.8%</td>
         </tr><tr class="">
             <td class="model-name">iPhone 16 Pro Max 256GB</td>
             <td class="num">72</td>
@@ -550,13 +550,13 @@ tr:hover{background:#12141e}
             <td class="num">EUR 656</td>
             <td class="num">EUR 790</td>
             <td class="num margin-bad">2.8%</td>
-            <td class="num">1</td>
-            <td class="num ">1.4%</td>
+            <td class="num">2</td>
+            <td class="num ">2.8%</td>
         </tr><tr class="ret-mid">
             <td class="model-name">iPhone 16 Pro 256GB</td>
             <td class="num">30</td>
-            <td class="num money">EUR 3,677</td>
-            <td class="num">EUR 122.57</td>
+            <td class="num money">EUR 3,684</td>
+            <td class="num">EUR 122.81</td>
             <td class="num">EUR 535</td>
             <td class="num">EUR 796</td>
             <td class="num margin-good">15.4%</td>
@@ -592,7 +592,7 @@ tr:hover{background:#12141e}
             <td class="num margin-ok">5.7%</td>
             <td class="num">1</td>
             <td class="num ">6.2%</td>
-        </tr><tr class="">
+        </tr><tr class="ret-mid">
             <td class="model-name">iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</td>
             <td class="num">14</td>
             <td class="num money">EUR -56</td>
@@ -600,9 +600,9 @@ tr:hover{background:#12141e}
             <td class="num">EUR 550</td>
             <td class="num">EUR 623</td>
             <td class="num margin-bad">-0.6%</td>
-            <td class="num">0</td>
-            <td class="num ">0.0%</td>
-        </tr><tr class="">
+            <td class="num">1</td>
+            <td class="num ">7.1%</td>
+        </tr><tr class="ret-mid">
             <td class="model-name">iPhone 15 256GB</td>
             <td class="num">11</td>
             <td class="num money">EUR 786</td>
@@ -610,9 +610,9 @@ tr:hover{background:#12141e}
             <td class="num">EUR 289</td>
             <td class="num">EUR 436</td>
             <td class="num margin-good">16.4%</td>
-            <td class="num">0</td>
-            <td class="num ">0.0%</td>
-        </tr><tr class="ret-mid">
+            <td class="num">1</td>
+            <td class="num ">9.1%</td>
+        </tr><tr class="ret-high">
             <td class="model-name">iPhone 16 128GB</td>
             <td class="num">10</td>
             <td class="num money">EUR 670</td>
@@ -620,8 +620,8 @@ tr:hover{background:#12141e}
             <td class="num">EUR 434</td>
             <td class="num">EUR 599</td>
             <td class="num margin-good">11.2%</td>
-            <td class="num">1</td>
-            <td class="num ">10.0%</td>
+            <td class="num">3</td>
+            <td class="num ret-badge">30.0%</td>
         </tr><tr class="ret-high">
             <td class="model-name">iPhone 14 Pro 128GB</td>
             <td class="num">8</td>
@@ -750,9 +750,11 @@ tr:hover{background:#12141e}
     <h2>KI-Analyse & Tagesempfehlungen <span>Was du heute tun solltest</span></h2>
     <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
             <div class="tip-title">>>> Tages-Check: Laeuft gut!</div>
-            <div class="tip-text">Dein Durchschnitts-Profit liegt bei <b>23.01 EUR/Order</b> - das ist ein starker Wert. Halte dieses Niveau und fokussiere dich auf Volumen-Steigerung bei den profitablen Modellen.</div></div><div class="tip" style="border-left-color:#ff3838">
+            <div class="tip-text">Dein Durchschnitts-Profit liegt bei <b>23.02 EUR/Order</b> - das ist ein starker Wert. Halte dieses Niveau und fokussiere dich auf Volumen-Steigerung bei den profitablen Modellen.</div></div><div class="tip" style="border-left-color:#ff3838">
             <div class="tip-title">XXX SOFORT STOPPEN: 7 Modelle im Minus</div>
             <div class="tip-text">Diese Modelle kosten dich Geld bei jedem Verkauf: <b>iPhone 14 Pro 128GB</b> (-83.47 EUR/Stk, 8x), <b>iPad Air (2024) | 13undquot | 256 GB | Starlight</b> (-19.25 EUR/Stk, 5x), <b>iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</b> (-4.00 EUR/Stk, 14x), <b>iPhone 15 Pro Max 512GB</b> (-3.83 EUR/Stk, 24x), <b>iPhone 15 Pro 128GB</b> (-3.78 EUR/Stk, 115x), <b>iPad Air (2024) | 13undquot | 128 GB | blue</b> (-1.94 EUR/Stk, 3x), <b>iPhone 14 Pro Max 128GB</b> (-0.65 EUR/Stk, 20x). <br><b>Aktion:</b> Sofort aus dem Einkauf nehmen! Wenn Lagerbestand vorhanden, VK erhoehen oder Bestand abverkaufen und nicht nachbestellen.</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! Retouren-Alarm: iPhone 16 128GB (30.0%)</div>
+            <div class="tip-text"><b>3 von 10</b> Geraeten wurden retourniert. Das hat dich <b>299 EUR</b> gekostet (Gewinn + Versand). <br><b>Aktion:</b> Qualitaetskontrolle bei diesem Modell verschaerfen! Pruefe: Ist der Zustand korrekt deklariert? Gibt es wiederkehrende Maengel? Kommt ein bestimmter Lieferant haeufiger vor?</div></div><div class="tip" style="border-left-color:#ff6b6b">
             <div class="tip-title">!!! Retouren-Alarm: iPhone 14 Pro Max 128GB (20.0%)</div>
             <div class="tip-text"><b>4 von 20</b> Geraeten wurden retourniert. Das hat dich <b>168 EUR</b> gekostet (Gewinn + Versand). <br><b>Aktion:</b> Qualitaetskontrolle bei diesem Modell verschaerfen! Pruefe: Ist der Zustand korrekt deklariert? Gibt es wiederkehrende Maengel? Kommt ein bestimmter Lieferant haeufiger vor?</div></div><div class="tip" style="border-left-color:#ff6b6b">
             <div class="tip-title">!!! Retouren-Alarm: iPhone 14 Pro 128GB (12.5%)</div>
@@ -764,15 +766,17 @@ tr:hover{background:#12141e}
             <div class="tip-title">$$$ EK-Warnung: iPad Air (2024) | 13undquot | 256 GB | purple - 50% im Minus</div>
             <div class="tip-text">Durchschnittlich machst du <b>3.85 EUR</b> Gewinn, aber <b>50%</b> deiner Verkaeufe sind im Verlust. Dein Avg EK: <b>540 EUR</b> | Max EK fuer Profit: <b>544 EUR</b>. <br><b>Aktion:</b> Kaufe dieses Modell NUR unter 544 EUR ein. Sortiere Lieferanten nach EK und kaufe nur vom guenstigsten.</div></div><div class="tip" style="border-left-color:#00d4aa">
             <div class="tip-title">>>> Top-Performer: Hier mehr einkaufen!</div>
-            <div class="tip-text">Diese Modelle sind deine Geldmaschinen: <br>&bull; <b>iPhone 16 Pro 128GB</b>: 8,756 EUR Gesamt (92x, 95.17 EUR/Stk, Ret: 6.5%)<br>&bull; <b>iPhone 16 Pro 256GB</b>: 3,677 EUR Gesamt (30x, 122.57 EUR/Stk, Ret: 6.7%)<br>&bull; <b>iPhone 15 Pro Max 256GB</b>: 2,792 EUR Gesamt (200x, 13.96 EUR/Stk, Ret: 9.0%)<br>&bull; <b>iPhone 16 Pro Max 256GB</b>: 1,584 EUR Gesamt (72x, 22.00 EUR/Stk, Ret: 1.4%) <br><b>Aktion:</b> Volumen bei diesen Modellen erhoehen! Kann der Lieferant mehr liefern? Gibt es weitere Quellen?</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-text">Diese Modelle sind deine Geldmaschinen: <br>&bull; <b>iPhone 16 Pro 128GB</b>: 8,756 EUR Gesamt (92x, 95.17 EUR/Stk, Ret: 9.8%)<br>&bull; <b>iPhone 16 Pro 256GB</b>: 3,684 EUR Gesamt (30x, 122.81 EUR/Stk, Ret: 6.7%)<br>&bull; <b>iPhone 15 Pro Max 256GB</b>: 2,791 EUR Gesamt (200x, 13.95 EUR/Stk, Ret: 9.5%)<br>&bull; <b>iPhone 16 Pro Max 256GB</b>: 1,584 EUR Gesamt (72x, 22.00 EUR/Stk, Ret: 2.8%) <br><b>Aktion:</b> Volumen bei diesen Modellen erhoehen! Kann der Lieferant mehr liefern? Gibt es weitere Quellen?</div></div><div class="tip" style="border-left-color:#f9d423">
             <div class="tip-title">$$$ Optimierbar: iPhone 15 Pro Max 256GB (200x, 2.3% Marge)</div>
-            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>506 EUR</b>, Avg VK <b>613 EUR</b>, Gewinn nur <b>13.96 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>1,000 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#f9d423">
+            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>506 EUR</b>, Avg VK <b>613 EUR</b>, Gewinn nur <b>13.95 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>1,000 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#f9d423">
             <div class="tip-title">$$$ Optimierbar: iPhone 15 Pro 256GB (190x, 1.0% Marge)</div>
-            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>495 EUR</b>, Avg VK <b>587 EUR</b>, Gewinn nur <b>5.96 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>950 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#00d4aa">
+            <div class="tip-text">Hohes Volumen aber niedrige Marge: Avg EK <b>495 EUR</b>, Avg VK <b>587 EUR</b>, Gewinn nur <b>5.96 EUR/Stk</b>. <br><b>Aktion:</b> Wenn du den EK um nur 5 EUR senkst, sparst du <b>950 EUR</b> bei aktuellem Volumen. Verhandle mit dem Lieferanten!</div></div><div class="tip" style="border-left-color:#ff6b6b">
+            <div class="tip-title">!!! Retourenquote gesamt: 8.9%</div>
+            <div class="tip-text">Deine Gesamtretourenquote ist ueber 8%. Jede Retoure kostet dich nicht nur den Gewinn sondern auch Versandkosten. <br><b>Aktion:</b> 1) Produktbeschreibungen pruefen - stimmen die Angaben? 2) Fotos kontrollieren - zeigen sie den echten Zustand? 3) QC verschaerfen bei Modellen mit >10% Retourenquote.</div></div><div class="tip" style="border-left-color:#00d4aa">
             <div class="tip-title">>>> Hidden Gems: Hoher Profit, wenig Volumen</div>
             <div class="tip-text">Diese Modelle haben top Margen aber wenig Verkaeufe: <b>iPhone 15 128GB</b> (54.30 EUR/Stk, nur 4x). <br><b>Aktion:</b> Pruefe ob du hier das Volumen erhoehen kannst! Gibt es diese Modelle haeufiger auf dem Markt?</div></div><div class="tip" style="border-left-color:#ff6b6b">
-            <div class="tip-title">!!! QC-Analyse: 40 technische Retouren - Top: Gehaeuse/Optik (11x)</div>
-            <div class="tip-text">Basierend auf der Zendesk-Kommunikation mit Kunden: <br>&bull; <b>Gehaeuse/Optik</b>: 11x (28%) - 360-Grad Inspektion bei Tageslicht, Zustandsbewertung nochmal pruefen, evtl. Zustand herunterstufen<br>&bull; <b>Kamera</b>: 9x (22%) - Beide Linsen testen (Foto+Video), Autofokus, OIS-Test, Blitz-Funktion<br>&bull; <b>Display/Bildschirm</b>: 9x (22%) - Pixel-Test bei voller Helligkeit, Touch-Responsivitaet, Dead-Pixel Check auf schwarzem/weissem Hintergrund<br>&bull; <b>Falsche Ware/Lieferung</b>: 4x (10%) - Doppelt-Check bei Versand: Modell, Farbe, Speicher mit Bestellung abgleichen<br>&bull; <b>Akku/Batterie</b>: 4x (10%) - Battery-Health pruefen (min. 80%), 30-Min Ladetest durchfuehren<br><br><b>Aktion:</b> QC-Checkliste um diese Punkte erweitern! Der haeufigste Grund <b>Gehaeuse/Optik</b> sollte bei JEDEM Geraet geprueft werden.</div></div></div>
+            <div class="tip-title">!!! QC-Analyse: 49 technische Retouren - Top: Display/Bildschirm (14x)</div>
+            <div class="tip-text">Basierend auf der Zendesk-Kommunikation mit Kunden: <br>&bull; <b>Display/Bildschirm</b>: 14x (29%) - Pixel-Test bei voller Helligkeit, Touch-Responsivitaet, Dead-Pixel Check auf schwarzem/weissem Hintergrund<br>&bull; <b>Gehaeuse/Optik</b>: 13x (27%) - 360-Grad Inspektion bei Tageslicht, Zustandsbewertung nochmal pruefen, evtl. Zustand herunterstufen<br>&bull; <b>Kamera</b>: 10x (20%) - Beide Linsen testen (Foto+Video), Autofokus, OIS-Test, Blitz-Funktion<br>&bull; <b>Akku/Batterie</b>: 5x (10%) - Battery-Health pruefen (min. 80%), 30-Min Ladetest durchfuehren<br>&bull; <b>Falsche Ware/Lieferung</b>: 4x (8%) - Doppelt-Check bei Versand: Modell, Farbe, Speicher mit Bestellung abgleichen<br><br><b>Aktion:</b> QC-Checkliste um diese Punkte erweitern! Der haeufigste Grund <b>Display/Bildschirm</b> sollte bei JEDEM Geraet geprueft werden.</div></div></div>
   </div>
 </div>
 
@@ -783,17 +787,17 @@ tr:hover{background:#12141e}
     <table>
       <tr><th>Land</th><th>Orders</th><th>Gewinn</th><th>Ret</th><th>Ret%</th></tr>
       <tr><td>Deutschland</td><td class="num">496</td>
-            <td class="num money">EUR 12,417</td>
-            <td class="num">39</td><td class="num">7.9%</td></tr><tr><td>Italien</td><td class="num">57</td>
+            <td class="num money">EUR 12,425</td>
+            <td class="num">51</td><td class="num">10.3%</td></tr><tr><td>Italien</td><td class="num">57</td>
             <td class="num money">EUR 2,255</td>
-            <td class="num">4</td><td class="num">7.0%</td></tr><tr><td>Irland</td><td class="num">40</td>
+            <td class="num">6</td><td class="num">10.5%</td></tr><tr><td>Irland</td><td class="num">40</td>
             <td class="num money">EUR 1,225</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Österreich</td><td class="num">84</td>
+            <td class="num">1</td><td class="num">2.5%</td></tr><tr><td>Österreich</td><td class="num">84</td>
             <td class="num money">EUR 1,095</td>
             <td class="num">4</td><td class="num">4.8%</td></tr><tr><td>Schweden</td><td class="num">39</td>
             <td class="num money">EUR 1,049</td>
-            <td class="num">3</td><td class="num">7.7%</td></tr><tr><td>Belgien</td><td class="num">23</td>
-            <td class="num money">EUR 505</td>
+            <td class="num">4</td><td class="num">10.3%</td></tr><tr><td>Belgien</td><td class="num">23</td>
+            <td class="num money">EUR 503</td>
             <td class="num">2</td><td class="num">8.7%</td></tr><tr><td>Frankreich</td><td class="num">7</td>
             <td class="num money">EUR 244</td>
             <td class="num">1</td><td class="num">14.3%</td></tr><tr><td>Niederlande</td><td class="num">10</td>
@@ -814,13 +818,13 @@ tr:hover{background:#12141e}
             <td class="num money">EUR -8</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Spanien</td><td class="num">7</td>
             <td class="num money">EUR -9</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 557,99</td><td class="num">1</td>
+            <td class="num">1</td><td class="num">14.3%</td></tr><tr><td>Gesamt Brutto: 557,99</td><td class="num">1</td>
             <td class="num money">EUR -10</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 642,99</td><td class="num">1</td>
             <td class="num money">EUR -11</td>
             <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Dänemark</td><td class="num">51</td>
             <td class="num money">EUR -32</td>
-            <td class="num">3</td><td class="num">5.9%</td></tr><tr><td>Gesamt Brutto: 615,99</td><td class="num">1</td>
+            <td class="num">4</td><td class="num">7.8%</td></tr><tr><td>Gesamt Brutto: 615,99</td><td class="num">1</td>
             <td class="num money">EUR -56</td>
             <td class="num">0</td><td class="num">0.0%</td></tr>
     </table>
@@ -830,15 +834,15 @@ tr:hover{background:#12141e}
 <!-- SECTION: PLATTFORMEN -->
 <div class="section" id="sec-platforms">
   <div class="card" style="margin-bottom:16px">
-    <h2>Plattform-Uebersicht <span>856 Verkaeufe gesamt | EUR 21,118 Profit</span></h2>
+    <h2>Plattform-Uebersicht <span>856 Verkaeufe gesamt | EUR 21,123 Profit</span></h2>
     <table>
       <tr><th>Plattform</th><th>Sales</th><th>Umsatz</th><th>Gewinn</th><th>Avg/Sale</th><th>Anteil</th></tr>
       <tr>
             <td><span style="color:#00e5a0;font-weight:600">Refurbed</span></td>
             <td class="num">834</td>
             <td class="num money">EUR 521,510</td>
-            <td class="num money">EUR 19,189.25</td>
-            <td class="num">EUR 23.01</td>
+            <td class="num money">EUR 19,194.79</td>
+            <td class="num">EUR 23.02</td>
             <td class="num">90.9%</td></tr><tr>
             <td><span style="color:#ff6b6b;font-weight:600">MediaMarktSaturn</span></td>
             <td class="num">13</td>
@@ -1047,8 +1051,8 @@ function initCharts() {
         data: {
             labels: ["2026-01", "2026-02"],
             datasets: [
-                { label: 'Brutto', data: [0, 19189.25], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4, yAxisID:'y' },
-                { label: 'Netto', data: [0, 17201.06], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4, yAxisID:'y' },
+                { label: 'Brutto', data: [0, 19194.79], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4, yAxisID:'y' },
+                { label: 'Netto', data: [0, 15928.32], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4, yAxisID:'y' },
                 { label: 'Orders', data: [821, 834], type:'line', borderColor:'#a78bfa', backgroundColor:'transparent', yAxisID:'y1', tension:.3, pointRadius:4 },
             ]
         },
@@ -1066,8 +1070,8 @@ function initCharts() {
         type: 'bar',
         data: {
             labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
-            datasets: [{ label: 'Gewinn', data: [2792.4, 1131.85, -434.68, 8755.7, 1583.68, 3677.02, -91.85, -13.01, 775.18, -56.02, 786.22, 669.83, -667.8, -96.25, 51.07],
-                backgroundColor: [2792.4, 1131.85, -434.68, 8755.7, 1583.68, 3677.02, -91.85, -13.01, 775.18, -56.02, 786.22, 669.83, -667.8, -96.25, 51.07].map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
+            datasets: [{ label: 'Gewinn', data: [2790.71, 1131.85, -434.68, 8755.7, 1583.68, 3684.25, -91.85, -13.01, 775.18, -56.02, 786.22, 669.83, -667.8, -96.25, 51.07],
+                backgroundColor: [2790.71, 1131.85, -434.68, 8755.7, 1583.68, 3684.25, -91.85, -13.01, 775.18, -56.02, 786.22, 669.83, -667.8, -96.25, 51.07].map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
                 borderRadius: 4 }]
         },
         options: {
@@ -1085,7 +1089,7 @@ function initCharts() {
             datasets: [
                 { label: 'Avg EK', data: [506.01, 494.86, 454.51, 502.02, 656.01, 535.0, 572.85, 407.55, 653.56, 550.0, 289.36, 434.5, 443.75, 540.0, 500.0], backgroundColor:'rgba(255,92,92,.6)', borderRadius:4 },
                 { label: 'Avg VK', data: [612.69, 587.43, 530.29, 718.45, 790.01, 795.74, 663.55, 488.8, 843.69, 622.84, 435.98, 599.18, 402.65, 594.93, 583.43], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4 },
-                { label: 'Avg Gewinn', data: [13.96, 5.96, -3.78, 95.17, 22.0, 122.57, -3.83, -0.65, 48.45, -4.0, 71.47, 66.98, -83.47, -19.25, 10.21], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
+                { label: 'Avg Gewinn', data: [13.95, 5.96, -3.78, 95.17, 22.0, 122.81, -3.83, -0.65, 48.45, -4.0, 71.47, 66.98, -83.47, -19.25, 10.21], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
             ]
         },
         options: {
@@ -1099,8 +1103,8 @@ function initCharts() {
         type: 'bar',
         data: {
             labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPad Air (2024) | 13undquot | 128 GB | Starlight"],
-            datasets: [{ label: 'Retourenquote %', data: [9.0, 6.3, 7.0, 6.5, 1.4, 6.7, 8.3, 20.0, 6.2, 0.0, 0.0, 10.0, 12.5, 0.0, 0.0],
-                backgroundColor: [9.0, 6.3, 7.0, 6.5, 1.4, 6.7, 8.3, 20.0, 6.2, 0.0, 0.0, 10.0, 12.5, 0.0, 0.0].map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
+            datasets: [{ label: 'Retourenquote %', data: [9.5, 9.5, 9.6, 9.8, 2.8, 6.7, 8.3, 20.0, 6.2, 7.1, 9.1, 30.0, 12.5, 0.0, 0.0],
+                backgroundColor: [9.5, 9.5, 9.6, 9.8, 2.8, 6.7, 8.3, 20.0, 6.2, 7.1, 9.1, 30.0, 12.5, 0.0, 0.0].map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
                 borderRadius:4 }]
         },
         options: {
@@ -1115,7 +1119,7 @@ function initCharts() {
         type: 'bar',
         data: {
             labels: ["Deutschland", "Schweden", "Italien", "Irland", "\u00d6sterreich", "D\u00e4nemark", "Frankreich", "Belgien", "Niederlande", "Gesamt Brutto: 580,99", "Tschechische Republik", "Spanien", "Gesamt Brutto: 772,99", "Gesamt Brutto: 722,99", "Gesamt Brutto: 741,99", "Gesamt Brutto: 572,99", "Gesamt Brutto: 557,99", "Gesamt Brutto: 642,99", "Gesamt Brutto: 615,99", "Gesamt Brutto: 785,99"],
-            datasets: [{ label: 'Gewinn', data: [12417.28, 1049.45, 2255.07, 1224.52, 1094.87, -32.08, 244.24, 504.53, 158.02, 99.7, 148.76, -8.76, 55.57, 25.65, 15.41, -7.86, -10.32, -11.4, -55.53, 22.13],
+            datasets: [{ label: 'Gewinn', data: [12424.51, 1049.45, 2255.07, 1224.52, 1094.87, -32.08, 244.24, 502.84, 158.02, 99.7, 148.76, -8.76, 55.57, 25.65, 15.41, -7.86, -10.32, -11.4, -55.53, 22.13],
                 backgroundColor: 'rgba(0,180,216,.7)', borderRadius: 4 }]
         },
         options: {
@@ -1130,9 +1134,9 @@ function initCharts() {
 // ========== RETOUREN-CHARTS ==========
 function initRetCharts() {
     // Donut: Retouren-Gruende
-    const reasonLabels = ["Kamera", "Widerruf/Kein Bedarf", "Gehaeuse/Optik", "Display/Bildschirm", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Sonstiges", "Face ID", "Stornierung", "Akku/Batterie", "Ladeanschluss/Port"];
-    const reasonValues = [9, 11, 11, 9, 4, 1, 2, 1, 3, 4, 1];
-    const reasonColors = ["#a78bfa", "#94a3b8", "#ff9f43", "#ff6b6b", "#fb923c", "#60a5fa", "#475569", "#34d399", "#6b7280", "#fbbf24", "#2dd4bf"];
+    const reasonLabels = ["Kamera", "Sonstiges", "Widerruf/Kein Bedarf", "Display/Bildschirm", "Gehaeuse/Optik", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Akku/Batterie", "Face ID", "Stornierung", "Ladeanschluss/Port"];
+    const reasonValues = [10, 7, 15, 14, 13, 4, 1, 5, 1, 3, 1];
+    const reasonColors = ["#a78bfa", "#475569", "#94a3b8", "#ff6b6b", "#ff9f43", "#fb923c", "#60a5fa", "#fbbf24", "#34d399", "#6b7280", "#2dd4bf"];
 
     new Chart(document.getElementById('reasonChart'), {
         type: 'doughnut',
@@ -1176,7 +1180,7 @@ function initRetCharts() {
 }
 
 // ========== EK-RECHNER ==========
-const calcModels = [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 612.69, "avg_ek": 506.01, "avg_dynamic": 8.86, "avg_discount": 8.51, "avg_final": -5.7, "avg_p": 13.96, "max_ek_profit": 520.0, "cnt": 200, "rrate": 9.0}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 587.43, "avg_ek": 494.86, "avg_dynamic": 10.01, "avg_discount": 10.17, "avg_final": -14.2, "avg_p": 5.96, "max_ek_profit": 501.0, "cnt": 190, "rrate": 6.3}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 530.29, "avg_ek": 454.51, "avg_dynamic": 9.03, "avg_discount": 7.21, "avg_final": -22.01, "avg_p": -3.78, "max_ek_profit": 451.0, "cnt": 115, "rrate": 7.0}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 718.45, "avg_ek": 502.02, "avg_dynamic": 11.66, "avg_discount": 10.46, "avg_final": 76.37, "avg_p": 95.17, "max_ek_profit": 597.0, "cnt": 92, "rrate": 6.5}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 790.01, "avg_ek": 656.01, "avg_dynamic": 10.79, "avg_discount": 14.14, "avg_final": -1.35, "avg_p": 22.0, "max_ek_profit": 678.0, "cnt": 72, "rrate": 1.4}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 795.74, "avg_ek": 535.0, "avg_dynamic": 13.28, "avg_discount": 12.93, "avg_final": 102.92, "avg_p": 122.57, "max_ek_profit": 658.0, "cnt": 30, "rrate": 6.7}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 663.55, "avg_ek": 572.85, "avg_dynamic": 10.88, "avg_discount": 11.44, "avg_final": -24.39, "avg_p": -3.83, "max_ek_profit": 569.0, "cnt": 24, "rrate": 8.3}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 488.8, "avg_ek": 407.55, "avg_dynamic": 11.11, "avg_discount": 3.42, "avg_final": -12.96, "avg_p": -0.65, "max_ek_profit": 407.0, "cnt": 20, "rrate": 20.0}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 843.69, "avg_ek": 653.56, "avg_dynamic": 17.4, "avg_discount": 6.3, "avg_final": 39.55, "avg_p": 48.45, "max_ek_profit": 702.0, "cnt": 16, "rrate": 6.2}, {"name": "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "avg_vk": 622.84, "avg_ek": 550.0, "avg_dynamic": 3.14, "avg_discount": 12.76, "avg_final": -33.62, "avg_p": -4.0, "max_ek_profit": 546.0, "cnt": 14, "rrate": 0.0}, {"name": "iPhone 15 256GB", "avg_vk": 435.98, "avg_ek": 289.36, "avg_dynamic": 3.64, "avg_discount": 9.22, "avg_final": 45.89, "avg_p": 71.47, "max_ek_profit": 361.0, "cnt": 11, "rrate": 0.0}, {"name": "iPhone 16 128GB", "avg_vk": 599.18, "avg_ek": 434.5, "avg_dynamic": 2.47, "avg_discount": 5.38, "avg_final": 44.07, "avg_p": 66.98, "max_ek_profit": 501.0, "cnt": 10, "rrate": 10.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 402.65, "avg_ek": 443.75, "avg_dynamic": 2.88, "avg_discount": 5.22, "avg_final": -105.82, "avg_p": -83.47, "max_ek_profit": 360.0, "cnt": 8, "rrate": 12.5}, {"name": "iPad Air (2024) | 13undquot | 256 GB | Starlight", "avg_vk": 594.93, "avg_ek": 540.0, "avg_dynamic": 2.0, "avg_discount": 7.06, "avg_final": -44.31, "avg_p": -19.25, "max_ek_profit": 521.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | Starlight", "avg_vk": 583.43, "avg_ek": 500.0, "avg_dynamic": 0.79, "avg_discount": 12.36, "avg_final": -21.35, "avg_p": 10.21, "max_ek_profit": 510.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | space gray", "avg_vk": 571.17, "avg_ek": 500.0, "avg_dynamic": 2.0, "avg_discount": 11.62, "avg_final": -28.97, "avg_p": 0.65, "max_ek_profit": 501.0, "cnt": 5, "rrate": 0.0}, {"name": "iPhone 15 128GB", "avg_vk": 390.19, "avg_ek": 266.25, "avg_dynamic": 10.76, "avg_discount": 14.13, "avg_final": 30.93, "avg_p": 54.3, "max_ek_profit": 321.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 256 GB | purple", "avg_vk": 641.51, "avg_ek": 540.0, "avg_dynamic": 3.6, "avg_discount": 0.0, "avg_final": -12.56, "avg_p": 3.85, "max_ek_profit": 544.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | blue", "avg_vk": 580.99, "avg_ek": 500.0, "avg_dynamic": 0.99, "avg_discount": 0.0, "avg_final": -20.95, "avg_p": -1.94, "max_ek_profit": 498.0, "cnt": 3, "rrate": 0.0}];
+const calcModels = [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 612.69, "avg_ek": 506.01, "avg_dynamic": 8.86, "avg_discount": 8.51, "avg_final": -5.7, "avg_p": 13.95, "max_ek_profit": 520.0, "cnt": 200, "rrate": 9.5}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 587.43, "avg_ek": 494.86, "avg_dynamic": 10.01, "avg_discount": 10.17, "avg_final": -14.2, "avg_p": 5.96, "max_ek_profit": 501.0, "cnt": 190, "rrate": 9.5}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 530.29, "avg_ek": 454.51, "avg_dynamic": 9.03, "avg_discount": 7.21, "avg_final": -22.01, "avg_p": -3.78, "max_ek_profit": 451.0, "cnt": 115, "rrate": 9.6}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 718.45, "avg_ek": 502.02, "avg_dynamic": 11.66, "avg_discount": 10.46, "avg_final": 76.37, "avg_p": 95.17, "max_ek_profit": 597.0, "cnt": 92, "rrate": 9.8}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 790.01, "avg_ek": 656.01, "avg_dynamic": 10.79, "avg_discount": 14.14, "avg_final": -1.35, "avg_p": 22.0, "max_ek_profit": 678.0, "cnt": 72, "rrate": 2.8}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 795.74, "avg_ek": 535.0, "avg_dynamic": 14.38, "avg_discount": 14.26, "avg_final": 102.92, "avg_p": 122.81, "max_ek_profit": 658.0, "cnt": 30, "rrate": 6.7}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 663.55, "avg_ek": 572.85, "avg_dynamic": 10.88, "avg_discount": 11.44, "avg_final": -24.39, "avg_p": -3.83, "max_ek_profit": 569.0, "cnt": 24, "rrate": 8.3}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 488.8, "avg_ek": 407.55, "avg_dynamic": 11.11, "avg_discount": 3.42, "avg_final": -12.96, "avg_p": -0.65, "max_ek_profit": 407.0, "cnt": 20, "rrate": 20.0}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 843.69, "avg_ek": 653.56, "avg_dynamic": 17.4, "avg_discount": 6.3, "avg_final": 39.55, "avg_p": 48.45, "max_ek_profit": 702.0, "cnt": 16, "rrate": 6.2}, {"name": "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "avg_vk": 622.84, "avg_ek": 550.0, "avg_dynamic": 3.14, "avg_discount": 12.76, "avg_final": -33.62, "avg_p": -4.0, "max_ek_profit": 546.0, "cnt": 14, "rrate": 7.1}, {"name": "iPhone 15 256GB", "avg_vk": 435.98, "avg_ek": 289.36, "avg_dynamic": 3.64, "avg_discount": 9.22, "avg_final": 45.89, "avg_p": 71.47, "max_ek_profit": 361.0, "cnt": 11, "rrate": 9.1}, {"name": "iPhone 16 128GB", "avg_vk": 599.18, "avg_ek": 434.5, "avg_dynamic": 2.47, "avg_discount": 5.38, "avg_final": 44.07, "avg_p": 66.98, "max_ek_profit": 501.0, "cnt": 10, "rrate": 30.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 402.65, "avg_ek": 443.75, "avg_dynamic": 2.88, "avg_discount": 5.22, "avg_final": -105.82, "avg_p": -83.47, "max_ek_profit": 360.0, "cnt": 8, "rrate": 12.5}, {"name": "iPad Air (2024) | 13undquot | 256 GB | Starlight", "avg_vk": 594.93, "avg_ek": 540.0, "avg_dynamic": 2.0, "avg_discount": 7.06, "avg_final": -44.31, "avg_p": -19.25, "max_ek_profit": 521.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | Starlight", "avg_vk": 583.43, "avg_ek": 500.0, "avg_dynamic": 0.79, "avg_discount": 12.36, "avg_final": -21.35, "avg_p": 10.21, "max_ek_profit": 510.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | space gray", "avg_vk": 571.17, "avg_ek": 500.0, "avg_dynamic": 2.0, "avg_discount": 11.62, "avg_final": -28.97, "avg_p": 0.65, "max_ek_profit": 501.0, "cnt": 5, "rrate": 0.0}, {"name": "iPhone 15 128GB", "avg_vk": 390.19, "avg_ek": 266.25, "avg_dynamic": 10.76, "avg_discount": 14.13, "avg_final": 30.93, "avg_p": 54.3, "max_ek_profit": 321.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 256 GB | purple", "avg_vk": 641.51, "avg_ek": 540.0, "avg_dynamic": 3.6, "avg_discount": 0.0, "avg_final": -12.56, "avg_p": 3.85, "max_ek_profit": 544.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | blue", "avg_vk": 580.99, "avg_ek": 500.0, "avg_dynamic": 0.99, "avg_discount": 0.0, "avg_final": -20.95, "avg_p": -1.94, "max_ek_profit": 498.0, "cnt": 3, "rrate": 0.0}];
 const pauschal = 20;
 
 // Dropdown befuellen
@@ -1276,7 +1280,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '20.02.2026 21:10';
+    const now = '21.02.2026 00:33';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
