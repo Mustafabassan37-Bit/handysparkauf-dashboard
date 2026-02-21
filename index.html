@@ -135,7 +135,7 @@ tr:hover{background:#12141e}
   <div class="tab" onclick="showSection('overview')">Uebersicht</div>
   <div class="tab" onclick="showSection('models')">Modelle</div>
   <div class="tab" onclick="showSection('tips')">KI-Tipps</div>
-  <div class="tab" onclick="showSection('countries')">Laender</div>
+  <div class="tab" onclick="showSection('countries')">Laender & Retouren</div>
 </div>
 
 <!-- SECTION: EK-RECHNER + PRUEFER (Default!) -->
@@ -718,52 +718,76 @@ tr:hover{background:#12141e}
   </div>
 </div>
 
-<!-- SECTION: LAENDER -->
+<!-- SECTION: LAENDER-RETOUREN-ANALYSE -->
 <div class="section" id="sec-countries">
-  <div class="card">
-    <h2>Laender</h2>
-    <table>
-      <tr><th>Land</th><th>Orders</th><th>Gewinn</th><th>Ret</th><th>Ret%</th></tr>
-      <tr><td>Deutschland</td><td class="num">461</td>
-            <td class="num money">EUR 10,565</td>
-            <td class="num">39</td><td class="num">8.5%</td></tr><tr><td>Italien</td><td class="num">54</td>
-            <td class="num money">EUR 2,100</td>
-            <td class="num">4</td><td class="num">7.4%</td></tr><tr><td>Irland</td><td class="num">38</td>
-            <td class="num money">EUR 1,078</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Schweden</td><td class="num">38</td>
-            <td class="num money">EUR 1,032</td>
-            <td class="num">3</td><td class="num">7.9%</td></tr><tr><td>Österreich</td><td class="num">80</td>
-            <td class="num money">EUR 1,015</td>
-            <td class="num">4</td><td class="num">5.0%</td></tr><tr><td>Belgien</td><td class="num">21</td>
-            <td class="num money">EUR 452</td>
-            <td class="num">2</td><td class="num">9.5%</td></tr><tr><td>Frankreich</td><td class="num">7</td>
-            <td class="num money">EUR 244</td>
-            <td class="num">1</td><td class="num">14.3%</td></tr><tr><td>Gesamt Brutto: 580,99</td><td class="num">1</td>
-            <td class="num money">EUR 100</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Niederlande</td><td class="num">7</td>
-            <td class="num money">EUR 65</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 772,99</td><td class="num">1</td>
-            <td class="num money">EUR 56</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Tschechische Republik</td><td class="num">10</td>
-            <td class="num money">EUR 55</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 722,99</td><td class="num">1</td>
-            <td class="num money">EUR 26</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 741,99</td><td class="num">1</td>
-            <td class="num money">EUR 15</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 572,99</td><td class="num">1</td>
-            <td class="num money">EUR -8</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Spanien</td><td class="num">7</td>
-            <td class="num money">EUR -9</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 557,99</td><td class="num">1</td>
-            <td class="num money">EUR -10</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 642,99</td><td class="num">1</td>
-            <td class="num money">EUR -11</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Gesamt Brutto: 615,99</td><td class="num">1</td>
-            <td class="num money">EUR -56</td>
-            <td class="num">0</td><td class="num">0.0%</td></tr><tr><td>Dänemark</td><td class="num">50</td>
-            <td class="num money">EUR -127</td>
-            <td class="num">3</td><td class="num">6.0%</td></tr>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <div class="section-title" style="margin:0">Retouren-Analyse nach Laendern</div>
+    <div style="font-size:11px;color:#555">Welches Land lohnt sich? Umsatz vs. Retouren-Probleme</div>
+  </div>
+
+  <!-- KPIs Laender -->
+  <div class="kpis" style="margin-bottom:16px">
+    <div class="kpi r"><div class="lbl">Problemland #1</div><div class="val" id="cProblem1">--</div><div class="sub" id="cProblem1Sub"></div></div>
+    <div class="kpi g"><div class="lbl">Bestes Land</div><div class="val" id="cBest">--</div><div class="sub" id="cBestSub"></div></div>
+    <div class="kpi y"><div class="lbl">Gesamt Ret-Verlust</div><div class="val" id="cRetLoss">--</div><div class="sub">geschaetzter Verlust durch Retouren</div></div>
+    <div class="kpi b"><div class="lbl">Laender mit Verlust</div><div class="val" id="cLossCount">--</div><div class="sub" id="cLossCountSub"></div></div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="g2">
+    <div class="card">
+      <h2>Retourenquote vs. Gewinn pro Order <span>Groesse = Anzahl Orders</span></h2>
+      <div class="chart-wrap"><canvas id="countryScatterChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Netto-Gewinn vs. Retouren-Verlust <span>je Land</span></h2>
+      <div class="chart-wrap"><canvas id="countryRetChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-top:16px">
+    <div class="card">
+      <h2>Gewinn pro Order nach Land <span>inkl. Retourenkosten</span></h2>
+      <div class="chart-wrap"><canvas id="countryProfitPerOrder"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Retouren-Anteil am Umsatz <span>% vom Gewinn verloren</span></h2>
+      <div class="chart-wrap"><canvas id="countryRetPctChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Bewertungs-Tabelle -->
+  <div class="card" style="margin-top:16px">
+    <h2>Laender-Bewertung <span>Sortiert nach Effizienz (Gewinn/Order abzgl. Retouren-Risiko)</span></h2>
+    <div style="overflow-x:auto">
+    <table id="countryTable">
+      <tr>
+        <th>Land</th>
+        <th class="num">Orders</th>
+        <th class="num">Brutto-Gew.</th>
+        <th class="num">Ret</th>
+        <th class="num">Ret%</th>
+        <th class="num">Gew./Order</th>
+        <th class="num">Ret-Verlust*</th>
+        <th class="num">Netto/Order</th>
+        <th class="num">Verlust-%</th>
+        <th>Bewertung</th>
+      </tr>
     </table>
+    </div>
+    <div style="font-size:10px;color:#444;margin-top:8px">* Ret-Verlust = Retouren x durchschnittlicher Gewinn/Order + geschaetzte Versandkosten (EUR 15/Retoure)</div>
+  </div>
+
+  <!-- KI Empfehlungen -->
+  <div class="card" style="margin-top:16px">
+    <h2>KI-Analyse: Laender-Empfehlungen</h2>
+    <div class="tips-grid" id="countryTips"></div>
+  </div>
+
+  <!-- Original Country Chart -->
+  <div class="card" style="margin-top:16px">
+    <h2>Gewinn nach Land <span>Gesamt</span></h2>
+    <div class="chart-wrap"><canvas id="countryChart"></canvas></div>
   </div>
 </div>
 
@@ -777,6 +801,7 @@ function showSection(id) {
     // Charts muessen nach Sichtbarwerden gerendert werden
     if (id === 'overview' && !window._chartsInit) { initCharts(); window._chartsInit = true; }
     if (id === 'returns' && !window._retChartsInit) { initRetCharts(); window._retChartsInit = true; }
+    if (id === 'countries' && !window._countryChartsInit) { initCountryAnalysis(); window._countryChartsInit = true; }
 }
 
 Chart.defaults.color = '#555';
@@ -916,6 +941,273 @@ function initRetCharts() {
             cutout: '55%'
         }
     });
+}
+
+// ========== LAENDER-RETOUREN-ANALYSE ==========
+function initCountryAnalysis() {
+    // Nur echte Laender (keine "Gesamt Brutto: xxx" Eintraege)
+    const rawData = [
+        { land: "Deutschland", orders: 461, gewinn: 10565.10, ret: 39 },
+        { land: "Italien", orders: 54, gewinn: 2100.21, ret: 4 },
+        { land: "Irland", orders: 38, gewinn: 1077.77, ret: 0 },
+        { land: "Schweden", orders: 38, gewinn: 1032.19, ret: 3 },
+        { land: "\u00d6sterreich", orders: 80, gewinn: 1015.35, ret: 4 },
+        { land: "Belgien", orders: 21, gewinn: 452.15, ret: 2 },
+        { land: "Frankreich", orders: 7, gewinn: 244.24, ret: 1 },
+        { land: "Niederlande", orders: 7, gewinn: 64.74, ret: 0 },
+        { land: "Tschechische Republik", orders: 10, gewinn: 55.25, ret: 0 },
+        { land: "Spanien", orders: 7, gewinn: -8.76, ret: 0 },
+        { land: "D\u00e4nemark", orders: 50, gewinn: -127.22, ret: 3 },
+    ];
+
+    const VERSAND_KOSTEN_RETOURE = 15; // EUR geschaetzt pro Retoure
+
+    // Berechnungen
+    const data = rawData.map(d => {
+        const retPct = d.orders > 0 ? (d.ret / d.orders * 100) : 0;
+        const gewPerOrder = d.orders > 0 ? d.gewinn / d.orders : 0;
+        const retVerlust = d.ret * (Math.abs(gewPerOrder) + VERSAND_KOSTEN_RETOURE);
+        const nettoGewinn = d.gewinn - retVerlust;
+        const nettoPerOrder = d.orders > 0 ? nettoGewinn / d.orders : 0;
+        const verlustPct = d.gewinn > 0 ? (retVerlust / d.gewinn * 100) : (d.gewinn < 0 ? 100 : 0);
+        return { ...d, retPct, gewPerOrder, retVerlust, nettoGewinn, nettoPerOrder, verlustPct };
+    });
+
+    // Sortiert nach Netto/Order (beste zuerst)
+    const sorted = [...data].sort((a, b) => b.nettoPerOrder - a.nettoPerOrder);
+
+    // --- KPI Cards ---
+    const worst = [...data].filter(d => d.orders >= 5).sort((a, b) => a.nettoPerOrder - b.nettoPerOrder)[0];
+    const best = sorted[0];
+    const totalRetLoss = data.reduce((s, d) => s + d.retVerlust, 0);
+    const lossCountries = data.filter(d => d.nettoGewinn <= 0 && d.orders >= 3);
+
+    document.getElementById('cProblem1').textContent = worst ? worst.land : '--';
+    document.getElementById('cProblem1Sub').textContent = worst ? worst.retPct.toFixed(1) + '% Retouren, ' + worst.nettoPerOrder.toFixed(2) + ' EUR/Order' : '';
+    document.getElementById('cBest').textContent = best ? best.land : '--';
+    document.getElementById('cBestSub').textContent = best ? best.retPct.toFixed(1) + '% Retouren, ' + best.nettoPerOrder.toFixed(2) + ' EUR/Order' : '';
+    document.getElementById('cRetLoss').textContent = 'EUR ' + Math.round(totalRetLoss).toLocaleString('de-DE');
+    document.getElementById('cLossCount').textContent = lossCountries.length;
+    document.getElementById('cLossCountSub').textContent = lossCountries.map(c => c.land).join(', ') || 'Keine';
+
+    // --- Tabelle ---
+    const tbody = document.getElementById('countryTable');
+    sorted.forEach(d => {
+        let badge, badgeClass, rowClass = '';
+        if (d.nettoPerOrder >= 15) { badge = 'TOP'; badgeClass = 'bg'; }
+        else if (d.nettoPerOrder >= 5) { badge = 'GUT'; badgeClass = 'bg'; }
+        else if (d.nettoPerOrder >= 0) { badge = 'KNAPP'; badgeClass = 'by'; rowClass = 'ret-mid'; }
+        else { badge = 'VERLUST'; badgeClass = 'br'; rowClass = 'ret-high'; }
+
+        // Spezialfall: sehr hohe Retourenquote
+        if (d.retPct >= 10 && d.orders >= 5) { badge = 'PROBLEM'; badgeClass = 'br'; rowClass = 'ret-high'; }
+
+        const tr = document.createElement('tr');
+        tr.className = rowClass;
+        tr.innerHTML = `
+            <td style="font-weight:500;color:#e0e0e0">${d.land}</td>
+            <td class="num">${d.orders}</td>
+            <td class="num ${d.gewinn >= 0 ? 'money' : 'loss'}">EUR ${d.gewinn.toFixed(0)}</td>
+            <td class="num ${d.ret > 0 ? 'ret-badge' : ''}">${d.ret}</td>
+            <td class="num" style="color:${d.retPct >= 10 ? '#ff5c5c' : d.retPct >= 7 ? '#fbbf24' : '#00e5a0'}">${d.retPct.toFixed(1)}%</td>
+            <td class="num" style="color:${d.gewPerOrder >= 10 ? '#00e5a0' : d.gewPerOrder >= 0 ? '#fbbf24' : '#ff5c5c'}">${d.gewPerOrder.toFixed(2)} EUR</td>
+            <td class="num loss">-${d.retVerlust.toFixed(0)} EUR</td>
+            <td class="num" style="font-weight:700;color:${d.nettoPerOrder >= 10 ? '#00e5a0' : d.nettoPerOrder >= 0 ? '#fbbf24' : '#ff5c5c'}">${d.nettoPerOrder.toFixed(2)} EUR</td>
+            <td class="num" style="color:${d.verlustPct >= 30 ? '#ff5c5c' : d.verlustPct >= 15 ? '#fbbf24' : '#00e5a0'}">${d.verlustPct.toFixed(1)}%</td>
+            <td><span class="badge ${badgeClass}">${badge}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    // --- Chart 1: Scatter (Retourenquote vs Gewinn/Order) ---
+    const scatterData = data.filter(d => d.orders >= 3).map(d => ({
+        x: d.retPct,
+        y: d.gewPerOrder,
+        r: Math.max(4, Math.sqrt(d.orders) * 2.5),
+        label: d.land
+    }));
+
+    new Chart(document.getElementById('countryScatterChart'), {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                data: scatterData,
+                backgroundColor: scatterData.map(d =>
+                    d.y < 0 ? 'rgba(255,92,92,.7)' :
+                    d.x > 8 ? 'rgba(251,191,36,.7)' :
+                    'rgba(0,229,160,.7)'
+                ),
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const d = scatterData[ctx.dataIndex];
+                            return d.label + ': ' + d.x.toFixed(1) + '% Ret, ' + d.y.toFixed(2) + ' EUR/Order';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Retourenquote %', color: '#555' }, ticks: { callback: v => v + '%' } },
+                y: { title: { display: true, text: 'Gewinn / Order (EUR)', color: '#555' }, ticks: { callback: v => v + 'E' },
+                     grid: { color: ctx => ctx.tick.value === 0 ? '#444' : '#1a1c28' } }
+            }
+        }
+    });
+
+    // --- Chart 2: Gewinn vs Retouren-Verlust (horizontal bar) ---
+    const barData = sorted.filter(d => d.orders >= 3);
+    new Chart(document.getElementById('countryRetChart'), {
+        type: 'bar',
+        data: {
+            labels: barData.map(d => d.land),
+            datasets: [
+                { label: 'Netto-Gewinn', data: barData.map(d => Math.round(d.gewinn)), backgroundColor: 'rgba(0,229,160,.7)', borderRadius: 4 },
+                { label: 'Retouren-Verlust', data: barData.map(d => -Math.round(d.retVerlust)), backgroundColor: 'rgba(255,92,92,.7)', borderRadius: 4 },
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: { legend: { labels: { font: { size: 10 } } } },
+            scales: {
+                x: { ticks: { callback: v => v + ' EUR' }, grid: { color: ctx => ctx.tick.value === 0 ? '#444' : '#1a1c28' } }
+            }
+        }
+    });
+
+    // --- Chart 3: Gewinn pro Order (bar) ---
+    new Chart(document.getElementById('countryProfitPerOrder'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(d => d.land),
+            datasets: [
+                { label: 'Brutto/Order', data: sorted.map(d => +d.gewPerOrder.toFixed(2)), backgroundColor: 'rgba(0,180,216,.5)', borderRadius: 4 },
+                { label: 'Netto/Order', data: sorted.map(d => +d.nettoPerOrder.toFixed(2)),
+                  backgroundColor: sorted.map(d => d.nettoPerOrder >= 0 ? 'rgba(0,229,160,.8)' : 'rgba(255,92,92,.8)'), borderRadius: 4 },
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { font: { size: 10 } } } },
+            scales: {
+                x: { ticks: { maxRotation: 45, font: { size: 9 } } },
+                y: { ticks: { callback: v => v + ' EUR' }, grid: { color: ctx => ctx.tick.value === 0 ? '#444' : '#1a1c28' } }
+            }
+        }
+    });
+
+    // --- Chart 4: Retouren-Anteil am Gewinn (bar) ---
+    const retPctData = sorted.filter(d => d.gewinn > 0);
+    new Chart(document.getElementById('countryRetPctChart'), {
+        type: 'bar',
+        data: {
+            labels: retPctData.map(d => d.land),
+            datasets: [{
+                label: '% vom Gewinn durch Retouren verloren',
+                data: retPctData.map(d => +d.verlustPct.toFixed(1)),
+                backgroundColor: retPctData.map(d =>
+                    d.verlustPct >= 30 ? 'rgba(255,92,92,.8)' :
+                    d.verlustPct >= 15 ? 'rgba(251,191,36,.7)' :
+                    'rgba(0,229,160,.5)'
+                ),
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { maxRotation: 45, font: { size: 9 } } },
+                y: { ticks: { callback: v => v + '%' }, max: 100 }
+            }
+        }
+    });
+
+    // --- KI-Empfehlungen generieren ---
+    const tips = [];
+
+    // Problemlaender
+    const problemLaender = data.filter(d => d.orders >= 5 && (d.nettoPerOrder < 0 || d.retPct >= 10));
+    if (problemLaender.length > 0) {
+        problemLaender.forEach(pl => {
+            tips.push({
+                color: '#ff5c5c',
+                title: '!!! Problemland: ' + pl.land,
+                text: pl.land + ' hat ' + pl.orders + ' Orders mit ' + pl.retPct.toFixed(1) + '% Retourenquote. '
+                    + 'Netto-Gewinn pro Order: <b>' + pl.nettoPerOrder.toFixed(2) + ' EUR</b>. '
+                    + 'Retouren-Verlust: <b>' + Math.round(pl.retVerlust) + ' EUR</b>. '
+                    + (pl.nettoPerOrder < 0
+                        ? 'Dieses Land ist ein Verlustgeschaeft — ueberlege Verkauf dort einzustellen oder Preise zu erhoehen.'
+                        : 'Die hohe Retourenquote frisst den Gewinn auf. Bessere QC oder hoehere Preise koennten helfen.')
+            });
+        });
+    }
+
+    // Top-Laender
+    const topLaender = sorted.filter(d => d.orders >= 5 && d.nettoPerOrder >= 10);
+    if (topLaender.length > 0) {
+        tips.push({
+            color: '#00e5a0',
+            title: '>>> Top-Maerkte: ' + topLaender.map(t => t.land).join(', '),
+            text: 'Diese Laender haben den besten Gewinn pro Order nach Retouren-Abzug: '
+                + topLaender.map(t => '<b>' + t.land + '</b> (' + t.nettoPerOrder.toFixed(2) + ' EUR/Order, ' + t.retPct.toFixed(1) + '% Ret)').join(', ')
+                + '. Hier lohnt es sich das Volumen zu erhoehen!'
+        });
+    }
+
+    // Laender ohne Retouren
+    const noRetLaender = data.filter(d => d.ret === 0 && d.orders >= 3 && d.gewinn > 0);
+    if (noRetLaender.length > 0) {
+        tips.push({
+            color: '#00b4d8',
+            title: '>>> Null Retouren: ' + noRetLaender.map(t => t.land).join(', '),
+            text: 'Diese Laender haben <b>keine einzige Retoure</b> und sind profitabel. '
+                + 'Besonders interessant fuer Expansion: '
+                + noRetLaender.map(t => t.land + ' (' + t.orders + ' Orders, ' + t.gewPerOrder.toFixed(2) + ' EUR/Order)').join(', ') + '.'
+        });
+    }
+
+    // Frankreich/Belgien warnung (hohe Ret% aber wenig Orders)
+    const warnLaender = data.filter(d => d.orders < 10 && d.retPct > 10 && d.orders >= 3);
+    if (warnLaender.length > 0) {
+        tips.push({
+            color: '#fbbf24',
+            title: '??? Beobachten: ' + warnLaender.map(t => t.land).join(', '),
+            text: 'Diese Laender haben eine hohe Retourenquote aber noch wenig Orders. '
+                + 'Noch nicht genug Daten fuer eine sichere Aussage — weiter beobachten! '
+                + warnLaender.map(t => t.land + ' (' + t.orders + ' Orders, ' + t.retPct.toFixed(1) + '% Ret)').join(', ') + '.'
+        });
+    }
+
+    // Gesamt-Zusammenfassung
+    const totalOrders = data.reduce((s, d) => s + d.orders, 0);
+    const totalRet = data.reduce((s, d) => s + d.ret, 0);
+    const totalGewinn = data.reduce((s, d) => s + d.gewinn, 0);
+    tips.push({
+        color: '#a78bfa',
+        title: '>>> Zusammenfassung',
+        text: '<b>' + totalOrders + ' Orders</b> in <b>' + data.length + ' Laendern</b>. '
+            + 'Gesamt-Retouren: <b>' + totalRet + '</b> (' + (totalRet / totalOrders * 100).toFixed(1) + '%). '
+            + 'Gesamt-Gewinn: <b>' + Math.round(totalGewinn).toLocaleString('de-DE') + ' EUR</b>. '
+            + 'Geschaetzter Retouren-Verlust: <b>' + Math.round(totalRetLoss).toLocaleString('de-DE') + ' EUR</b> (' + (totalRetLoss / totalGewinn * 100).toFixed(1) + '% vom Gewinn). '
+            + 'Deutschland dominiert mit ' + (461 / totalOrders * 100).toFixed(0) + '% der Orders — Diversifikation in profitable Maerkte wie '
+            + topLaender.slice(0, 3).map(t => t.land).join(', ') + ' empfohlen.'
+    });
+
+    const tipsContainer = document.getElementById('countryTips');
+    tipsContainer.innerHTML = tips.map(t => `
+        <div class="tip" style="border-left-color:${t.color}">
+            <div class="tip-title">${t.title}</div>
+            <div class="tip-text">${t.text}</div>
+        </div>
+    `).join('');
 }
 
 // ========== EK-RECHNER ==========
