@@ -17,11 +17,19 @@ body{font-family:'Outfit',sans-serif;background:#080810;color:#c8cad0;min-height
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 /* Daily Bar */
 .daily-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.daily-col{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28;text-align:center}
+.daily-col{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28;text-align:center;cursor:pointer;transition:all .2s}
+.daily-col:hover{border-color:rgba(0,229,160,.4);transform:translateY(-2px)}
+.daily-col.active{border-color:rgba(0,229,160,.6)}
 .daily-today{border-color:rgba(0,229,160,.3);background:linear-gradient(135deg,rgba(0,229,160,.05),rgba(0,180,216,.05))}
 .daily-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
 .daily-profit{font-size:22px;font-weight:700;color:#00e5a0;font-family:'JetBrains Mono',monospace}
 .daily-meta{font-size:10px;color:#444;margin-top:4px}
+.daily-hint{font-size:9px;color:#333;margin-top:6px;letter-spacing:.5px}
+.daily-detail{display:none;margin-bottom:14px;animation:fadeIn .3s ease}
+.daily-detail.show{display:block}
+.daily-detail .card{border-color:rgba(0,229,160,.15)}
+.daily-detail table td.ret{color:#ff5c5c;font-weight:600}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
 .kpi{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28}
 .kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
@@ -90,6 +98,8 @@ tr:hover{background:#12141e}
   .hdr h1{font-size:16px}
   .daily-bar{grid-template-columns:1fr 1fr 1fr;gap:6px}
   .daily-profit{font-size:16px}
+  .daily-detail table{font-size:10px}
+  .daily-detail th,.daily-detail td{padding:4px 3px}
   .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
   .kpi .val{font-size:18px}
   .g2,.g3{grid-template-columns:1fr}
@@ -143,7 +153,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>22.02.2026 19:20</span>
+    <span>22.02.2026 20:13</span>
     <span>|</span>
     <span>852 Orders</span>
     <span>|</span>
@@ -151,21 +161,573 @@ tr:hover{background:#12141e}
   </div>
 </div>
 
-<!-- TAGES-UMSATZ (letzte 3 Tage) -->
+<!-- TAGES-UMSATZ (letzte 3 Tage) - klickbar -->
 <div class="daily-bar">
-<div class="daily-col daily-today">
+<div class="daily-col daily-today" onclick="toggleDaily(0)">
   <div class="daily-label">Heute</div>
   <div class="daily-profit">EUR -180.62</div>
   <div class="daily-meta">5 Orders | EUR 2,802 Umsatz</div>
-</div><div class="daily-col">
+  <div class="daily-hint">&#9662; Details anzeigen</div>
+</div><div class="daily-col" onclick="toggleDaily(1)">
   <div class="daily-label">Gestern</div>
   <div class="daily-profit">EUR 517.18</div>
   <div class="daily-meta">11 Orders | EUR 6,838 Umsatz</div>
-</div><div class="daily-col">
+  <div class="daily-hint">&#9662; Details anzeigen</div>
+</div><div class="daily-col" onclick="toggleDaily(2)">
   <div class="daily-label">Fri 20.02</div>
   <div class="daily-profit">EUR 2,425.83</div>
   <div class="daily-meta">42 Orders | EUR 26,382 Umsatz</div>
+  <div class="daily-hint">&#9662; Details anzeigen</div>
 </div></div>
+
+<!-- DETAIL-PANELS pro Tag -->
+<div class="daily-detail" id="daily-detail-0">
+  <div class="card">
+    <h2>&#128197; Heute &mdash; 22.02.2026 <span>5 Verkauefe</span></h2>
+    <table>
+      <tr><th>Zeit</th><th>Order</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
+      <tr>
+        <td>13:41</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16939502</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | purple</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 588</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -37.40</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:13</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16939192</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | purple</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 559</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -29.62</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>11:42</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16938122</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | Starlight</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 571</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -42.90</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>09:47</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16936933</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | Starlight</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 542</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -35.35</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>09:41</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16936879</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | Starlight</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 542</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -35.35</td>
+        <td class="">&#9989;</td>
+      </tr>
+    </table>
+  </div>
+</div><div class="daily-detail" id="daily-detail-1">
+  <div class="card">
+    <h2>&#128197; Gestern &mdash; 21.02.2026 <span>11 Verkauefe</span></h2>
+    <table>
+      <tr><th>Zeit</th><th>Order</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
+      <tr>
+        <td>22:11</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16934899</td>
+        <td>iPhone 14 Pro Max 128GB</td>
+        <td>Dänemark</td>
+        <td class="num">EUR 469</td>
+        <td class="num">EUR 415</td>
+        <td class="num loss">EUR -19.29</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>21:15</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16934417</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Niederlande</td>
+        <td class="num">EUR 596</td>
+        <td class="num">EUR 391</td>
+        <td class="num money">EUR 94.51</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>18:17</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16932775</td>
+        <td>iPhone 14 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 533</td>
+        <td class="num">EUR 487</td>
+        <td class="num loss">EUR -43.04</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:51</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16931915</td>
+        <td>iPhone 14 Pro Max 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 405</td>
+        <td class="num">EUR 426</td>
+        <td class="num loss">EUR -52.40</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>12:36</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16929061</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 491</td>
+        <td class="num">EUR 355</td>
+        <td class="num money">EUR 79.54</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>12:28</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16928999</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Irland</td>
+        <td class="num">EUR 698</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 115.02</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>12:20</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16928923</td>
+        <td>iPhone 14 Pro Max 256GB</td>
+        <td>Belgien</td>
+        <td class="num">EUR 606</td>
+        <td class="num">EUR 498</td>
+        <td class="num money">EUR 22.40</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>09:10</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16927095</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Irland</td>
+        <td class="num">EUR 1,449</td>
+        <td class="num">EUR 1,040</td>
+        <td class="num money">EUR 176.54</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>07:08</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16926561</td>
+        <td>iPhone 15 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 413</td>
+        <td class="num">EUR 390</td>
+        <td class="num loss">EUR -45.04</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>04:13</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16926354</td>
+        <td>iPhone 15 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 475</td>
+        <td class="num">EUR 325</td>
+        <td class="num money">EUR 63.17</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>01:35</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16926107</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 703</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 125.77</td>
+        <td class="">&#9989;</td>
+      </tr>
+    </table>
+  </div>
+</div><div class="daily-detail" id="daily-detail-2">
+  <div class="card">
+    <h2>&#128197; Fri 20.02 &mdash; 20.02.2026 <span>42 Verkauefe</span></h2>
+    <table>
+      <tr><th>Zeit</th><th>Order</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
+      <tr>
+        <td>21:42</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16924743</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 732</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 108.09</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>21:03</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16924305</td>
+        <td>iPhone 15 Pro 128GB</td>
+        <td>Gesamt Brutto: 514,99</td>
+        <td class="num">EUR 515</td>
+        <td class="num">EUR 486</td>
+        <td class="num loss">EUR -53.59</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>20:32</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16924015</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Tschechische Republik</td>
+        <td class="num">EUR 600</td>
+        <td class="num">EUR 391</td>
+        <td class="num money">EUR 93.51</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>20:00</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16923654</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 732</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 108.09</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>19:12</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16923150</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 740</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 105.97</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>18:42</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16922733</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 732</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 108.09</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>18:07</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16922473</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 695</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 117.78</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>17:33</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16922053</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Italien</td>
+        <td class="num">EUR 595</td>
+        <td class="num">EUR 514</td>
+        <td class="num loss">EUR -9.62</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:53</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921576</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 622</td>
+        <td class="num">EUR 420</td>
+        <td class="num money">EUR 129.36</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:49</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921510</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 699</td>
+        <td class="num">EUR 431</td>
+        <td class="num money">EUR 143.82</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:48</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921490</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 730</td>
+        <td class="num">EUR 500</td>
+        <td class="num money">EUR 108.62</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:46</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921487</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Irland</td>
+        <td class="num">EUR 548</td>
+        <td class="num">EUR 391</td>
+        <td class="num money">EUR 88.47</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:43</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921437</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Niederlande</td>
+        <td class="num">EUR 618</td>
+        <td class="num">EUR 521</td>
+        <td class="num money">EUR 2.39</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:40</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921413</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Gesamt Brutto: 785,99</td>
+        <td class="num">EUR 786</td>
+        <td class="num">EUR 630</td>
+        <td class="num money">EUR 22.13</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:28</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921260</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Niederlande</td>
+        <td class="num">EUR 546</td>
+        <td class="num">EUR 380</td>
+        <td class="num money">EUR 84.16</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:27</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921229</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Irland</td>
+        <td class="num">EUR 538</td>
+        <td class="num">EUR 380</td>
+        <td class="num money">EUR 58.28</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:13</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921067</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Dänemark</td>
+        <td class="num">EUR 656</td>
+        <td class="num">EUR 420</td>
+        <td class="num money">EUR 95.14</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:07</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16921000</td>
+        <td>iPhone 15 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 480</td>
+        <td class="num">EUR 335</td>
+        <td class="num money">EUR 48.72</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:05</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920973</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 704</td>
+        <td class="num">EUR 621</td>
+        <td class="num money">EUR 24.53</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>16:02</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920921</td>
+        <td>iPhone 15 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 480</td>
+        <td class="num">EUR 335</td>
+        <td class="num money">EUR 48.72</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:53</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920777</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 769</td>
+        <td class="num">EUR 461</td>
+        <td class="num money">EUR 170.08</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:52</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920799</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 731</td>
+        <td class="num">EUR 461</td>
+        <td class="num money">EUR 180.25</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:34</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920539</td>
+        <td>iPhone 15 Pro 128GB</td>
+        <td>Belgien</td>
+        <td class="num">EUR 475</td>
+        <td class="num">EUR 335</td>
+        <td class="num money">EUR 49.04</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:31</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920506</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | purple</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 677</td>
+        <td class="num">EUR 540</td>
+        <td class="num money">EUR 29.04</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:30</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920483</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Italien</td>
+        <td class="num">EUR 638</td>
+        <td class="num">EUR 479</td>
+        <td class="num money">EUR 82.24</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>15:24</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920435</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 700</td>
+        <td class="num">EUR 621</td>
+        <td class="num loss">EUR -15.11</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>14:59</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920109</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Schweden</td>
+        <td class="num">EUR 589</td>
+        <td class="num">EUR 472</td>
+        <td class="num money">EUR 17.26</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>14:58</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920069</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 599</td>
+        <td class="num">EUR 451</td>
+        <td class="num money">EUR 63.62</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>14:57</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16920097</td>
+        <td>iPad Air (2024) | 13undquot | 256 GB | purple</td>
+        <td>Österreich</td>
+        <td class="num">EUR 630</td>
+        <td class="num">EUR 540</td>
+        <td class="num loss">EUR -2.53</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:48</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919534</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 777</td>
+        <td class="num">EUR 699</td>
+        <td class="num loss">EUR -16.07</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:47</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919517</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 529</td>
+        <td class="num">EUR 472</td>
+        <td class="num loss">EUR -8.83</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:31</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919345</td>
+        <td>iPhone 16 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 703</td>
+        <td class="num">EUR 627</td>
+        <td class="num money">EUR 19.42</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:24</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919251</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 567</td>
+        <td class="num">EUR 518</td>
+        <td class="num loss">EUR -17.56</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:24</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919040</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 491</td>
+        <td class="num">EUR 370</td>
+        <td class="num money">EUR 65.80</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:20</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16919215</td>
+        <td>iPhone 15 Pro Max 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 567</td>
+        <td class="num">EUR 518</td>
+        <td class="num loss">EUR -17.56</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>13:00</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16918980</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 491</td>
+        <td class="num">EUR 370</td>
+        <td class="num money">EUR 65.80</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>11:58</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16918295</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 503</td>
+        <td class="num">EUR 370</td>
+        <td class="num money">EUR 62.78</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>10:28</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16917296</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 635</td>
+        <td class="num">EUR 451</td>
+        <td class="num money">EUR 54.21</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>10:21</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16917250</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 635</td>
+        <td class="num">EUR 451</td>
+        <td class="num money">EUR 54.21</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>10:00</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16917005</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 635</td>
+        <td class="num">EUR 451</td>
+        <td class="num money">EUR 54.21</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>06:51</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16915775</td>
+        <td>iPhone 16 Pro 128GB</td>
+        <td>Deutschland</td>
+        <td class="num">EUR 654</td>
+        <td class="num">EUR 528</td>
+        <td class="num money">EUR 20.63</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
+        <td>06:50</td>
+        <td style="font-family:JetBrains Mono,monospace;font-size:10px">16915767</td>
+        <td>iPhone 15 Pro 256GB</td>
+        <td>Italien</td>
+        <td class="num">EUR 638</td>
+        <td class="num">EUR 479</td>
+        <td class="num money">EUR 82.24</td>
+        <td class="">&#9989;</td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 <!-- KPIs -->
 <div class="kpis">
@@ -1111,6 +1673,31 @@ tr:hover{background:#12141e}
 </div>
 
 <script>
+// Daily Detail Toggle
+function toggleDaily(idx) {
+    const panel = document.getElementById('daily-detail-' + idx);
+    const cols = document.querySelectorAll('.daily-col');
+    const allPanels = document.querySelectorAll('.daily-detail');
+    // Wenn schon offen -> zuklappen
+    if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        cols[idx].classList.remove('active');
+        cols[idx].querySelector('.daily-hint').innerHTML = '&#9662; Details anzeigen';
+        return;
+    }
+    // Alle anderen zuklappen
+    allPanels.forEach(p => p.classList.remove('show'));
+    cols.forEach(c => {
+        c.classList.remove('active');
+        const h = c.querySelector('.daily-hint');
+        if (h) h.innerHTML = '&#9662; Details anzeigen';
+    });
+    // Dieses Panel oeffnen
+    panel.classList.add('show');
+    cols[idx].classList.add('active');
+    cols[idx].querySelector('.daily-hint').innerHTML = '&#9652; Zuklappen';
+}
+
 // Tab Navigation
 function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -1362,7 +1949,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '22.02.2026 19:20';
+    const now = '22.02.2026 20:13';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
