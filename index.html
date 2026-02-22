@@ -30,6 +30,13 @@ body{font-family:'Outfit',sans-serif;background:#080810;color:#c8cad0;min-height
 .daily-detail .card{border-color:rgba(0,229,160,.15)}
 .daily-detail table td.ret{color:#ff5c5c;font-weight:600}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+/* Month Selector */
+.month-selector{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:6px 0}
+.month-selector label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px}
+.month-selector select{padding:8px 14px;background:#12141e;border:1px solid #1a1c28;border-radius:8px;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;outline:none;min-width:180px}
+.month-selector select:focus{border-color:#00e5a0}
+.month-summary{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28;text-align:center;margin-bottom:14px;color:#888;font-size:13px}
+.month-summary b{color:#00e5a0;font-family:'JetBrains Mono',monospace}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
 .kpi{background:#0e1018;border-radius:12px;padding:14px;border:1px solid #1a1c28}
 .kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:6px}
@@ -110,6 +117,8 @@ tr:hover{background:#12141e}
   .section-title{font-size:14px}
   .calc-grid{grid-template-columns:1fr}
   .calc-profit-num{font-size:32px}
+  .month-selector{flex-direction:column;align-items:stretch}
+  .month-selector select{width:100%;min-width:unset}
 }
 @media(max-width:400px){
   .kpis{grid-template-columns:1fr 1fr}
@@ -153,15 +162,24 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>22.02.2026 20:47</span>
+    <span>22.02.2026 21:10</span>
     <span>|</span>
-    <span>852 Orders</span>
+    <span id="hdr-orders">852 Orders</span>
     <span>|</span>
-    <span>Letzter Verkauf: 22.02.2026 13:41</span>
+    <span id="hdr-lastsale">Letzter Verkauf: 22.02.2026 13:41</span>
   </div>
 </div>
 
-<!-- TAGES-UMSATZ (letzte 3 Tage) - klickbar -->
+<!-- MONATS-DROPDOWN -->
+<div class="month-selector">
+  <label>Monat</label>
+  <select id="monthSelect" onchange="switchMonth(this.value)">
+    <option value="2026-01" >Januar 2026</option><option value="2026-02" selected>Februar 2026</option>
+  </select>
+</div>
+
+<!-- TAGES-UMSATZ (letzte 3 Tage) - nur fuer neuesten Monat -->
+<div id="daily-bar-area">
 <div class="daily-bar">
 <div class="daily-col daily-today" onclick="toggleDaily(0)">
   <div class="daily-label">Heute</div>
@@ -764,49 +782,1360 @@ tr:hover{background:#12141e}
     </table>
   </div>
 </div>
+</div><!-- /daily-bar-area -->
 
-<!-- KPIs -->
+<!-- MONATS-SUMMARY (fuer alte Monate statt Daily-Bar) -->
+<div class="month-summary" id="month-summary-bar" style="display:none">
+  <span id="month-summary-text">Februar 2026: <b>852</b> Orders | <b>EUR 16,483</b> Netto</span>
+</div>
+
+<!-- KPIs (global, per JS aktualisiert) -->
 <div class="kpis">
-  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val">EUR 16,483</div><div class="sub">nach Retouren</div></div>
-  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val">EUR 19,588</div><div class="sub">EUR 22.99/Order</div></div>
-  <div class="kpi p"><div class="lbl">Orders</div><div class="val">852</div><div class="sub">850 gescrapt</div></div>
-  <div class="kpi r"><div class="lbl">Retouren</div><div class="val">93</div><div class="sub">10.9%</div></div>
-  <div class="kpi y"><div class="lbl">Ret-Verlust</div><div class="val">EUR 3,104</div><div class="sub">Gewinn + Versand</div></div>
+  <div class="kpi g"><div class="lbl">Netto-Gewinn</div><div class="val" id="kpi-netto">EUR 16,483</div><div class="sub">nach Retouren</div></div>
+  <div class="kpi b"><div class="lbl">Brutto-Gewinn</div><div class="val" id="kpi-profit">EUR 19,588</div><div class="sub" id="kpi-avg">EUR 22.99/Order</div></div>
+  <div class="kpi p"><div class="lbl">Orders</div><div class="val" id="kpi-orders">852</div><div class="sub" id="kpi-scraped">850 gescrapt</div></div>
+  <div class="kpi r"><div class="lbl">Retouren</div><div class="val" id="kpi-rets">93</div><div class="sub" id="kpi-rrate">10.9%</div></div>
+  <div class="kpi y"><div class="lbl">Ret-Verlust</div><div class="val" id="kpi-retloss">EUR 3,104</div><div class="sub">Gewinn + Versand</div></div>
 </div>
 
 <!-- NAVIGATION TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="showSection('ek')">EK-Pruefer</div>
-  <div class="tab" onclick="showSection('returns')">Retouren</div>
-  <div class="tab" onclick="showSection('overview')">Uebersicht</div>
-  <div class="tab" onclick="showSection('models')">Modelle</div>
-  <div class="tab" onclick="showSection('tips')">KI-Tipps</div>
-  <div class="tab" onclick="showSection('countries')">Laender</div>
-  <div class="tab" onclick="showSection('platforms')">Plattformen</div>
+  <div class="tab active" data-tab="ek" onclick="showSection('ek')">EK-Pruefer</div>
+  <div class="tab" data-tab="returns" onclick="showSection('returns')">Retouren</div>
+  <div class="tab" data-tab="overview" onclick="showSection('overview')">Uebersicht</div>
+  <div class="tab" data-tab="models" onclick="showSection('models')">Modelle</div>
+  <div class="tab" data-tab="tips" onclick="showSection('tips')">KI-Tipps</div>
+  <div class="tab" data-tab="countries" onclick="showSection('countries')">Laender</div>
+  <div class="tab" data-tab="platforms" onclick="showSection('platforms')">Plattformen</div>
+  <div class="tab" data-tab="compare" onclick="showSection('compare')">Rueckblick</div>
 </div>
 
-<!-- SECTION: EK-RECHNER + PRUEFER (Default!) -->
-<div class="section active" id="sec-ek">
+<!-- SECTION: RUECKBLICK (global, ausserhalb Monats-Container) -->
+<div class="section" id="sec-compare">
+  <div class="card" style="margin-bottom:16px">
+    <h2>Monatsvergleich <span>Alle Monate im Ueberblick</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Monat</th><th>Orders</th><th>Brutto</th><th>Netto</th><th>Avg/Order</th><th>Retouren</th><th>Ret%</th><th>Ret-Verlust</th><th>Trend</th></tr>
+      <tr>
+            <td style="font-weight:600;color:#fff">Januar 2026</td>
+            <td class="num">821</td>
+            <td class="num">EUR 525,947</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num loss">EUR 0</td>
+            <td class="num"><span style="color:#555">-</span></td>
+        </tr><tr>
+            <td style="font-weight:600;color:#fff">Februar 2026</td>
+            <td class="num">852</td>
+            <td class="num">EUR 532,397</td>
+            <td class="num money">EUR 16,483</td>
+            <td class="num">EUR 22.99</td>
+            <td class="num">93</td>
+            <td class="num">10.9%</td>
+            <td class="num loss">EUR 3,104</td>
+            <td class="num"><span style="color:#00e5a0">+16,483 EUR</span></td>
+        </tr><tr style="border-top:2px solid #00e5a0;font-weight:700">
+        <td style="color:#00e5a0">GESAMT</td>
+        <td class="num" style="color:#fff">1673</td>
+        <td class="num" style="color:#fff">EUR 1,058,345</td>
+        <td class="num money">EUR 16,483</td>
+        <td class="num" style="color:#fff">EUR 11.71</td>
+        <td class="num" style="color:#fff">93</td>
+        <td class="num" style="color:#fff">5.6%</td>
+        <td class="num loss">EUR 3,104</td>
+        <td></td>
+    </tr>
+    </table>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Monatsvergleich Chart</h2>
+    <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
+  </div>
+</div>
 
-  <!-- EK-RECHNER (interaktiv) -->
+<!-- MONATS-CONTAINER (pro Monat) -->
+
+<div class="month-content" id="mc-2026-01" style="display:none">
+
+<!-- SECTION: EK-RECHNER + PRUEFER -->
+<div class="section" data-sec="ek">
   <div class="card" style="margin-bottom:16px;border-color:rgba(0,229,160,.3)">
     <h2>EK-Rechner <span>Gib deinen Einkaufspreis ein und sieh den erwarteten Profit</span></h2>
     <div class="calc-grid">
       <div class="calc-input-area">
         <label class="calc-label">Modell waehlen</label>
-        <select id="calcModel" onchange="calcProfit()" class="calc-select">
+        <select id="calcModel-2026-01" onchange="calcProfit()" class="calc-select">
           <option value="">-- Modell waehlen --</option>
         </select>
         <label class="calc-label" style="margin-top:12px">Dein EK (EUR)</label>
-        <input type="number" id="calcEK" onkeyup="calcProfit()" oninput="calcProfit()" placeholder="z.B. 450" class="calc-input" />
+        <input type="number" id="calcEK-2026-01" onkeyup="calcProfit()" oninput="calcProfit()" placeholder="z.B. 450" class="calc-input" />
       </div>
-      <div class="calc-result-area" id="calcResult">
+      <div class="calc-result-area" id="calcResult-2026-01">
         <div class="calc-placeholder">Waehle ein Modell und gib deinen EK ein</div>
       </div>
     </div>
   </div>
+  <div class="card">
+    <h2>EK-Pruefer <span>Max EK = hoechster EK bei dem du noch Profit machst</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Modell</th><th>Stk</th><th>Avg EK</th><th>Max EK</th><th>Avg VK</th><th>Avg Gewinn</th><th>Status</th><th>Detail</th></tr>
+      <tr>
+            <td class="model-name">iPhone 15 Pro Max 256GB</td>
+            <td class="num">173</td>
+            <td class="num">EUR 559</td>
+            <td class="num ek-max">EUR 559</td>
+            <td class="num">EUR 683</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro 256GB</td>
+            <td class="num">149</td>
+            <td class="num">EUR 520</td>
+            <td class="num ek-max">EUR 520</td>
+            <td class="num">EUR 634</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro 128GB</td>
+            <td class="num">100</td>
+            <td class="num">EUR 511</td>
+            <td class="num ek-max">EUR 511</td>
+            <td class="num">EUR 625</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 14 Pro Max 128GB</td>
+            <td class="num">76</td>
+            <td class="num">EUR 450</td>
+            <td class="num ek-max">EUR 450</td>
+            <td class="num">EUR 509</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro Max 256GB</td>
+            <td class="num">56</td>
+            <td class="num">EUR 815</td>
+            <td class="num ek-max">EUR 815</td>
+            <td class="num">EUR 808</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 Pro Max 512GB</td>
+            <td class="num">51</td>
+            <td class="num">EUR 618</td>
+            <td class="num ek-max">EUR 618</td>
+            <td class="num">EUR 716</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro 128GB</td>
+            <td class="num">50</td>
+            <td class="num">EUR 605</td>
+            <td class="num ek-max">EUR 605</td>
+            <td class="num">EUR 777</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 13 Mini 256GB</td>
+            <td class="num">42</td>
+            <td class="num">EUR 259</td>
+            <td class="num ek-max">EUR 259</td>
+            <td class="num">EUR 356</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 14 Pro Max 256GB</td>
+            <td class="num">39</td>
+            <td class="num">EUR 490</td>
+            <td class="num ek-max">EUR 490</td>
+            <td class="num">EUR 600</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 15 256GB</td>
+            <td class="num">20</td>
+            <td class="num">EUR 464</td>
+            <td class="num ek-max">EUR 464</td>
+            <td class="num">EUR 519</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro Max 512GB</td>
+            <td class="num">15</td>
+            <td class="num">EUR 844</td>
+            <td class="num ek-max">EUR 844</td>
+            <td class="num">EUR 899</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 Pro 256GB</td>
+            <td class="num">14</td>
+            <td class="num">EUR 618</td>
+            <td class="num ek-max">EUR 618</td>
+            <td class="num">EUR 884</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 14 Pro 256GB</td>
+            <td class="num">11</td>
+            <td class="num">EUR 477</td>
+            <td class="num ek-max">EUR 477</td>
+            <td class="num">EUR 474</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 14 Pro 128GB</td>
+            <td class="num">10</td>
+            <td class="num">EUR 461</td>
+            <td class="num ek-max">EUR 461</td>
+            <td class="num">EUR 418</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr><tr>
+            <td class="model-name">iPhone 16 128GB</td>
+            <td class="num">6</td>
+            <td class="num">EUR 434</td>
+            <td class="num ek-max">EUR 434</td>
+            <td class="num">EUR 590</td>
+            <td class="num money">EUR 0.00</td>
+            <td><span class="badge by">KNAPP</span></td>
+            <td class="num sub-text">alle OK</td>
+        </tr>
+    </table>
+    </div>
+  </div>
+</div>
 
-  <!-- EK-PRUEFER Tabelle -->
+<!-- SECTION: RETOUREN-ANALYSE -->
+<div class="section" data-sec="returns">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:11px;color:#555">Basierend auf Zendesk-Kundenkommunikation | 0 Retouren analysiert</div>
+    <button class="pdf-btn" onclick="printSection('returns')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      QC-Report als PDF
+    </button>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h2>Retouren-Gruende <span>0 Retouren analysiert via Zendesk</span></h2>
+      <div class="chart-wrap"><canvas id="reasonChart-2026-01"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>QC vs Kein QC <span>Vermeidbar vs Kundenentscheidung</span></h2>
+      <div class="chart-wrap"><canvas id="qcChart-2026-01"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;border-color:rgba(0,229,160,.2)">
+    <h2>KI Retouren-Analyse <span>Konkrete QC-Massnahmen basierend auf Kundenkommunikation</span></h2>
+    <div class="tips-grid"></div>
+  </div>
+</div>
+
+<!-- SECTION: UEBERSICHT -->
+<div class="section" data-sec="overview">
+  <div class="g2">
+    <div class="card">
+      <h2>Gewinn nach Modell</h2>
+      <div class="chart-wrap"><canvas id="profitChart-2026-01"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>EK vs VK vs Gewinn</h2>
+      <div class="chart-wrap"><canvas id="ekChart-2026-01"></canvas></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h2>Retourenquote</h2>
+      <div class="chart-wrap"><canvas id="retChart-2026-01"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Gewinn nach Land</h2>
+      <div class="chart-wrap"><canvas id="countryChart-2026-01"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: MODELLE -->
+<div class="section" data-sec="models">
+  <div class="card">
+    <h2>Alle Modelle <span>sortiert nach Volumen</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Modell</th><th>Stk</th><th>Gewinn</th><th>Avg/Stk</th><th>Avg EK</th><th>Avg VK</th><th>Marge</th><th>Ret</th><th>Ret%</th></tr>
+      <tr class="">
+            <td class="model-name">iPhone 15 Pro Max 256GB</td>
+            <td class="num">173</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 559</td>
+            <td class="num">EUR 683</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 15 Pro 256GB</td>
+            <td class="num">149</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 520</td>
+            <td class="num">EUR 634</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 15 Pro 128GB</td>
+            <td class="num">100</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 511</td>
+            <td class="num">EUR 625</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 14 Pro Max 128GB</td>
+            <td class="num">76</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 450</td>
+            <td class="num">EUR 509</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 16 Pro Max 256GB</td>
+            <td class="num">56</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 815</td>
+            <td class="num">EUR 808</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 15 Pro Max 512GB</td>
+            <td class="num">51</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 618</td>
+            <td class="num">EUR 716</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 16 Pro 128GB</td>
+            <td class="num">50</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 605</td>
+            <td class="num">EUR 777</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 13 Mini 256GB</td>
+            <td class="num">42</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 259</td>
+            <td class="num">EUR 356</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 14 Pro Max 256GB</td>
+            <td class="num">39</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 490</td>
+            <td class="num">EUR 600</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 15 256GB</td>
+            <td class="num">20</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 464</td>
+            <td class="num">EUR 519</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 16 Pro Max 512GB</td>
+            <td class="num">15</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 844</td>
+            <td class="num">EUR 899</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 16 Pro 256GB</td>
+            <td class="num">14</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 618</td>
+            <td class="num">EUR 884</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 14 Pro 256GB</td>
+            <td class="num">11</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 477</td>
+            <td class="num">EUR 474</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 14 Pro 128GB</td>
+            <td class="num">10</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 461</td>
+            <td class="num">EUR 418</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 16 128GB</td>
+            <td class="num">6</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 434</td>
+            <td class="num">EUR 590</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 14 128GB</td>
+            <td class="num">2</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 328</td>
+            <td class="num">EUR 326</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d</td>
+            <td class="num">2</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 614</td>
+            <td class="num">EUR 760</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 13 Pro 256GB</td>
+            <td class="num">2</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 398</td>
+            <td class="num">EUR 366</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 15 128GB</td>
+            <td class="num">2</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 390</td>
+            <td class="num">EUR 395</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr><tr class="">
+            <td class="model-name">iPhone 13 Pro 128GB</td>
+            <td class="num">1</td>
+            <td class="num money">EUR 0</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">EUR 392</td>
+            <td class="num">EUR 390</td>
+            <td class="num margin-bad">0.0%</td>
+            <td class="num">0</td>
+            <td class="num ">0.0%</td>
+        </tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: KI-TIPPS -->
+<div class="section" data-sec="tips">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+    <button class="pdf-btn" onclick="printSection('tips')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      KI-Tipps als PDF
+    </button>
+  </div>
+  <div class="card" style="border-color:rgba(0,229,160,.2)">
+    <h2>KI-Analyse & Tagesempfehlungen <span>Was du heute tun solltest</span></h2>
+    <div class="tips-grid"><div class="tip" style="border-left-color:#00b4d8">
+            <div class="tip-title">>>> Tages-Check: Kurs korrigieren!</div>
+            <div class="tip-text"><b>0.00 EUR/Order</b> ist zu wenig. Du musst dringend die Modelle mit Verlust identifizieren und aus dem Sortiment nehmen oder den EK massiv senken. Fokussiere dich auf weniger Modelle mit hoeherem Profit.</div></div></div>
+  </div>
+</div>
+
+<!-- SECTION: LAENDER KI-ANALYSE -->
+<div class="section" data-sec="countries">
+  <div class="card" style="margin-bottom:16px">
+    <h2>Laender-Analyse <span>KI-Bewertung: Lohnt sich das Land?</span></h2>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Status</th><th>Land</th><th>Orders</th><th>Ret</th><th>Ret%</th><th>Netto</th><th>Avg/Ord</th><th>Anteil</th><th>Empfehlung</th></tr>
+      <tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Deutschland</td>
+            <td class="num">494</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">60.2%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Italien</td>
+            <td class="num">53</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">6.5%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Österreich</td>
+            <td class="num">82</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">10.0%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Irland</td>
+            <td class="num">35</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">4.3%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Dänemark</td>
+            <td class="num">44</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">5.4%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Schweden</td>
+            <td class="num">41</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">5.0%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Niederlande</td>
+            <td class="num">21</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">2.6%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Belgien</td>
+            <td class="num">26</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">3.2%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Tschechische Republik</td>
+            <td class="num">16</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">1.9%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr><tr>
+            <td><span class="badge bg">GUT</span></td>
+            <td style="font-weight:500">Spanien</td>
+            <td class="num">3</td>
+            <td class="num">0</td>
+            <td class="num">0.0%</td>
+            <td class="num money">EUR 0</td>
+            <td class="num money">EUR 0.0</td>
+            <td class="num">0.4%</td>
+            <td style="font-size:11px;color:#999">Weiter bespielen, Retouren im Auge behalten.</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="card">
+    <h2>KI-Empfehlung pro Land</h2>
+    <div class="tips-grid">
+      <div class="tip" style="border-left-color:#a78bfa"><div class="tip-title">KI-Analyse Zusammenfassung</div><div class="tip-text">Bestes Land: <b style="color:#00e5a0">Deutschland</b> (Score 3, 0.0 EUR/Ord, 0.0% Ret)<br>Schlechtestes Land: <b style="color:#ff5c5c">Spanien</b> (Score 2, 0.0 EUR/Ord, 0.0% Ret)<br>Gesamt-Retourenquote: <b>0.0%</b></div></div>
+      <div class="tip" style="border-left-color:#00e5a0"><div class="tip-title">TOP Laender - Volumen erhoehen!</div><div class="tip-text"><b style="color:#00e5a0">Deutschland</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Italien</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Österreich</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Irland</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Dänemark</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Schweden</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Niederlande</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Belgien</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Tschechische Republik</b> (0.0 EUR/Ord, 0.0% Ret), <b style="color:#00e5a0">Spanien</b> (0.0 EUR/Ord, 0.0% Ret)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: PLATTFORMEN -->
+<div class="section" data-sec="platforms">
+  <div class="card" style="margin-bottom:16px">
+    <h2>Plattform-Uebersicht <span>915 Verkaeufe gesamt | EUR 5,082 Profit</span></h2>
+    <table>
+      <tr><th>Plattform</th><th>Sales</th><th>Umsatz</th><th>Gewinn</th><th>Avg/Sale</th><th>Anteil</th></tr>
+      <tr>
+            <td><span style="color:#ff6b6b;font-weight:600">MediaMarktSaturn</span></td>
+            <td class="num">59</td>
+            <td class="num money">EUR 43,702</td>
+            <td class="num money">EUR 3,361.95</td>
+            <td class="num">EUR 56.98</td>
+            <td class="num">66.2%</td></tr><tr>
+            <td><span style="color:#00b4d8;font-weight:600">PayPal</span></td>
+            <td class="num">19</td>
+            <td class="num money">EUR 6,219</td>
+            <td class="num money">EUR 1,085.46</td>
+            <td class="num">EUR 57.13</td>
+            <td class="num">21.4%</td></tr><tr>
+            <td><span style="color:#fbbf24;font-weight:600">eBay</span></td>
+            <td class="num">16</td>
+            <td class="num money">EUR 10,804</td>
+            <td class="num money">EUR 634.21</td>
+            <td class="num">EUR 39.64</td>
+            <td class="num">12.5%</td></tr><tr>
+            <td><span style="color:#00e5a0;font-weight:600">Refurbed</span></td>
+            <td class="num">821</td>
+            <td class="num money">EUR 525,947</td>
+            <td class="num money">EUR 0.00</td>
+            <td class="num">EUR 0.00</td>
+            <td class="num">0.0%</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>Externe Sales (MediaMarkt, eBay, PayPal) <span>94 Sales in 2026-01</span></h2>
+    <table>
+      <tr><th>Plattform</th><th>Datum</th><th>Produkt</th><th>Brutto</th><th>EK</th><th>Gebuehr</th><th>Gewinn</th></tr>
+      <tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Blau Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 492</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 109.29</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 528</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 79.04</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Weiß Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 565</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 47.95</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 528</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 79.04</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Blau Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 492</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 109.29</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Blau Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 492</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 109.29</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 675</td>
+            <td class="num">EUR 575</td>
+            <td class="num">EUR 57.4</td>
+            <td class="num money">EUR 20.36</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Schwarz</td>
+            <td class="num">EUR 699</td>
+            <td class="num">EUR 590</td>
+            <td class="num">EUR 59.4</td>
+            <td class="num money">EUR 26.18</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>31.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 528</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 79.04</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>30.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 675</td>
+            <td class="num">EUR 575</td>
+            <td class="num">EUR 57.4</td>
+            <td class="num money">EUR 20.36</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>30.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 528</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 79.04</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>30.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 675</td>
+            <td class="num">EUR 575</td>
+            <td class="num">EUR 57.4</td>
+            <td class="num money">EUR 20.36</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>30.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Exzellent</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 528</td>
+            <td class="num">EUR 59.5</td>
+            <td class="num money">EUR 79.04</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>28.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Blau</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 600</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 33.16</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>27.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Weiß</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 600</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 33.16</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>27.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>27.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max Display Reparatur</td>
+            <td class="num">EUR 298</td>
+            <td class="num">EUR 209</td>
+            <td class="num">EUR 4.9</td>
+            <td class="num money">EUR 63.87</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>26.01.2026</td>
+            <td class="model-name">Jetzt 60 Tage Kostenlos Testen</td>
+            <td class="num">EUR 616</td>
+            <td class="num">EUR 641</td>
+            <td class="num">EUR 10.2</td>
+            <td class="num loss">EUR -37.41</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>26.01.2026</td>
+            <td class="model-name">Panzerglas</td>
+            <td class="num">EUR 125</td>
+            <td class="num">EUR 31</td>
+            <td class="num">EUR 2.1</td>
+            <td class="num money">EUR 71.13</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>26.01.2026</td>
+            <td class="model-name">iPhone 11 Pro Panzerglas Premium (Inkl Instal</td>
+            <td class="num">EUR 40</td>
+            <td class="num">EUR 5</td>
+            <td class="num">EUR 0.7</td>
+            <td class="num money">EUR 22.82</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>26.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Weiß</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>26.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Schwarz</td>
+            <td class="num">EUR 770</td>
+            <td class="num">EUR 590</td>
+            <td class="num">EUR 65.5</td>
+            <td class="num money">EUR 79.81</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>25.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Weiß</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>25.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Weiß</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>25.01.2026</td>
+            <td class="model-name">iPhone 12 Rückseite Reparatur</td>
+            <td class="num">EUR 99</td>
+            <td class="num">EUR 0</td>
+            <td class="num">EUR 1.6</td>
+            <td class="num money">EUR 75.56</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>24.01.2026</td>
+            <td class="model-name">Gewährleistungsfall / Reparatur iPhone 14 Pro</td>
+            <td class="num">EUR 2</td>
+            <td class="num">EUR 0</td>
+            <td class="num">EUR 0.0</td>
+            <td class="num loss">EUR -4.35</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>23.01.2026</td>
+            <td class="model-name">iPhone 5s Display Schwarz</td>
+            <td class="num">EUR 23</td>
+            <td class="num">EUR 0</td>
+            <td class="num">EUR 0.4</td>
+            <td class="num money">EUR 13.35</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>22.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 550</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 75.18</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>22.01.2026</td>
+            <td class="model-name">iPhone 15 Display Reparatur</td>
+            <td class="num">EUR 105</td>
+            <td class="num">EUR 34</td>
+            <td class="num">EUR 1.7</td>
+            <td class="num money">EUR 52.13</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>22.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 550</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 75.18</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>22.01.2026</td>
+            <td class="model-name">iPhone 15 256 GB Rosa Exzellent</td>
+            <td class="num">EUR 544</td>
+            <td class="num">EUR 461</td>
+            <td class="num">EUR 22.7</td>
+            <td class="num money">EUR 31.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>21.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 532</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 53.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>21.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 532</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 53.02</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>21.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>21.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>20.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max Display Reparatur</td>
+            <td class="num">EUR 189</td>
+            <td class="num">EUR 209</td>
+            <td class="num">EUR 3.1</td>
+            <td class="num loss">EUR -25.93</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>19.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>19.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max Rückseite Reparatur</td>
+            <td class="num">EUR 149</td>
+            <td class="num">EUR 10</td>
+            <td class="num">EUR 2.5</td>
+            <td class="num money">EUR 108.35</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>18.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max 128 GB Exzellent ( Wie aus </td>
+            <td class="num">EUR 499</td>
+            <td class="num">EUR 451</td>
+            <td class="num">EUR 8.2</td>
+            <td class="num money">EUR 26.10</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>17.01.2026</td>
+            <td class="model-name">iPhone 15 256 GB Grün Exzellent</td>
+            <td class="num">EUR 544</td>
+            <td class="num">EUR 461</td>
+            <td class="num">EUR 22.7</td>
+            <td class="num money">EUR 31.02</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>16.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Natur</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 550</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 75.18</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>16.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>15.01.2026</td>
+            <td class="model-name">iPhone 15 256 GB Grün Exzellent</td>
+            <td class="num">EUR 544</td>
+            <td class="num">EUR 461</td>
+            <td class="num">EUR 22.7</td>
+            <td class="num money">EUR 31.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>14.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>14.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>14.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 532</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 53.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>14.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 532</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 53.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>10.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>09.01.2026</td>
+            <td class="model-name">iPhone 12 Mini  Hauptkamera Reparatur</td>
+            <td class="num">EUR 109</td>
+            <td class="num">EUR 0</td>
+            <td class="num">EUR 1.8</td>
+            <td class="num money">EUR 83.80</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>09.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max 256GB Schwarz Exzellent</td>
+            <td class="num">EUR 599</td>
+            <td class="num">EUR 480</td>
+            <td class="num">EUR 50.9</td>
+            <td class="num money">EUR 43.08</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>09.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Schwarz</td>
+            <td class="num">EUR 780</td>
+            <td class="num">EUR 590</td>
+            <td class="num">EUR 70.2</td>
+            <td class="num money">EUR 79.46</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 532</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 53.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Schwarz</td>
+            <td class="num">EUR 780</td>
+            <td class="num">EUR 590</td>
+            <td class="num">EUR 70.2</td>
+            <td class="num money">EUR 79.46</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max 128 GB Lila Exzellent</td>
+            <td class="num">EUR 580</td>
+            <td class="num">EUR 460</td>
+            <td class="num">EUR 49.3</td>
+            <td class="num money">EUR 45.54</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 16 Pro Max 256 GB Exzellent (wie aus d</td>
+            <td class="num">EUR 990</td>
+            <td class="num">EUR 700</td>
+            <td class="num">EUR 16.3</td>
+            <td class="num money">EUR 221.36</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>08.01.2026</td>
+            <td class="model-name">iPhone 14 Pro 256GB Lila Exzellent</td>
+            <td class="num">EUR 599</td>
+            <td class="num">EUR 430</td>
+            <td class="num">EUR 50.9</td>
+            <td class="num money">EUR 85.10</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>07.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Weiß</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>07.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Weiß</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>07.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>07.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 256 GB Natur Sehr Gut</td>
+            <td class="num">EUR 611</td>
+            <td class="num">EUR 630</td>
+            <td class="num">EUR 10.1</td>
+            <td class="num loss">EUR -32.05</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>06.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Display Reparatur</td>
+            <td class="num">EUR 149</td>
+            <td class="num">EUR 199</td>
+            <td class="num">EUR 2.5</td>
+            <td class="num loss">EUR -50.48</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>05.01.2026</td>
+            <td class="model-name">iPhone 14 Pro 256GB Lila</td>
+            <td class="num">EUR 500</td>
+            <td class="num">EUR 469</td>
+            <td class="num">EUR 42.5</td>
+            <td class="num loss">EUR -22.13</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>05.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>05.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>05.01.2026</td>
+            <td class="model-name">Batteriezustand 100%</td>
+            <td class="num">EUR 495</td>
+            <td class="num">EUR 391</td>
+            <td class="num">EUR 8.2</td>
+            <td class="num money">EUR 72.99</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Natur Exzellent</td>
+            <td class="num">EUR 660</td>
+            <td class="num">EUR 560</td>
+            <td class="num">EUR 56.1</td>
+            <td class="num money">EUR 22.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 749</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 26.8</td>
+            <td class="num money">EUR 36.16</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 256 GB Grün Exzellent</td>
+            <td class="num">EUR 544</td>
+            <td class="num">EUR 461</td>
+            <td class="num">EUR 22.7</td>
+            <td class="num money">EUR 31.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>04.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Blau</td>
+            <td class="num">EUR 810</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 68.8</td>
+            <td class="num money">EUR 55.40</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Natur Exzellent</td>
+            <td class="num">EUR 660</td>
+            <td class="num">EUR 560</td>
+            <td class="num">EUR 56.1</td>
+            <td class="num money">EUR 22.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Natur Exzellent</td>
+            <td class="num">EUR 660</td>
+            <td class="num">EUR 560</td>
+            <td class="num">EUR 56.1</td>
+            <td class="num money">EUR 22.02</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Natur</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>03.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 512 GB Schwarz</td>
+            <td class="num">EUR 820</td>
+            <td class="num">EUR 655</td>
+            <td class="num">EUR 69.7</td>
+            <td class="num money">EUR 62.96</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>02.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Natur Exzellent</td>
+            <td class="num">EUR 660</td>
+            <td class="num">EUR 560</td>
+            <td class="num">EUR 56.1</td>
+            <td class="num money">EUR 22.02</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>02.01.2026</td>
+            <td class="model-name">Gewährleistungsfall / Reparatur iPhone 14 Pro</td>
+            <td class="num">EUR 1</td>
+            <td class="num">EUR 0</td>
+            <td class="num">EUR 0.0</td>
+            <td class="num loss">EUR -5.18</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 16 Pro Max 512 GB Exzellent (wie aus d</td>
+            <td class="num">EUR 1,199</td>
+            <td class="num">EUR 770</td>
+            <td class="num">EUR 19.8</td>
+            <td class="num money">EUR 334.72</td></tr><tr>
+            <td><span style="color:#fbbf24">eBay</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Weiß</td>
+            <td class="num">EUR 689</td>
+            <td class="num">EUR 638</td>
+            <td class="num">EUR 25.6</td>
+            <td class="num money">EUR 1.32</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 15 Pro Max 256 GB Schwarz</td>
+            <td class="num">EUR 770</td>
+            <td class="num">EUR 640</td>
+            <td class="num">EUR 65.5</td>
+            <td class="num money">EUR 38.03</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 14 Pro Max 128 GB Lila Exzellent</td>
+            <td class="num">EUR 580</td>
+            <td class="num">EUR 440</td>
+            <td class="num">EUR 49.3</td>
+            <td class="num money">EUR 62.35</td></tr><tr>
+            <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 15 Pro 128 GB Weiß Exzellent</td>
+            <td class="num">EUR 670</td>
+            <td class="num">EUR 571</td>
+            <td class="num">EUR 57.0</td>
+            <td class="num money">EUR 20.45</td></tr><tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>01.01.2026</td>
+            <td class="model-name">iPhone 15 128 GB Blau Exzellent (Wie aus der </td>
+            <td class="num">EUR 520</td>
+            <td class="num">EUR 390</td>
+            <td class="num">EUR 8.6</td>
+            <td class="num money">EUR 94.66</td></tr>
+    </table>
+    
+  </div>
+</div>
+
+</div><!-- /month-content 2026-01 -->
+
+<div class="month-content" id="mc-2026-02" style="display:block">
+
+<!-- SECTION: EK-RECHNER + PRUEFER -->
+<div class="section active" data-sec="ek">
+  <div class="card" style="margin-bottom:16px;border-color:rgba(0,229,160,.3)">
+    <h2>EK-Rechner <span>Gib deinen Einkaufspreis ein und sieh den erwarteten Profit</span></h2>
+    <div class="calc-grid">
+      <div class="calc-input-area">
+        <label class="calc-label">Modell waehlen</label>
+        <select id="calcModel-2026-02" onchange="calcProfit()" class="calc-select">
+          <option value="">-- Modell waehlen --</option>
+        </select>
+        <label class="calc-label" style="margin-top:12px">Dein EK (EUR)</label>
+        <input type="number" id="calcEK-2026-02" onkeyup="calcProfit()" oninput="calcProfit()" placeholder="z.B. 450" class="calc-input" />
+      </div>
+      <div class="calc-result-area" id="calcResult-2026-02">
+        <div class="calc-placeholder">Waehle ein Modell und gib deinen EK ein</div>
+      </div>
+    </div>
+  </div>
   <div class="card">
     <h2>EK-Pruefer <span>Max EK = hoechster EK bei dem du noch Profit machst</span></h2>
     <div style="overflow-x:auto">
@@ -999,7 +2328,7 @@ tr:hover{background:#12141e}
 </div>
 
 <!-- SECTION: RETOUREN-ANALYSE -->
-<div class="section" id="sec-returns">
+<div class="section" data-sec="returns">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <div style="font-size:11px;color:#555">Basierend auf Zendesk-Kundenkommunikation | 93 Retouren analysiert</div>
     <button class="pdf-btn" onclick="printSection('returns')">
@@ -1010,11 +2339,11 @@ tr:hover{background:#12141e}
   <div class="g2">
     <div class="card">
       <h2>Retouren-Gruende <span>93 Retouren analysiert via Zendesk</span></h2>
-      <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="reasonChart-2026-02"></canvas></div>
     </div>
     <div class="card">
       <h2>QC vs Kein QC <span>Vermeidbar vs Kundenentscheidung</span></h2>
-      <div class="chart-wrap"><canvas id="qcChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="qcChart-2026-02"></canvas></div>
     </div>
   </div>
   <div class="card" style="margin-top:16px;border-color:rgba(0,229,160,.2)">
@@ -1075,35 +2404,31 @@ tr:hover{background:#12141e}
 </div>
 
 <!-- SECTION: UEBERSICHT -->
-<div class="section" id="sec-overview">
-  <div class="card" style="margin-bottom:16px">
-    <h2>Monatsvergleich</h2>
-    <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
-  </div>
+<div class="section" data-sec="overview">
   <div class="g2">
     <div class="card">
       <h2>Gewinn nach Modell</h2>
-      <div class="chart-wrap"><canvas id="profitChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="profitChart-2026-02"></canvas></div>
     </div>
     <div class="card">
       <h2>EK vs VK vs Gewinn</h2>
-      <div class="chart-wrap"><canvas id="ekChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="ekChart-2026-02"></canvas></div>
     </div>
   </div>
   <div class="g2">
     <div class="card">
       <h2>Retourenquote</h2>
-      <div class="chart-wrap"><canvas id="retChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="retChart-2026-02"></canvas></div>
     </div>
     <div class="card">
       <h2>Gewinn nach Land</h2>
-      <div class="chart-wrap"><canvas id="countryChart"></canvas></div>
+      <div class="chart-wrap"><canvas id="countryChart-2026-02"></canvas></div>
     </div>
   </div>
 </div>
 
 <!-- SECTION: MODELLE -->
-<div class="section" id="sec-models">
+<div class="section" data-sec="models">
   <div class="card">
     <h2>Alle Modelle <span>sortiert nach Volumen</span></h2>
     <div style="overflow-x:auto">
@@ -1346,7 +2671,7 @@ tr:hover{background:#12141e}
 </div>
 
 <!-- SECTION: KI-TIPPS -->
-<div class="section" id="sec-tips">
+<div class="section" data-sec="tips">
   <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
     <button class="pdf-btn" onclick="printSection('tips')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -1386,7 +2711,7 @@ tr:hover{background:#12141e}
 </div>
 
 <!-- SECTION: LAENDER KI-ANALYSE -->
-<div class="section" id="sec-countries">
+<div class="section" data-sec="countries">
   <div class="card" style="margin-bottom:16px">
     <h2>Laender-Analyse <span>KI-Bewertung: Lohnt sich das Land?</span></h2>
     <div style="overflow-x:auto">
@@ -1505,7 +2830,7 @@ tr:hover{background:#12141e}
 </div>
 
 <!-- SECTION: PLATTFORMEN -->
-<div class="section" id="sec-platforms">
+<div class="section" data-sec="platforms">
   <div class="card" style="margin-bottom:16px">
     <h2>Plattform-Uebersicht <span>876 Verkaeufe gesamt | EUR 21,671 Profit</span></h2>
     <table>
@@ -1715,50 +3040,129 @@ tr:hover{background:#12141e}
   </div>
 </div>
 
+</div><!-- /month-content 2026-02 -->
+
+
 <script>
-// Daily Detail Toggle
+// ========== GLOBALS ==========
+let activeMonth = '2026-02';
+const newestMonth = '2026-02';
+const ALL_MONTHS_KPI = [{"month": "2026-01", "n": 821, "scraped": 0, "profit": 0, "avg_p": 0.0, "netto": 0, "rets_n": 0, "rrate": 0.0, "lost": 0, "ship": 0, "updated": "22.02.2026 21:10", "last_sale": "31.01.2026 20:08", "total_brutto": 525947.33}, {"month": "2026-02", "n": 852, "scraped": 850, "profit": 19587.54, "avg_p": 22.99, "netto": 16483.13, "rets_n": 93, "rrate": 10.9, "lost": 2515.41, "ship": 589.0, "updated": "22.02.2026 21:10", "last_sale": "22.02.2026 13:41", "total_brutto": 532397.3}];
+const ALL_MONTHS_SUMMARY = {"2026-01": {"label": "Januar 2026", "n": 821, "netto": 0}, "2026-02": {"label": "Februar 2026", "n": 852, "netto": 16483}};
+const ALL_CHART_DATA = {"2026-01": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 256GB", "iPhone 15 Pro Max 512GB", "iPhone 16 Pro 128GB", "iPhone 13 Mini 256GB", "iPhone 14 Pro Max 256GB", "iPhone 15 256GB", "iPhone 16 Pro Max 512GB", "iPhone 16 Pro 256GB", "iPhone 14 Pro 256GB", "iPhone 14 Pro 128GB", "iPhone 16 128GB"], "model_profits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "model_rrates": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "model_avg_ek": [558.98, 520.11, 511.39, 449.97, 814.79, 618.3, 604.59, 259.31, 489.84, 463.9, 844.33, 618.0, 476.99, 461.2, 434.17], "model_avg_vk": [683.49, 633.5, 624.76, 508.63, 807.61, 715.97, 776.95, 355.69, 600.2, 518.82, 898.72, 883.55, 474.17, 417.74, 590.07], "model_avg_p": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "country_labels": ["Deutschland", "Italien", "Irland", "Dänemark", "Österreich", "Schweden", "Unbekannt", "Niederlande", "Belgien", "Tschechische Republik", "Spanien"], "country_profits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "reason_labels": [], "reason_values": [], "reason_colors": []}, "2026-02": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | purple"], "model_profits": [2886.91, 1211.39, -425.1, 8755.7, 2109.1, 3684.25, -91.85, -84.7, 775.18, -56.02, 786.22, 669.83, -209.85, -667.8, -51.63], "model_rrates": [12.9, 12.6, 10.3, 9.8, 5.3, 6.7, 8.3, 18.2, 6.2, 14.3, 9.1, 30.0, 0.0, 12.5, 0.0], "model_avg_ek": [505.44, 494.12, 453.67, 502.02, 654.9, 535.0, 572.85, 408.73, 653.56, 550.0, 289.36, 434.5, 540.0, 443.75, 540.0], "model_avg_vk": [612.61, 586.92, 529.69, 718.45, 795.57, 795.74, 663.55, 484.08, 843.69, 622.84, 435.98, 599.18, 578.81, 402.65, 618.77], "model_avg_p": [14.36, 6.34, -3.63, 95.17, 27.75, 122.81, -3.83, -3.85, 48.45, -4.0, 71.47, 66.98, -26.23, -83.47, -8.6], "country_labels": ["Deutschland", "Schweden", "Italien", "Irland", "Österreich", "Dänemark", "Frankreich", "Belgien", "Niederlande", "Unbekannt", "Tschechische Republik", "Spanien"], "country_profits": [12479.98, 1049.45, 2255.07, 1516.08, 1094.87, -51.37, 244.24, 526.93, 252.53, 79.76, 148.76, -8.76], "reason_labels": ["Kamera", "Sonstiges", "Widerruf/Kein Bedarf", "Display/Bildschirm", "Gehaeuse/Optik", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Akku/Batterie", "Face ID", "Stornierung", "Ladeanschluss/Port"], "reason_values": [12, 10, 16, 21, 18, 4, 1, 6, 1, 3, 1], "reason_colors": ["#a78bfa", "#475569", "#94a3b8", "#ff6b6b", "#ff9f43", "#fb923c", "#60a5fa", "#fbbf24", "#34d399", "#6b7280", "#2dd4bf"]}};
+
+window._chartsInit = {};
+window._retChartsInit = {};
+window._compareChartInit = false;
+
+// ========== MONTH SWITCHING ==========
+function switchMonth(month) {
+    activeMonth = month;
+    // 1. KPIs updaten
+    const kpi = ALL_MONTHS_KPI.find(m => m.month === month);
+    if (!kpi) return;
+    document.getElementById('kpi-netto').textContent = 'EUR ' + Math.round(kpi.netto).toLocaleString('de-DE');
+    document.getElementById('kpi-profit').textContent = 'EUR ' + Math.round(kpi.profit).toLocaleString('de-DE');
+    document.getElementById('kpi-avg').textContent = 'EUR ' + kpi.avg_p.toFixed(2) + '/Order';
+    document.getElementById('kpi-orders').textContent = kpi.n;
+    document.getElementById('kpi-scraped').textContent = kpi.scraped + ' gescrapt';
+    document.getElementById('kpi-rets').textContent = kpi.rets_n;
+    document.getElementById('kpi-rrate').textContent = kpi.rrate + '%';
+    document.getElementById('kpi-retloss').textContent = 'EUR ' + Math.round(kpi.lost + kpi.ship).toLocaleString('de-DE');
+    document.getElementById('hdr-orders').textContent = kpi.n + ' Orders';
+    document.getElementById('hdr-lastsale').textContent = 'Letzter Verkauf: ' + kpi.last_sale;
+
+    // 2. Monats-Container switchen
+    document.querySelectorAll('.month-content').forEach(mc => mc.style.display = 'none');
+    const mc = document.getElementById('mc-' + month);
+    if (mc) mc.style.display = 'block';
+
+    // 3. Daily-Bar nur fuer neuesten Monat
+    const dailyArea = document.getElementById('daily-bar-area');
+    const summaryArea = document.getElementById('month-summary-bar');
+    if (dailyArea) dailyArea.style.display = month === newestMonth ? '' : 'none';
+    if (summaryArea) {
+        summaryArea.style.display = month === newestMonth ? 'none' : '';
+        const sd = ALL_MONTHS_SUMMARY[month];
+        if (sd) {
+            document.getElementById('month-summary-text').innerHTML = sd.label + ': <b>' + sd.n + '</b> Orders | <b>EUR ' + sd.netto.toLocaleString('de-DE') + '</b> Netto';
+        }
+    }
+
+    // 4. Aktiven Tab beibehalten
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab) {
+        const secName = activeTab.getAttribute('data-tab');
+        if (secName && secName !== 'compare') {
+            showSection(secName);
+        }
+    }
+
+    // 5. EK-Rechner Dropdown fuer neuen Monat befuellen
+    populateCalcDropdown();
+}
+
+// ========== TAB NAVIGATION ==========
+function showSection(id) {
+    // Alle Sections ueberall verstecken
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    // Tab markieren
+    const tab = document.querySelector('.tab[data-tab="' + id + '"]');
+    if (tab) tab.classList.add('active');
+
+    if (id === 'compare') {
+        // Globale Section
+        document.getElementById('sec-compare').classList.add('active');
+        if (!window._compareChartInit) { initCompareChart(); window._compareChartInit = true; }
+    } else {
+        // Monats-spezifische Section
+        const mc = document.getElementById('mc-' + activeMonth);
+        if (mc) {
+            const sec = mc.querySelector('[data-sec="' + id + '"]');
+            if (sec) sec.classList.add('active');
+        }
+        // Charts lazy-init pro Monat
+        if (id === 'overview' && !window._chartsInit[activeMonth]) {
+            initCharts(activeMonth);
+            window._chartsInit[activeMonth] = true;
+        }
+        if (id === 'returns' && !window._retChartsInit[activeMonth]) {
+            initRetCharts(activeMonth);
+            window._retChartsInit[activeMonth] = true;
+        }
+    }
+}
+
+// ========== DAILY DETAIL TOGGLE ==========
 function toggleDaily(idx) {
     const panel = document.getElementById('daily-detail-' + idx);
     const cols = document.querySelectorAll('.daily-col');
     const allPanels = document.querySelectorAll('.daily-detail');
-    // Wenn schon offen -> zuklappen
     if (panel.classList.contains('show')) {
         panel.classList.remove('show');
         cols[idx].classList.remove('active');
         cols[idx].querySelector('.daily-hint').innerHTML = '&#9662; Details anzeigen';
         return;
     }
-    // Alle anderen zuklappen
     allPanels.forEach(p => p.classList.remove('show'));
     cols.forEach(c => {
         c.classList.remove('active');
         const h = c.querySelector('.daily-hint');
         if (h) h.innerHTML = '&#9662; Details anzeigen';
     });
-    // Dieses Panel oeffnen
     panel.classList.add('show');
     cols[idx].classList.add('active');
     cols[idx].querySelector('.daily-hint').innerHTML = '&#9652; Zuklappen';
 }
 
-// Tab Navigation
-function showSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('sec-'+id).classList.add('active');
-    event.target.classList.add('active');
-    // Charts muessen nach Sichtbarwerden gerendert werden
-    if (id === 'overview' && !window._chartsInit) { initCharts(); window._chartsInit = true; }
-    if (id === 'returns' && !window._retChartsInit) { initRetCharts(); window._retChartsInit = true; }
-}
-
+// ========== CHARTS ==========
 Chart.defaults.color = '#555';
 Chart.defaults.borderColor = '#1a1c28';
 Chart.defaults.font.family = 'Outfit';
 
-function initCharts() {
-    // Monatsvergleich
-    new Chart(document.getElementById('monthChart'), {
+function initCompareChart() {
+    new Chart(document.getElementById('compareChart'), {
         type: 'bar',
         data: {
             labels: ["2026-01", "2026-02"],
@@ -1776,165 +3180,192 @@ function initCharts() {
             }
         }
     });
+}
+
+function initCharts(month) {
+    const cd = ALL_CHART_DATA[month];
+    if (!cd) return;
 
     // Gewinn nach Modell
-    new Chart(document.getElementById('profitChart'), {
-        type: 'bar',
-        data: {
-            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | purple"],
-            datasets: [{ label: 'Gewinn', data: [2886.91, 1211.39, -425.1, 8755.7, 2109.1, 3684.25, -91.85, -84.7, 775.18, -56.02, 786.22, 669.83, -209.85, -667.8, -51.63],
-                backgroundColor: [2886.91, 1211.39, -425.1, 8755.7, 2109.1, 3684.25, -91.85, -84.7, 775.18, -56.02, 786.22, 669.83, -209.85, -667.8, -51.63].map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
-                borderRadius: 4 }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
-        }
-    });
+    const profitEl = document.getElementById('profitChart-' + month);
+    if (profitEl) {
+        new Chart(profitEl, {
+            type: 'bar',
+            data: {
+                labels: cd.model_names,
+                datasets: [{ label: 'Gewinn', data: cd.model_profits,
+                    backgroundColor: cd.model_profits.map(v => v >= 0 ? 'rgba(0,229,160,.7)' : 'rgba(255,92,92,.7)'),
+                    borderRadius: 4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
+            }
+        });
+    }
 
-    // EK-Pruefer Chart
-    new Chart(document.getElementById('ekChart'), {
-        type: 'bar',
-        data: {
-            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | purple"],
-            datasets: [
-                { label: 'Avg EK', data: [505.44, 494.12, 453.67, 502.02, 654.9, 535.0, 572.85, 408.73, 653.56, 550.0, 289.36, 434.5, 540.0, 443.75, 540.0], backgroundColor:'rgba(255,92,92,.6)', borderRadius:4 },
-                { label: 'Avg VK', data: [612.61, 586.92, 529.69, 718.45, 795.57, 795.74, 663.55, 484.08, 843.69, 622.84, 435.98, 599.18, 578.81, 402.65, 618.77], backgroundColor:'rgba(0,180,216,.6)', borderRadius:4 },
-                { label: 'Avg Gewinn', data: [14.36, 6.34, -3.63, 95.17, 27.75, 122.81, -3.83, -3.85, 48.45, -4.0, 71.47, 66.98, -26.23, -83.47, -8.6], backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
-            ]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
-        }
-    });
+    // EK vs VK vs Gewinn
+    const ekEl = document.getElementById('ekChart-' + month);
+    if (ekEl) {
+        new Chart(ekEl, {
+            type: 'bar',
+            data: {
+                labels: cd.model_names,
+                datasets: [
+                    { label: 'Avg EK', data: cd.model_avg_ek, backgroundColor:'rgba(255,92,92,.6)', borderRadius:4 },
+                    { label: 'Avg VK', data: cd.model_avg_vk, backgroundColor:'rgba(0,180,216,.6)', borderRadius:4 },
+                    { label: 'Avg Gewinn', data: cd.model_avg_p, backgroundColor:'rgba(0,229,160,.8)', borderRadius:4 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'E' } } }
+            }
+        });
+    }
 
     // Retourenquote
-    new Chart(document.getElementById('retChart'), {
-        type: 'bar',
-        data: {
-            labels: ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | purple"],
-            datasets: [{ label: 'Retourenquote %', data: [12.9, 12.6, 10.3, 9.8, 5.3, 6.7, 8.3, 18.2, 6.2, 14.3, 9.1, 30.0, 0.0, 12.5, 0.0],
-                backgroundColor: [12.9, 12.6, 10.3, 9.8, 5.3, 6.7, 8.3, 18.2, 6.2, 14.3, 9.1, 30.0, 0.0, 12.5, 0.0].map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
-                borderRadius:4 }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display:false } },
-            scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'%' } } }
-        }
-    });
+    const retEl = document.getElementById('retChart-' + month);
+    if (retEl) {
+        new Chart(retEl, {
+            type: 'bar',
+            data: {
+                labels: cd.model_names,
+                datasets: [{ label: 'Retourenquote %', data: cd.model_rrates,
+                    backgroundColor: cd.model_rrates.map(v => v>10?'rgba(255,92,92,.8)':v>5?'rgba(251,191,36,.7)':'rgba(0,229,160,.5)'),
+                    borderRadius:4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display:false } },
+                scales: { x: { ticks: { maxRotation:45, font:{size:9} } }, y: { ticks: { callback: v => v+'%' } } }
+            }
+        });
+    }
 
     // Laender
-    new Chart(document.getElementById('countryChart'), {
-        type: 'bar',
-        data: {
-            labels: ["Deutschland", "Schweden", "Italien", "Irland", "\u00d6sterreich", "D\u00e4nemark", "Frankreich", "Belgien", "Niederlande", "Unbekannt", "Tschechische Republik", "Spanien"],
-            datasets: [{ label: 'Gewinn', data: [12479.98, 1049.45, 2255.07, 1516.08, 1094.87, -51.37, 244.24, 526.93, 252.53, 79.76, 148.76, -8.76],
-                backgroundColor: 'rgba(0,180,216,.7)', borderRadius: 4 }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display:false } },
-            indexAxis: 'y',
-            scales: { x: { ticks: { callback: v => v+'E' } } }
-        }
-    });
+    const countryEl = document.getElementById('countryChart-' + month);
+    if (countryEl) {
+        new Chart(countryEl, {
+            type: 'bar',
+            data: {
+                labels: cd.country_labels,
+                datasets: [{ label: 'Gewinn', data: cd.country_profits,
+                    backgroundColor: 'rgba(0,180,216,.7)', borderRadius: 4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display:false } },
+                indexAxis: 'y',
+                scales: { x: { ticks: { callback: v => v+'E' } } }
+            }
+        });
+    }
 }
 
 // ========== RETOUREN-CHARTS ==========
-function initRetCharts() {
-    // Donut: Retouren-Gruende
-    const reasonLabels = ["Kamera", "Sonstiges", "Widerruf/Kein Bedarf", "Display/Bildschirm", "Gehaeuse/Optik", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Akku/Batterie", "Face ID", "Stornierung", "Ladeanschluss/Port"];
-    const reasonValues = [12, 10, 16, 21, 18, 4, 1, 6, 1, 3, 1];
-    const reasonColors = ["#a78bfa", "#475569", "#94a3b8", "#ff6b6b", "#ff9f43", "#fb923c", "#60a5fa", "#fbbf24", "#34d399", "#6b7280", "#2dd4bf"];
+function initRetCharts(month) {
+    const cd = ALL_CHART_DATA[month];
+    if (!cd) return;
 
-    new Chart(document.getElementById('reasonChart'), {
-        type: 'doughnut',
-        data: {
-            labels: reasonLabels,
-            datasets: [{ data: reasonValues, backgroundColor: reasonColors, borderWidth: 0 }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'right', labels: { font: { size: 10 }, padding: 8, usePointStyle: true, pointStyleWidth: 8 } }
+    const reasonEl = document.getElementById('reasonChart-' + month);
+    if (reasonEl) {
+        new Chart(reasonEl, {
+            type: 'doughnut',
+            data: {
+                labels: cd.reason_labels,
+                datasets: [{ data: cd.reason_values, backgroundColor: cd.reason_colors, borderWidth: 0 }]
             },
-            cutout: '55%'
-        }
-    });
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { font: { size: 10 }, padding: 8, usePointStyle: true, pointStyleWidth: 8 } }
+                },
+                cutout: '55%'
+            }
+        });
+    }
 
     // QC vs Nicht-QC
-    const qcLabels = ['QC-Probleme', 'Widerruf/Storno', 'Sonstiges'];
-    const qcData = [0, 0, 0];
-    const noQC = ['Widerruf/Kein Bedarf', 'Stornierung'];
-    const other = ['Sonstiges', 'Unbekannt'];
-    for (let i = 0; i < reasonLabels.length; i++) {
-        if (noQC.includes(reasonLabels[i])) qcData[1] += reasonValues[i];
-        else if (other.includes(reasonLabels[i])) qcData[2] += reasonValues[i];
-        else qcData[0] += reasonValues[i];
-    }
-    new Chart(document.getElementById('qcChart'), {
-        type: 'doughnut',
-        data: {
-            labels: qcLabels,
-            datasets: [{ data: qcData, backgroundColor: ['#ff6b6b', '#94a3b8', '#475569'], borderWidth: 0 }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'right', labels: { font: { size: 11 }, padding: 10, usePointStyle: true } }
-            },
-            cutout: '55%'
+    const qcEl = document.getElementById('qcChart-' + month);
+    if (qcEl) {
+        const qcLabels = ['QC-Probleme', 'Widerruf/Storno', 'Sonstiges'];
+        const qcData = [0, 0, 0];
+        const noQC = ['Widerruf/Kein Bedarf', 'Stornierung'];
+        const other = ['Sonstiges', 'Unbekannt'];
+        for (let i = 0; i < cd.reason_labels.length; i++) {
+            if (noQC.includes(cd.reason_labels[i])) qcData[1] += cd.reason_values[i];
+            else if (other.includes(cd.reason_labels[i])) qcData[2] += cd.reason_values[i];
+            else qcData[0] += cd.reason_values[i];
         }
-    });
+        new Chart(qcEl, {
+            type: 'doughnut',
+            data: {
+                labels: qcLabels,
+                datasets: [{ data: qcData, backgroundColor: ['#ff6b6b', '#94a3b8', '#475569'], borderWidth: 0 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { font: { size: 11 }, padding: 10, usePointStyle: true } }
+                },
+                cutout: '55%'
+            }
+        });
+    }
 }
 
 // ========== EK-RECHNER ==========
-const calcModels = [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 612.61, "avg_ek": 505.44, "avg_dynamic": 8.83, "avg_discount": 8.47, "avg_final": -5.28, "avg_p": 14.36, "max_ek_profit": 520.0, "cnt": 201, "rrate": 12.9}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 586.92, "avg_ek": 494.12, "avg_dynamic": 9.96, "avg_discount": 10.25, "avg_final": -13.94, "avg_p": 6.34, "max_ek_profit": 500.0, "cnt": 191, "rrate": 12.6}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 529.69, "avg_ek": 453.67, "avg_dynamic": 8.96, "avg_discount": 7.09, "avg_final": -21.81, "avg_p": -3.63, "max_ek_profit": 450.0, "cnt": 117, "rrate": 10.3}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 718.45, "avg_ek": 502.02, "avg_dynamic": 11.66, "avg_discount": 10.46, "avg_final": 76.37, "avg_p": 95.17, "max_ek_profit": 597.0, "cnt": 92, "rrate": 9.8}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 795.57, "avg_ek": 654.9, "avg_dynamic": 10.25, "avg_discount": 14.37, "avg_final": 3.63, "avg_p": 27.75, "max_ek_profit": 683.0, "cnt": 76, "rrate": 5.3}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 795.74, "avg_ek": 535.0, "avg_dynamic": 14.38, "avg_discount": 14.26, "avg_final": 102.92, "avg_p": 122.81, "max_ek_profit": 658.0, "cnt": 30, "rrate": 6.7}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 663.55, "avg_ek": 572.85, "avg_dynamic": 10.88, "avg_discount": 11.44, "avg_final": -24.39, "avg_p": -3.83, "max_ek_profit": 569.0, "cnt": 24, "rrate": 8.3}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 484.08, "avg_ek": 408.73, "avg_dynamic": 10.41, "avg_discount": 4.07, "avg_final": -17.51, "avg_p": -3.85, "max_ek_profit": 405.0, "cnt": 22, "rrate": 18.2}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 843.69, "avg_ek": 653.56, "avg_dynamic": 17.4, "avg_discount": 6.3, "avg_final": 39.55, "avg_p": 48.45, "max_ek_profit": 702.0, "cnt": 16, "rrate": 6.2}, {"name": "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "avg_vk": 622.84, "avg_ek": 550.0, "avg_dynamic": 3.14, "avg_discount": 12.76, "avg_final": -33.62, "avg_p": -4.0, "max_ek_profit": 546.0, "cnt": 14, "rrate": 14.3}, {"name": "iPhone 15 256GB", "avg_vk": 435.98, "avg_ek": 289.36, "avg_dynamic": 3.64, "avg_discount": 9.22, "avg_final": 45.89, "avg_p": 71.47, "max_ek_profit": 361.0, "cnt": 11, "rrate": 9.1}, {"name": "iPhone 16 128GB", "avg_vk": 599.18, "avg_ek": 434.5, "avg_dynamic": 2.47, "avg_discount": 5.38, "avg_final": 44.07, "avg_p": 66.98, "max_ek_profit": 501.0, "cnt": 10, "rrate": 30.0}, {"name": "iPad Air (2024) | 13undquot | 256 GB | Starlight", "avg_vk": 578.81, "avg_ek": 540.0, "avg_dynamic": 1.62, "avg_discount": 11.55, "avg_final": -56.16, "avg_p": -26.23, "max_ek_profit": 514.0, "cnt": 8, "rrate": 0.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 402.65, "avg_ek": 443.75, "avg_dynamic": 2.88, "avg_discount": 5.22, "avg_final": -105.82, "avg_p": -83.47, "max_ek_profit": 360.0, "cnt": 8, "rrate": 12.5}, {"name": "iPad Air (2024) | 13undquot | 256 GB | purple", "avg_vk": 618.77, "avg_ek": 540.0, "avg_dynamic": 5.06, "avg_discount": 4.9, "avg_final": -28.44, "avg_p": -8.6, "max_ek_profit": 531.0, "cnt": 6, "rrate": 0.0}, {"name": "iPhone 15 128GB", "avg_vk": 394.75, "avg_ek": 291.0, "avg_dynamic": 11.21, "avg_discount": 11.3, "avg_final": 14.33, "avg_p": 34.43, "max_ek_profit": 325.0, "cnt": 5, "rrate": 20.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | Starlight", "avg_vk": 583.43, "avg_ek": 500.0, "avg_dynamic": 0.79, "avg_discount": 12.36, "avg_final": -21.35, "avg_p": 10.21, "max_ek_profit": 510.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | space gray", "avg_vk": 571.17, "avg_ek": 500.0, "avg_dynamic": 2.0, "avg_discount": 11.62, "avg_final": -28.97, "avg_p": 0.65, "max_ek_profit": 501.0, "cnt": 5, "rrate": 0.0}, {"name": "iPhone 14 Pro Max 256GB", "avg_vk": 579.68, "avg_ek": 485.5, "avg_dynamic": 6.0, "avg_discount": 9.31, "avg_final": -14.44, "avg_p": 8.87, "max_ek_profit": 494.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | blue", "avg_vk": 580.99, "avg_ek": 500.0, "avg_dynamic": 0.99, "avg_discount": 0.0, "avg_final": -20.95, "avg_p": -1.94, "max_ek_profit": 498.0, "cnt": 3, "rrate": 0.0}];
+const allCalcModels = {"2026-01": [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 683.49, "avg_ek": 558.98, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 1.39, "avg_p": 0.0, "max_ek_profit": 559.0, "cnt": 173, "rrate": 0.0}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 633.5, "avg_ek": 520.11, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -1.47, "avg_p": 0.0, "max_ek_profit": 520.0, "cnt": 149, "rrate": 0.0}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 624.76, "avg_ek": 511.39, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 0.35, "avg_p": 0.0, "max_ek_profit": 511.0, "cnt": 100, "rrate": 0.0}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 508.63, "avg_ek": 449.97, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -34.78, "avg_p": 0.0, "max_ek_profit": 450.0, "cnt": 76, "rrate": 0.0}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 807.61, "avg_ek": 814.79, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -120.2, "avg_p": 0.0, "max_ek_profit": 815.0, "cnt": 56, "rrate": 0.0}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 715.97, "avg_ek": 618.3, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -23.6, "avg_p": 0.0, "max_ek_profit": 618.0, "cnt": 51, "rrate": 0.0}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 776.95, "avg_ek": 604.59, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 33.01, "avg_p": 0.0, "max_ek_profit": 605.0, "cnt": 50, "rrate": 0.0}, {"name": "iPhone 13 Mini 256GB", "avg_vk": 355.69, "avg_ek": 259.31, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 11.15, "avg_p": 0.0, "max_ek_profit": 259.0, "cnt": 42, "rrate": 0.0}, {"name": "iPhone 14 Pro Max 256GB", "avg_vk": 600.2, "avg_ek": 489.84, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -2.74, "avg_p": 0.0, "max_ek_profit": 490.0, "cnt": 39, "rrate": 0.0}, {"name": "iPhone 15 256GB", "avg_vk": 518.82, "avg_ek": 463.9, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -37.02, "avg_p": 0.0, "max_ek_profit": 464.0, "cnt": 20, "rrate": 0.0}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 898.72, "avg_ek": 844.33, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -77.73, "avg_p": 0.0, "max_ek_profit": 844.0, "cnt": 15, "rrate": 0.0}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 883.55, "avg_ek": 618.0, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 100.17, "avg_p": 0.0, "max_ek_profit": 618.0, "cnt": 14, "rrate": 0.0}, {"name": "iPhone 14 Pro 256GB", "avg_vk": 474.17, "avg_ek": 476.99, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -81.34, "avg_p": 0.0, "max_ek_profit": 477.0, "cnt": 11, "rrate": 0.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 417.74, "avg_ek": 461.2, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": -110.89, "avg_p": 0.0, "max_ek_profit": 461.0, "cnt": 10, "rrate": 0.0}, {"name": "iPhone 16 128GB", "avg_vk": 590.07, "avg_ek": 434.17, "avg_dynamic": 0.0, "avg_discount": 0.0, "avg_final": 35.39, "avg_p": 0.0, "max_ek_profit": 434.0, "cnt": 6, "rrate": 0.0}], "2026-02": [{"name": "iPhone 15 Pro Max 256GB", "avg_vk": 612.61, "avg_ek": 505.44, "avg_dynamic": 8.83, "avg_discount": 8.47, "avg_final": -5.28, "avg_p": 14.36, "max_ek_profit": 520.0, "cnt": 201, "rrate": 12.9}, {"name": "iPhone 15 Pro 256GB", "avg_vk": 586.92, "avg_ek": 494.12, "avg_dynamic": 9.96, "avg_discount": 10.25, "avg_final": -13.94, "avg_p": 6.34, "max_ek_profit": 500.0, "cnt": 191, "rrate": 12.6}, {"name": "iPhone 15 Pro 128GB", "avg_vk": 529.69, "avg_ek": 453.67, "avg_dynamic": 8.96, "avg_discount": 7.09, "avg_final": -21.81, "avg_p": -3.63, "max_ek_profit": 450.0, "cnt": 117, "rrate": 10.3}, {"name": "iPhone 16 Pro 128GB", "avg_vk": 718.45, "avg_ek": 502.02, "avg_dynamic": 11.66, "avg_discount": 10.46, "avg_final": 76.37, "avg_p": 95.17, "max_ek_profit": 597.0, "cnt": 92, "rrate": 9.8}, {"name": "iPhone 16 Pro Max 256GB", "avg_vk": 795.57, "avg_ek": 654.9, "avg_dynamic": 10.25, "avg_discount": 14.37, "avg_final": 3.63, "avg_p": 27.75, "max_ek_profit": 683.0, "cnt": 76, "rrate": 5.3}, {"name": "iPhone 16 Pro 256GB", "avg_vk": 795.74, "avg_ek": 535.0, "avg_dynamic": 14.38, "avg_discount": 14.26, "avg_final": 102.92, "avg_p": 122.81, "max_ek_profit": 658.0, "cnt": 30, "rrate": 6.7}, {"name": "iPhone 15 Pro Max 512GB", "avg_vk": 663.55, "avg_ek": 572.85, "avg_dynamic": 10.88, "avg_discount": 11.44, "avg_final": -24.39, "avg_p": -3.83, "max_ek_profit": 569.0, "cnt": 24, "rrate": 8.3}, {"name": "iPhone 14 Pro Max 128GB", "avg_vk": 484.08, "avg_ek": 408.73, "avg_dynamic": 10.41, "avg_discount": 4.07, "avg_final": -17.51, "avg_p": -3.85, "max_ek_profit": 405.0, "cnt": 22, "rrate": 18.2}, {"name": "iPhone 16 Pro Max 512GB", "avg_vk": 843.69, "avg_ek": 653.56, "avg_dynamic": 17.4, "avg_discount": 6.3, "avg_final": 39.55, "avg_p": 48.45, "max_ek_profit": 702.0, "cnt": 16, "rrate": 6.2}, {"name": "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "avg_vk": 622.84, "avg_ek": 550.0, "avg_dynamic": 3.14, "avg_discount": 12.76, "avg_final": -33.62, "avg_p": -4.0, "max_ek_profit": 546.0, "cnt": 14, "rrate": 14.3}, {"name": "iPhone 15 256GB", "avg_vk": 435.98, "avg_ek": 289.36, "avg_dynamic": 3.64, "avg_discount": 9.22, "avg_final": 45.89, "avg_p": 71.47, "max_ek_profit": 361.0, "cnt": 11, "rrate": 9.1}, {"name": "iPhone 16 128GB", "avg_vk": 599.18, "avg_ek": 434.5, "avg_dynamic": 2.47, "avg_discount": 5.38, "avg_final": 44.07, "avg_p": 66.98, "max_ek_profit": 501.0, "cnt": 10, "rrate": 30.0}, {"name": "iPad Air (2024) | 13undquot | 256 GB | Starlight", "avg_vk": 578.81, "avg_ek": 540.0, "avg_dynamic": 1.62, "avg_discount": 11.55, "avg_final": -56.16, "avg_p": -26.23, "max_ek_profit": 514.0, "cnt": 8, "rrate": 0.0}, {"name": "iPhone 14 Pro 128GB", "avg_vk": 402.65, "avg_ek": 443.75, "avg_dynamic": 2.88, "avg_discount": 5.22, "avg_final": -105.82, "avg_p": -83.47, "max_ek_profit": 360.0, "cnt": 8, "rrate": 12.5}, {"name": "iPad Air (2024) | 13undquot | 256 GB | purple", "avg_vk": 618.77, "avg_ek": 540.0, "avg_dynamic": 5.06, "avg_discount": 4.9, "avg_final": -28.44, "avg_p": -8.6, "max_ek_profit": 531.0, "cnt": 6, "rrate": 0.0}, {"name": "iPhone 15 128GB", "avg_vk": 394.75, "avg_ek": 291.0, "avg_dynamic": 11.21, "avg_discount": 11.3, "avg_final": 14.33, "avg_p": 34.43, "max_ek_profit": 325.0, "cnt": 5, "rrate": 20.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | Starlight", "avg_vk": 583.43, "avg_ek": 500.0, "avg_dynamic": 0.79, "avg_discount": 12.36, "avg_final": -21.35, "avg_p": 10.21, "max_ek_profit": 510.0, "cnt": 5, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | space gray", "avg_vk": 571.17, "avg_ek": 500.0, "avg_dynamic": 2.0, "avg_discount": 11.62, "avg_final": -28.97, "avg_p": 0.65, "max_ek_profit": 501.0, "cnt": 5, "rrate": 0.0}, {"name": "iPhone 14 Pro Max 256GB", "avg_vk": 579.68, "avg_ek": 485.5, "avg_dynamic": 6.0, "avg_discount": 9.31, "avg_final": -14.44, "avg_p": 8.87, "max_ek_profit": 494.0, "cnt": 4, "rrate": 0.0}, {"name": "iPad Air (2024) | 13undquot | 128 GB | blue", "avg_vk": 580.99, "avg_ek": 500.0, "avg_dynamic": 0.99, "avg_discount": 0.0, "avg_final": -20.95, "avg_p": -1.94, "max_ek_profit": 498.0, "cnt": 3, "rrate": 0.0}]};
 const pauschal = 20;
 
-// Dropdown befuellen
-(function() {
-    const sel = document.getElementById('calcModel');
-    calcModels.sort((a,b) => b.cnt - a.cnt);
-    calcModels.forEach((m, i) => {
+function populateCalcDropdown() {
+    const models = allCalcModels[activeMonth];
+    const sel = document.getElementById('calcModel-' + activeMonth);
+    if (!sel || !models) return;
+    // Nur befuellen wenn leer
+    if (sel.options.length > 1) return;
+    const sorted = [...models].sort((a,b) => b.cnt - a.cnt);
+    sorted.forEach((m, i) => {
         const opt = document.createElement('option');
         opt.value = i;
         opt.textContent = m.name + ' (' + m.cnt + 'x, Avg VK: ' + Math.round(m.avg_vk) + ' EUR)';
         sel.appendChild(opt);
     });
-})();
+    // Daten an Select binden fuer calcProfit
+    sel._sortedModels = sorted;
+}
+
+// Initial befuellen
+populateCalcDropdown();
 
 function calcProfit() {
-    const sel = document.getElementById('calcModel');
-    const ekInput = document.getElementById('calcEK');
-    const box = document.getElementById('calcResult');
+    const sel = document.getElementById('calcModel-' + activeMonth);
+    const ekInput = document.getElementById('calcEK-' + activeMonth);
+    const box = document.getElementById('calcResult-' + activeMonth);
+    if (!sel || !ekInput || !box) return;
 
     if (sel.value === '' || !ekInput.value) {
         box.innerHTML = '<div class="calc-placeholder">Waehle ein Modell und gib deinen EK ein</div>';
         return;
     }
 
-    const m = calcModels[parseInt(sel.value)];
+    const models = sel._sortedModels || allCalcModels[activeMonth];
+    if (!models) return;
+    const m = models[parseInt(sel.value)];
     const ek = parseFloat(ekInput.value);
     if (isNaN(ek) || ek <= 0) {
         box.innerHTML = '<div class="calc-placeholder">Bitte gueltigen EK eingeben</div>';
         return;
     }
 
-    // Profit-Formel: final_email + (pauschal - dynamic) + discount
-    // final_email haengt von VK und EK ab: final = VK - EK (vereinfacht: avg_final skaliert)
-    // Genauere Formel: Bei gleichem Modell aendert sich final proportional zum EK-Unterschied
-    // profit = avg_final + (avg_ek - ek) + (pauschal - avg_dynamic) + avg_discount
     const ekDiff = m.avg_ek - ek;
     const dynDiff = pauschal - m.avg_dynamic;
     const expectedFinal = m.avg_final + ekDiff;
     const expectedProfit = expectedFinal + dynDiff + m.avg_discount;
     const maxEK = m.max_ek_profit;
 
-    // Farbe bestimmen
     let color, bg, verdict;
     if (expectedProfit >= 15) {
         color = '#00e5a0'; bg = 'rgba(0,229,160,.1)';
@@ -1950,7 +3381,6 @@ function calcProfit() {
         verdict = 'ACHTUNG: Verlust erwartet! Finger weg bei diesem EK.';
     }
 
-    // Balken: wo liegt EK relativ zum Max-EK?
     const barPct = maxEK > 0 ? Math.min(100, Math.max(0, (ek / maxEK) * 100)) : 0;
     const barColor = barPct > 90 ? '#ff5c5c' : barPct > 70 ? '#fbbf24' : '#00e5a0';
 
@@ -1969,6 +3399,7 @@ function calcProfit() {
             <div class="calc-verdict" style="background:${bg};color:${color}">${verdict}</div>
         </div>`;
 }
+
 // ========== PDF EXPORT ==========
 function printSection(secId) {
     const titles = {
@@ -1976,10 +3407,12 @@ function printSection(secId) {
         'tips': 'KI-Tipps & Handlungsempfehlungen',
     };
     const title = titles[secId] || 'Report';
-    const sec = document.getElementById('sec-' + secId);
+    // Im aktiven Monats-Container suchen
+    const mc = document.getElementById('mc-' + activeMonth);
+    let sec = null;
+    if (mc) sec = mc.querySelector('[data-sec="' + secId + '"]');
     if (!sec) return;
 
-    // Nur die Tip-Karten sammeln (keine Charts)
     const tips = sec.querySelectorAll('.tip');
     let cardsHtml = '';
     tips.forEach(tip => {
@@ -1992,7 +3425,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '22.02.2026 20:47';
+    const now = '22.02.2026 21:10';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
