@@ -153,7 +153,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>22.02.2026 20:17</span>
+    <span>22.02.2026 20:21</span>
     <span>|</span>
     <span>852 Orders</span>
     <span>|</span>
@@ -165,8 +165,8 @@ tr:hover{background:#12141e}
 <div class="daily-bar">
 <div class="daily-col daily-today" onclick="toggleDaily(0)">
   <div class="daily-label">Heute</div>
-  <div class="daily-profit">EUR -117.42</div>
-  <div class="daily-meta">6 Orders | EUR 3,372 Umsatz</div>
+  <div class="daily-profit">EUR -25.55</div>
+  <div class="daily-meta">7 Orders | EUR 3,501 Umsatz</div>
   <div class="daily-hint">&#9662; Details anzeigen</div>
 </div><div class="daily-col" onclick="toggleDaily(1)">
   <div class="daily-label">Gestern</div>
@@ -183,10 +183,19 @@ tr:hover{background:#12141e}
 <!-- DETAIL-PANELS pro Tag -->
 <div class="daily-detail" id="daily-detail-0">
   <div class="card">
-    <h2>&#128197; Heute &mdash; 22.02.2026 <span>6 Verkauefe</span></h2>
+    <h2>&#128197; Heute &mdash; 22.02.2026 <span>7 Verkauefe</span></h2>
     <table>
       <tr><th>Zeit</th><th>Plattform</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
       <tr>
+        <td>19:44</td>
+        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,180,216,.1);color:#00b4d8">PayPal</span></td>
+        <td>iPhone 13 Pro Rückseite Reparatur</td>
+        <td>PayPal</td>
+        <td class="num">EUR 129</td>
+        <td class="num">EUR 10</td>
+        <td class="num money">EUR 91.87</td>
+        <td class="">&#9989;</td>
+      </tr><tr>
         <td>17:09</td>
         <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,165,0,.1);color:#ffa500">MediaMarktSaturn</span></td>
         <td>iPhone 15 Pro 128GB</td>
@@ -1498,7 +1507,7 @@ tr:hover{background:#12141e}
 <!-- SECTION: PLATTFORMEN -->
 <div class="section" id="sec-platforms">
   <div class="card" style="margin-bottom:16px">
-    <h2>Plattform-Uebersicht <span>875 Verkaeufe gesamt | EUR 21,579 Profit</span></h2>
+    <h2>Plattform-Uebersicht <span>876 Verkaeufe gesamt | EUR 21,671 Profit</span></h2>
     <table>
       <tr><th>Plattform</th><th>Sales</th><th>Umsatz</th><th>Gewinn</th><th>Avg/Sale</th><th>Anteil</th></tr>
       <tr>
@@ -1507,19 +1516,19 @@ tr:hover{background:#12141e}
             <td class="num money">EUR 532,397</td>
             <td class="num money">EUR 19,587.54</td>
             <td class="num">EUR 22.99</td>
-            <td class="num">90.8%</td></tr><tr>
+            <td class="num">90.4%</td></tr><tr>
             <td><span style="color:#ff6b6b;font-weight:600">MediaMarktSaturn</span></td>
             <td class="num">14</td>
             <td class="num money">EUR 10,219</td>
             <td class="num money">EUR 1,396.73</td>
             <td class="num">EUR 99.77</td>
-            <td class="num">6.5%</td></tr><tr>
+            <td class="num">6.4%</td></tr><tr>
             <td><span style="color:#00b4d8;font-weight:600">PayPal</span></td>
-            <td class="num">7</td>
-            <td class="num money">EUR 724</td>
-            <td class="num money">EUR 509.90</td>
-            <td class="num">EUR 72.84</td>
-            <td class="num">2.4%</td></tr><tr>
+            <td class="num">8</td>
+            <td class="num money">EUR 853</td>
+            <td class="num money">EUR 601.77</td>
+            <td class="num">EUR 75.22</td>
+            <td class="num">2.8%</td></tr><tr>
             <td><span style="color:#fbbf24;font-weight:600">eBay</span></td>
             <td class="num">2</td>
             <td class="num money">EUR 1,498</td>
@@ -1529,10 +1538,17 @@ tr:hover{background:#12141e}
     </table>
   </div>
   <div class="card">
-    <h2>Externe Sales (MediaMarkt, eBay, PayPal) <span>23 Sales in 2026-02</span></h2>
+    <h2>Externe Sales (MediaMarkt, eBay, PayPal) <span>24 Sales in 2026-02</span></h2>
     <table>
       <tr><th>Plattform</th><th>Datum</th><th>Produkt</th><th>Brutto</th><th>EK</th><th>Gebuehr</th><th>Gewinn</th></tr>
       <tr>
+            <td><span style="color:#00b4d8">PayPal</span></td>
+            <td>22.02.2026</td>
+            <td class="model-name">iPhone 13 Pro Rückseite Reparatur</td>
+            <td class="num">EUR 129</td>
+            <td class="num">EUR 10</td>
+            <td class="num">EUR 2.1</td>
+            <td class="num money">EUR 91.87</td></tr><tr>
             <td><span style="color:#ff6b6b">MediaMarktSaturn</span></td>
             <td>22.02.2026</td>
             <td class="model-name">iPhone 15 Pro 128 GB Natur Exzellent</td>
@@ -1976,7 +1992,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '22.02.2026 20:17';
+    const now = '22.02.2026 20:21';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
