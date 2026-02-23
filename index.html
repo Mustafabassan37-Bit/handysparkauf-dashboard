@@ -104,31 +104,154 @@ tr:hover{background:#12141e}
 .section{display:none}.section.active{display:block}
 
 /* === RESPONSIVE === */
+
+/* Tablet / kleiner Desktop */
 @media(max-width:768px){
   .wrap{padding:10px}
+  .hdr{padding:12px 0;margin-bottom:10px;gap:6px}
   .hdr h1{font-size:16px}
-  .daily-bar{grid-template-columns:1fr 1fr 1fr;gap:6px}
-  .daily-profit{font-size:16px}
+  .hdr .meta{font-size:11px}
+
+  /* Daily Bar: 3 -> 1 Spalte auf Tablet */
+  .daily-bar{grid-template-columns:1fr;gap:8px}
+  .daily-col{padding:12px;border-radius:10px}
+  .daily-profit{font-size:18px}
+  .daily-label{font-size:9px}
+  .daily-meta{font-size:9px}
+  .daily-hint{font-size:8px}
+
+  /* Daily Detail */
   .daily-detail table{font-size:10px}
   .daily-detail th,.daily-detail td{padding:4px 3px}
+
+  /* Retouren unter Daily */
+  .ret-daily-card{margin-top:8px!important}
+  .daily-ret-detail table td{font-size:10px}
+
+  /* KPIs: 2 Spalten */
   .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  .kpi{padding:12px}
   .kpi .val{font-size:18px}
+  .kpi .lbl{font-size:9px}
+  .kpi .sub{font-size:10px}
+
+  /* Grids: alles 1 Spalte */
   .g2,.g3{grid-template-columns:1fr}
   .tips-grid{grid-template-columns:1fr}
   .chart-wrap{height:200px}
+
+  /* Tabellen */
   table{font-size:10px}
   th,td{padding:5px 3px}
-  .section-title{font-size:14px}
+  th{font-size:8px}
+  .model-name{font-size:10px}
+
+  /* Sections */
+  .section-title{font-size:14px;margin:16px 0 8px}
+
+  /* EK-Rechner */
   .calc-grid{grid-template-columns:1fr}
   .calc-profit-num{font-size:32px}
-  .month-selector{flex-direction:column;align-items:stretch}
-  .month-selector select{width:100%;min-width:unset}
+  .calc-details{grid-template-columns:1fr 1fr;gap:6px}
+  .calc-detail .cd-val{font-size:14px}
+
+  /* Month Selector */
+  .month-selector{flex-direction:column;align-items:stretch;gap:6px}
+  .month-selector select{width:100%;min-width:unset;font-size:15px;padding:10px 14px}
+  .month-summary{font-size:12px;padding:10px}
+
+  /* Tabs: groessere Touch-Targets */
+  .tabs{gap:4px;margin-bottom:12px;padding-bottom:4px}
+  .tab{padding:8px 12px;font-size:11px;border-radius:6px}
+
+  /* Cards */
+  .card{padding:12px;border-radius:10px}
+  .card h2{font-size:13px;margin-bottom:8px}
+  .card h2 span{font-size:10px}
+
+  /* Login */
+  .login-box{width:90%;max-width:340px;padding:28px 20px}
+  .login-box h2{font-size:16px}
+
+  /* PDF Button */
+  .pdf-btn{padding:6px 14px;font-size:11px}
 }
-@media(max-width:400px){
-  .kpis{grid-template-columns:1fr 1fr}
-  .kpi{padding:10px}
+
+/* Smartphone (iPhone SE bis iPhone 14) */
+@media(max-width:480px){
+  .wrap{padding:8px}
+  .hdr{flex-direction:column;align-items:flex-start;gap:4px;padding:10px 0;margin-bottom:8px}
+  .hdr h1{font-size:15px}
+  .hdr .meta{font-size:10px;gap:4px}
+
+  /* Daily Bar: kompakter */
+  .daily-bar{gap:6px}
+  .daily-col{padding:10px 8px;border-radius:8px}
+  .daily-profit{font-size:16px}
+
+  /* KPIs */
+  .kpis{grid-template-columns:1fr 1fr;gap:6px}
+  .kpi{padding:10px 8px;border-radius:8px}
   .kpi .val{font-size:16px}
-  .hdr h1{font-size:14px}
+  .kpi .lbl{font-size:8px;letter-spacing:.3px}
+  .kpi .sub{font-size:9px}
+
+  /* Tabellen: noch kompakter */
+  table{font-size:9px}
+  th{font-size:7px;padding:4px 2px;letter-spacing:.3px}
+  td{padding:4px 2px}
+  .model-name{font-size:9px;max-width:100px;overflow:hidden;text-overflow:ellipsis}
+  .num{font-size:9px}
+
+  /* Charts kleiner */
+  .chart-wrap{height:180px}
+
+  /* Tabs: scrollbar horizontal */
+  .tabs{gap:3px;padding:2px 0 6px}
+  .tab{padding:7px 10px;font-size:10px}
+
+  /* EK-Rechner */
+  .calc-profit-num{font-size:26px}
+  .calc-select,.calc-input{font-size:13px;padding:8px 10px}
+  .calc-details{grid-template-columns:1fr 1fr;gap:4px}
+  .calc-detail{padding:8px}
+  .calc-detail .cd-val{font-size:13px}
+  .calc-detail .cd-lbl{font-size:8px}
+
+  /* Section Title */
+  .section-title{font-size:13px;margin:14px 0 8px;padding-left:10px}
+
+  /* Tips */
+  .tip{padding:10px}
+  .tip-title{font-size:11px}
+  .tip-text{font-size:11px;line-height:1.5}
+
+  /* Badges */
+  .badge{font-size:9px;padding:2px 6px}
+
+  /* Retouren Daily */
+  .ret-daily-card div[style*="cursor:pointer"]{font-size:12px!important}
+  .daily-ret-detail table td{font-size:9px}
+
+  /* Login */
+  .login-box{width:92%;padding:24px 16px}
+  .login-box input{font-size:16px;padding:10px 12px}
+  .login-box .login-btn{font-size:12px;padding:10px}
+}
+
+/* Sehr kleine Screens (iPhone SE, altes Modell) */
+@media(max-width:360px){
+  .wrap{padding:6px}
+  .hdr h1{font-size:13px}
+  .kpis{grid-template-columns:1fr 1fr;gap:4px}
+  .kpi{padding:8px 6px}
+  .kpi .val{font-size:14px}
+  .daily-profit{font-size:14px}
+  .tab{padding:6px 8px;font-size:9px}
+  .card{padding:10px}
+  table{font-size:8px}
+  th{font-size:7px}
+  .calc-profit-num{font-size:22px}
 }
 
 /* PDF Button */
@@ -166,7 +289,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>23.02.2026 21:13</span>
+    <span>23.02.2026 21:17</span>
     <span>|</span>
     <span id="hdr-orders">876 Orders</span>
     <span>|</span>
@@ -3119,7 +3242,7 @@ tr:hover{background:#12141e}
 // ========== GLOBALS ==========
 let activeMonth = '2026-02';
 const newestMonth = '2026-02';
-const ALL_MONTHS_KPI = [{"month": "2026-01", "n": 821, "scraped": 110, "profit": -1385.49, "avg_p": -1.69, "netto": -627.08, "rets_n": 107, "rrate": 13.0, "lost": -1465.41, "ship": 707.0, "updated": "23.02.2026 21:13", "last_sale": "31.01.2026 20:08", "total_brutto": 525947.33}, {"month": "2026-02", "n": 876, "scraped": 874, "profit": 19471.94, "avg_p": 22.23, "netto": 15616.05, "rets_n": 106, "rrate": 12.1, "lost": 3197.89, "ship": 658.0, "updated": "23.02.2026 21:13", "last_sale": "23.02.2026 20:55", "total_brutto": 547133.97}];
+const ALL_MONTHS_KPI = [{"month": "2026-01", "n": 821, "scraped": 110, "profit": -1385.49, "avg_p": -1.69, "netto": -627.08, "rets_n": 107, "rrate": 13.0, "lost": -1465.41, "ship": 707.0, "updated": "23.02.2026 21:17", "last_sale": "31.01.2026 20:08", "total_brutto": 525947.33}, {"month": "2026-02", "n": 876, "scraped": 874, "profit": 19471.94, "avg_p": 22.23, "netto": 15616.05, "rets_n": 106, "rrate": 12.1, "lost": 3197.89, "ship": 658.0, "updated": "23.02.2026 21:17", "last_sale": "23.02.2026 20:55", "total_brutto": 547133.97}];
 const ALL_MONTHS_SUMMARY = {"2026-01": {"label": "Januar 2026", "n": 821, "netto": -627}, "2026-02": {"label": "Februar 2026", "n": 876, "netto": 15616}};
 const ALL_CHART_DATA = {"2026-01": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 256GB", "iPhone 15 Pro Max 512GB", "iPhone 16 Pro 128GB", "iPhone 13 Mini 256GB", "iPhone 14 Pro Max 256GB", "iPhone 15 256GB", "iPhone 16 Pro Max 512GB", "iPhone 16 Pro 256GB", "iPhone 14 Pro 256GB", "iPhone 14 Pro 128GB", "iPhone 16 128GB"], "model_profits": [242.14, -192.16, 385.03, -241.45, -1396.31, 186.59, 97.2, 7.85, 28.16, 46.28, -294.89, 126.19, 0, -463.81, 128.97], "model_rrates": [7.5, 17.4, 20.0, 17.1, 23.2, 3.9, 6.0, 2.4, 7.7, 10.0, 13.3, 7.1, 0.0, 50.0, 33.3], "model_avg_ek": [558.98, 520.11, 511.39, 449.97, 814.79, 618.3, 604.59, 259.31, 489.84, 463.9, 844.33, 618.0, 476.99, 461.2, 434.17], "model_avg_vk": [683.49, 633.5, 624.76, 508.63, 807.61, 715.97, 776.95, 355.69, 600.2, 518.82, 898.72, 883.55, 474.17, 417.74, 590.07], "model_avg_p": [1.4, -1.29, 3.85, -3.18, -24.93, 3.66, 1.94, 0.19, 0.72, 2.31, -19.66, 9.01, 0.0, -46.38, 21.5], "country_labels": ["Deutschland", "Italien", "Irland", "Dänemark", "Österreich", "Schweden", "Unbekannt", "Niederlande", "Belgien", "Tschechische Republik", "Spanien"], "country_profits": [-1310.45, -361.41, 129.06, 11.19, -29.89, 218.67, 0, 57.96, -6.77, -93.85, 0], "reason_labels": ["Unbekannt"], "reason_values": [107], "reason_colors": ["#334155"]}, "2026-02": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 16 128GB", "iPhone 15 256GB", "iPad Air (2024) | 13undquot | 128 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight"], "model_profits": [2940.66, 1055.29, -429.09, 8755.7, 1855.8, 3951.6, -10.24, -84.7, 775.18, -56.02, 768.14, 786.22, -52.23, -767.73, -209.85], "model_rrates": [14.2, 13.3, 13.6, 9.8, 7.3, 9.4, 8.0, 18.2, 6.2, 14.3, 27.3, 18.2, 0.0, 11.1, 0.0], "model_avg_ek": [504.97, 494.42, 453.61, 502.02, 655.3, 530.03, 566.33, 408.73, 653.56, 550.0, 426.82, 289.36, 500.0, 445.0, 540.0], "model_avg_vk": [612.44, 586.41, 529.9, 718.45, 790.78, 792.13, 659.51, 484.08, 843.69, 622.84, 594.71, 435.98, 566.55, 403.91, 578.81], "model_avg_p": [14.41, 5.41, -3.64, 95.17, 22.63, 123.49, -0.41, -3.85, 48.45, -4.0, 69.83, 71.47, -5.22, -85.3, -26.23], "country_labels": ["Deutschland", "Schweden", "Italien", "Irland", "Österreich", "Dänemark", "Frankreich", "Belgien", "Niederlande", "Unbekannt", "Tschechische Republik", "Spanien"], "country_profits": [12307.51, 1023.31, 2233.77, 1597.69, 779.83, -51.37, 244.24, 526.93, 590.27, 79.76, 148.76, -8.76], "reason_labels": ["Kamera", "Sonstiges", "Widerruf/Kein Bedarf", "Display/Bildschirm", "Gehaeuse/Optik", "Falsche Ware/Lieferung", "WLAN/Netz/Signal", "Akku/Batterie", "Stornierung", "Face ID", "Ladeanschluss/Port"], "reason_values": [14, 14, 16, 26, 18, 4, 1, 7, 4, 1, 1], "reason_colors": ["#a78bfa", "#475569", "#94a3b8", "#ff6b6b", "#ff9f43", "#fb923c", "#60a5fa", "#fbbf24", "#6b7280", "#34d399", "#2dd4bf"]}};
 
@@ -3507,7 +3630,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '23.02.2026 21:13';
+    const now = '23.02.2026 21:17';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
