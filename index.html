@@ -289,7 +289,7 @@ tr:hover{background:#12141e}
   <h1><b>Handysparkauf</b> Dashboard</h1>
   <div class="meta">
     <span class="live"></span>
-    <span>06.03.2026 23:28</span>
+    <span>07.03.2026 04:04</span>
     <span>|</span>
     <span id="hdr-orders">111 Orders</span>
     <span>|</span>
@@ -310,25 +310,31 @@ tr:hover{background:#12141e}
 <div class="daily-bar">
 <div class="daily-col daily-today" onclick="toggleDaily(0)">
   <div class="daily-label">Heute</div>
-  <div class="daily-profit">EUR 322.65</div>
-  <div class="daily-meta">7 Orders | EUR 3,726 Umsatz</div>
+  <div class="daily-profit">EUR 0.00</div>
+  <div class="daily-meta">0 Orders | EUR 0 Umsatz</div>
   <div class="daily-hint">&#9662; Details anzeigen</div>
 </div><div class="daily-col" onclick="toggleDaily(1)">
   <div class="daily-label">Gestern</div>
-  <div class="daily-profit">EUR 71.78</div>
-  <div class="daily-meta">7 Orders | EUR 4,807 Umsatz</div>
+  <div class="daily-profit">EUR 322.65</div>
+  <div class="daily-meta">7 Orders | EUR 3,726 Umsatz</div>
   <div class="daily-hint">&#9662; Details anzeigen</div>
 </div><div class="daily-col" onclick="toggleDaily(2)">
-  <div class="daily-label">Wed 04.03</div>
-  <div class="daily-profit">EUR 175.66</div>
-  <div class="daily-meta">13 Orders | EUR 7,932 Umsatz</div>
+  <div class="daily-label">Thu 05.03</div>
+  <div class="daily-profit">EUR 71.78</div>
+  <div class="daily-meta">7 Orders | EUR 4,807 Umsatz</div>
   <div class="daily-hint">&#9662; Details anzeigen</div>
 </div></div>
 
 <!-- DETAIL-PANELS pro Tag -->
 <div class="daily-detail" id="daily-detail-0">
   <div class="card">
-    <h2>&#128197; Heute &mdash; 06.03.2026 <span>7 Verkauefe</span></h2>
+    <h2>&#128197; Heute &mdash; 07.03.2026 <span>0 Verkauefe</span></h2>
+    <p style="color:#555;font-size:12px">Keine Verkaeufe an diesem Tag.</p>
+  </div>
+  
+</div><div class="daily-detail" id="daily-detail-1">
+  <div class="card">
+    <h2>&#128197; Gestern &mdash; 06.03.2026 <span>7 Verkauefe</span></h2>
     <table>
       <tr><th>Zeit</th><th>Plattform</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
       <tr>
@@ -397,14 +403,14 @@ tr:hover{background:#12141e}
       </tr>
     </table>
   </div>
-  <div class="card ret-daily-card" onclick="toggleRetDaily(0)" style="margin-top:8px;cursor:pointer;border-left:3px solid #ff5c5c">
+  <div class="card ret-daily-card" onclick="toggleRetDaily(1)" style="margin-top:8px;cursor:pointer;border-left:3px solid #ff5c5c">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <span style="color:#ff5c5c;font-weight:600">&#128308; 9 Retouren eingegangen</span>
       <span style="color:#ff5c5c;font-size:13px">Kosten: EUR 458.38</span>
       <span style="font-size:10px;color:#888">&#9662; Details</span>
     </div>
   </div>
-  <div class="daily-ret-detail" id="daily-ret-0" style="display:none;animation:fadeIn .3s ease">
+  <div class="daily-ret-detail" id="daily-ret-1" style="display:none;animation:fadeIn .3s ease">
     <div class="card" style="border-color:rgba(255,92,92,.2)">
       <table>
         <tr><th>Order</th><th>Plattform</th><th>Produkt</th><th class="num">Brutto</th><th class="num">Verlust</th><th>Kaufmonat</th></tr>
@@ -475,9 +481,9 @@ tr:hover{background:#12141e}
       </table>
     </div>
   </div>
-</div><div class="daily-detail" id="daily-detail-1">
+</div><div class="daily-detail" id="daily-detail-2">
   <div class="card">
-    <h2>&#128197; Gestern &mdash; 05.03.2026 <span>7 Verkauefe</span></h2>
+    <h2>&#128197; Thu 05.03 &mdash; 05.03.2026 <span>7 Verkauefe</span></h2>
     <table>
       <tr><th>Zeit</th><th>Plattform</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
       <tr>
@@ -546,14 +552,14 @@ tr:hover{background:#12141e}
       </tr>
     </table>
   </div>
-  <div class="card ret-daily-card" onclick="toggleRetDaily(1)" style="margin-top:8px;cursor:pointer;border-left:3px solid #ff5c5c">
+  <div class="card ret-daily-card" onclick="toggleRetDaily(2)" style="margin-top:8px;cursor:pointer;border-left:3px solid #ff5c5c">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <span style="color:#ff5c5c;font-weight:600">&#128308; 5 Retouren eingegangen</span>
       <span style="color:#ff5c5c;font-size:13px">Kosten: EUR 300.29</span>
       <span style="font-size:10px;color:#888">&#9662; Details</span>
     </div>
   </div>
-  <div class="daily-ret-detail" id="daily-ret-1" style="display:none;animation:fadeIn .3s ease">
+  <div class="daily-ret-detail" id="daily-ret-2" style="display:none;animation:fadeIn .3s ease">
     <div class="card" style="border-color:rgba(255,92,92,.2)">
       <table>
         <tr><th>Order</th><th>Plattform</th><th>Produkt</th><th class="num">Brutto</th><th class="num">Verlust</th><th>Kaufmonat</th></tr>
@@ -592,258 +598,6 @@ tr:hover{background:#12141e}
           <td class="num">EUR 560</td>
           <td class="num loss">EUR 10.98</td>
           <td>2026-03</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div><div class="daily-detail" id="daily-detail-2">
-  <div class="card">
-    <h2>&#128197; Wed 04.03 &mdash; 04.03.2026 <span>13 Verkauefe</span></h2>
-    <table>
-      <tr><th>Zeit</th><th>Plattform</th><th>Produkt</th><th>Land</th><th class="num">Brutto</th><th class="num">EK</th><th class="num">Gewinn</th><th>Status</th></tr>
-      <tr>
-        <td>22:29</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro Max 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 525</td>
-        <td class="num">EUR 400</td>
-        <td class="num money">EUR 39.28</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>22:28</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro Max 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 499</td>
-        <td class="num">EUR 400</td>
-        <td class="num money">EUR 46.36</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>17:39</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 725</td>
-        <td class="num">EUR 440</td>
-        <td class="num money">EUR 126.74</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>15:53</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro Max 256GB</td>
-        <td>Niederlande</td>
-        <td class="num">EUR 533</td>
-        <td class="num">EUR 500</td>
-        <td class="num loss">EUR -45.91</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>15:08</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro Max 256GB</td>
-        <td>Italien</td>
-        <td class="num">EUR 494</td>
-        <td class="num">EUR 500</td>
-        <td class="num loss">EUR -46.21</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>15:02</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,165,0,.1);color:#ffa500">MediaMarktSaturn</span></td>
-        <td>iPhone 16 Pro Max 256GB</td>
-        <td>MediaMarktSaturn</td>
-        <td class="num">EUR 709</td>
-        <td class="num">EUR 700</td>
-        <td class="num loss">EUR -58.70</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>14:52</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 16 Pro Max 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 705</td>
-        <td class="num">EUR 637</td>
-        <td class="num loss">EUR -18.51</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>14:50</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro 128GB</td>
-        <td>Belgien</td>
-        <td class="num">EUR 576</td>
-        <td class="num">EUR 441</td>
-        <td class="num money">EUR 63.04</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>14:48</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 16 Pro Max 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 705</td>
-        <td class="num">EUR 637</td>
-        <td class="num loss">EUR -18.51</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>14:13</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 16 Pro Max 256GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 705</td>
-        <td class="num">EUR 637</td>
-        <td class="num loss">EUR -18.51</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>14:05</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro 128GB</td>
-        <td>Tschechische Republik</td>
-        <td class="num">EUR 532</td>
-        <td class="num">EUR 438</td>
-        <td class="num money">EUR 32.46</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>13:34</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 15 Pro 128GB</td>
-        <td>Italien</td>
-        <td class="num">EUR 560</td>
-        <td class="num">EUR 438</td>
-        <td class="num money">EUR 24.48</td>
-        <td class="">&#9989;</td>
-      </tr><tr>
-        <td>12:42</td>
-        <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,160,.1);color:#00e5a0">Refurbed</span></td>
-        <td>iPhone 16 Pro 128GB</td>
-        <td>Deutschland</td>
-        <td class="num">EUR 665</td>
-        <td class="num">EUR 551</td>
-        <td class="num money">EUR 49.65</td>
-        <td class="">&#9989;</td>
-      </tr>
-    </table>
-  </div>
-  <div class="card ret-daily-card" onclick="toggleRetDaily(2)" style="margin-top:8px;cursor:pointer;border-left:3px solid #ff5c5c">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="color:#ff5c5c;font-weight:600">&#128308; 16 Retouren eingegangen</span>
-      <span style="color:#ff5c5c;font-size:13px">Kosten: EUR 621.09</span>
-      <span style="font-size:10px;color:#888">&#9662; Details</span>
-    </div>
-  </div>
-  <div class="daily-ret-detail" id="daily-ret-2" style="display:none;animation:fadeIn .3s ease">
-    <div class="card" style="border-color:rgba(255,92,92,.2)">
-      <table>
-        <tr><th>Order</th><th>Plattform</th><th>Produkt</th><th class="num">Brutto</th><th class="num">Verlust</th><th>Kaufmonat</th></tr>
-        <tr>
-          <td>16879346</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro 128 GB Blau Exzellent</td>
-          <td class="num">EUR 595</td>
-          <td class="num loss">EUR 31.71</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16847066</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro | 128 GB | Dual-SIM (eSIM, Nano-SIM)</td>
-          <td class="num">EUR 675</td>
-          <td class="num loss">EUR 14.56</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16871435</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro 256 GB Weiß Exzellent ( Wie aus der </td>
-          <td class="num">EUR 611</td>
-          <td class="num loss">EUR 32.15</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16922733</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max | 256 GB | Dual-SIM (eSIM, Nano-</td>
-          <td class="num">EUR 732</td>
-          <td class="num loss">EUR 90.09</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16964962</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro Max | 256 GB | Dual-SIM (eSIM, Nano-</td>
-          <td class="num">EUR 525</td>
-          <td class="num loss">EUR 17.91</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>01125</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">MediaMarktSaturn</span></td>
-          <td>iPhone 16 Pro Max 256 GB Grau Wie Neu / Ausstellun</td>
-          <td class="num">EUR 650</td>
-          <td class="num loss">EUR 64.80</td>
-          <td>2026-03</td>
-        </tr><tr>
-          <td>16847995</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max | 256 GB | Dual-SIM (eSIM, Nano-</td>
-          <td class="num">EUR 700</td>
-          <td class="num loss">EUR 66.56</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16836855</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro Max 256 GB  Blau A+ / Aussteller</td>
-          <td class="num">EUR 574</td>
-          <td class="num loss">EUR 38.96</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16965693</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max 256 GB Exzellent (wie aus der Ve</td>
-          <td class="num">EUR 742</td>
-          <td class="num loss">EUR 17.81</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16965254</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max 256 GB Exzellent (wie aus der Ve</td>
-          <td class="num">EUR 694</td>
-          <td class="num loss">EUR 80.75</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16854944</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro Max | 256 GB | Dual-SIM (eSIM, Nano-</td>
-          <td class="num">EUR 540</td>
-          <td class="num loss">EUR 44.19</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16921260</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro Max | 256 GB | Dual-SIM (eSIM, Nano-</td>
-          <td class="num">EUR 546</td>
-          <td class="num loss">EUR 50.16</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>01125</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">MediaMarktSaturn</span></td>
-          <td>iPhone 16 Pro Max 256 GB Schwarz Wie Neu / Ausstel</td>
-          <td class="num">EUR 709</td>
-          <td class="num loss">EUR 0.12</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16965710</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max 256 GB Exzellent (wie aus der Ve</td>
-          <td class="num">EUR 742</td>
-          <td class="num loss">EUR 17.81</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16953706</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 16 Pro Max 256 GB Exzellent (wie aus der Ve</td>
-          <td class="num">EUR 742</td>
-          <td class="num loss">EUR 8.91</td>
-          <td>2026-02</td>
-        </tr><tr>
-          <td>16873707</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,92,92,.1);color:#ff5c5c">Refurbed</span></td>
-          <td>iPhone 15 Pro 256 GB Schwarz Exzellent</td>
-          <td class="num">EUR 637</td>
-          <td class="num loss">EUR 44.60</td>
-          <td>2026-02</td>
         </tr>
       </table>
     </div>
@@ -4071,7 +3825,7 @@ tr:hover{background:#12141e}
 // ========== GLOBALS ==========
 let activeMonth = '2026-03';
 const newestMonth = '2026-03';
-const ALL_MONTHS_KPI = [{"month": "2026-01", "n": 821, "n_ext": 94, "n_total": 915, "scraped": 113, "profit": 3651.62, "avg_p": 3.99, "netto": 4330.63, "rets_n": 115, "rrate": 14.0, "lost": -1430.01, "ship": 751.0, "updated": "06.03.2026 23:28", "last_sale": "31.01.2026 20:08", "total_brutto": 586672.71}, {"month": "2026-02", "n": 926, "n_ext": 68, "n_total": 994, "scraped": 924, "profit": 23640.75, "avg_p": 23.78, "netto": 16131.31, "rets_n": 207, "rrate": 22.4, "lost": 6154.44, "ship": 1355.0, "updated": "06.03.2026 23:28", "last_sale": "25.02.2026 15:07", "total_brutto": 616090.88}, {"month": "2026-03", "n": 82, "n_ext": 29, "n_total": 111, "scraped": 82, "profit": 1476.03, "avg_p": 13.3, "netto": 1476.03, "rets_n": 0, "rrate": 0.0, "lost": 0, "ship": 0, "updated": "06.03.2026 23:28", "last_sale": "06.03.2026 18:23", "total_brutto": 62984.62}];
+const ALL_MONTHS_KPI = [{"month": "2026-01", "n": 821, "n_ext": 94, "n_total": 915, "scraped": 113, "profit": 3651.62, "avg_p": 3.99, "netto": 4330.63, "rets_n": 115, "rrate": 14.0, "lost": -1430.01, "ship": 751.0, "updated": "07.03.2026 04:04", "last_sale": "31.01.2026 20:08", "total_brutto": 586672.71}, {"month": "2026-02", "n": 926, "n_ext": 68, "n_total": 994, "scraped": 924, "profit": 23640.75, "avg_p": 23.78, "netto": 16131.31, "rets_n": 207, "rrate": 22.4, "lost": 6154.44, "ship": 1355.0, "updated": "07.03.2026 04:04", "last_sale": "25.02.2026 15:07", "total_brutto": 616090.88}, {"month": "2026-03", "n": 82, "n_ext": 29, "n_total": 111, "scraped": 82, "profit": 1476.03, "avg_p": 13.3, "netto": 1476.03, "rets_n": 0, "rrate": 0.0, "lost": 0, "ship": 0, "updated": "07.03.2026 04:04", "last_sale": "06.03.2026 18:23", "total_brutto": 62984.62}];
 const ALL_MONTHS_SUMMARY = {"2026-01": {"label": "Januar 2026", "n": 821, "n_ext": 94, "n_total": 915, "netto": 4331}, "2026-02": {"label": "Februar 2026", "n": 926, "n_ext": 68, "n_total": 994, "netto": 16131}, "2026-03": {"label": "Maerz 2026", "n": 82, "n_ext": 29, "n_total": 111, "netto": 1476}};
 const ALL_CHART_DATA = {"2026-01": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 256GB", "iPhone 15 Pro Max 512GB", "iPhone 16 Pro 128GB", "iPhone 13 Mini 256GB", "iPhone 14 Pro Max 256GB", "iPhone 15 256GB", "iPhone 16 Pro Max 512GB", "iPhone 16 Pro 256GB", "iPhone 14 Pro 256GB", "iPhone 14 Pro 128GB", "iPhone 16 128GB"], "model_profits": [306.8, -212.51, 385.03, -241.45, -1485.14, 186.59, 97.2, 7.85, 28.16, 46.28, -294.89, 126.19, 0, -463.81, 128.97], "model_rrates": [9.2, 18.8, 22.0, 17.1, 25.0, 3.9, 6.0, 2.4, 7.7, 10.0, 13.3, 7.1, 0.0, 50.0, 33.3], "model_avg_ek": [558.98, 520.11, 511.39, 449.97, 814.79, 618.3, 604.59, 259.31, 489.84, 463.9, 844.33, 618.0, 476.99, 461.2, 434.17], "model_avg_vk": [683.49, 633.5, 624.76, 508.63, 807.61, 715.97, 776.95, 355.69, 600.2, 518.82, 898.72, 883.55, 474.17, 417.74, 590.07], "model_avg_p": [1.77, -1.43, 3.85, -3.18, -26.52, 3.66, 1.94, 0.19, 0.72, 2.31, -19.66, 9.01, 0.0, -46.38, 21.5], "country_labels": ["Deutschland", "Italien", "Irland", "Dänemark", "Österreich", "Schweden", "Unbekannt", "Niederlande", "Belgien", "Tschechische Republik", "Spanien"], "country_profits": [-1266.14, -361.41, 129.06, 11.19, -29.89, 218.67, 0, -30.87, -6.77, -93.85, 0], "reason_labels": ["Unbekannt"], "reason_values": [115], "reason_colors": ["#334155"]}, "2026-02": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPhone 15 Pro Max 512GB", "iPhone 14 Pro Max 128GB", "iPhone 16 Pro Max 512GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 15 256GB", "iPhone 16 128GB", "iPad Air (2024) | 13undquot | 128 GB | Starlight", "iPhone 14 Pro 128GB", "iPad Air (2024) | 13undquot | 256 GB | Starlight"], "model_profits": [2568.76, 1158.67, -376.35, 9141.36, 1454.13, 4167.38, -10.24, -84.7, 775.18, -56.02, 875.59, 768.14, -76.29, -767.73, -209.85], "model_rrates": [23.3, 21.1, 23.3, 18.2, 31.9, 20.0, 12.0, 31.8, 18.8, 21.4, 33.3, 27.3, 0.0, 33.3, 0.0], "model_avg_ek": [503.36, 492.61, 452.43, 506.39, 655.01, 534.4, 566.33, 408.73, 653.56, 550.0, 286.08, 426.82, 500.0, 445.0, 540.0], "model_avg_vk": [606.75, 584.94, 529.33, 718.94, 782.54, 789.63, 659.51, 484.08, 843.69, 622.84, 435.4, 594.71, 565.5, 403.91, 578.81], "model_avg_p": [11.73, 5.68, -3.14, 92.34, 15.47, 119.07, -0.41, -3.85, 48.45, -4.0, 72.97, 69.83, -6.94, -85.3, -26.23], "country_labels": ["Deutschland", "Schweden", "Italien", "Irland", "Österreich", "Dänemark", "Frankreich", "Belgien", "Niederlande", "Unbekannt", "Tschechische Republik", "Spanien"], "country_profits": [12864.29, 1023.31, 2279.09, 1658.54, 135.14, -217.85, 244.24, 526.93, 748.28, 69.4, 198.63, -8.76], "reason_labels": ["Kamera", "Sonstiges", "Widerruf/Kein Bedarf", "Display/Bildschirm", "Unbekannt", "Gehaeuse/Optik", "Falsche Ware/Lieferung", "Software/Performance", "WLAN/Netz/Signal", "Akku/Batterie", "Stornierung", "Face ID", "Ladeanschluss/Port"], "reason_values": [20, 28, 23, 42, 49, 20, 5, 2, 1, 10, 4, 1, 2], "reason_colors": ["#a78bfa", "#475569", "#94a3b8", "#ff6b6b", "#334155", "#ff9f43", "#fb923c", "#00b4d8", "#60a5fa", "#fbbf24", "#6b7280", "#34d399", "#2dd4bf"]}, "2026-03": {"model_names": ["iPhone 15 Pro Max 256GB", "iPhone 15 Pro 256GB", "iPhone 15 Pro 128GB", "iPhone 16 Pro Max 256GB", "iPhone 16 Pro 256GB", "iPad Air 6 (2024) 128 GB WIFI Exzellent (Wie aus d", "iPhone 16 Pro 128GB", "iPhone 15 128GB", "iPhone 14 128GB"], "model_profits": [337.69, 54.24, 398.8, -22.95, 214.54, -112.97, 193.05, -96.38, -148.73], "model_rrates": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "model_avg_ek": [485.61, 457.55, 433.71, 627.37, 581.0, 500.0, 561.0, 390.0, 405.0], "model_avg_vk": [577.34, 543.41, 541.55, 707.1, 773.43, 525.41, 725.18, 416.99, 260.99], "model_avg_p": [14.68, 2.71, 22.16, -2.55, 71.51, -37.66, 64.35, -48.19, -148.73], "country_labels": ["Deutschland", "Italien", "Schweden", "Unbekannt", "Tschechische Republik", "Dänemark", "Frankreich", "Österreich", "Belgien", "Niederlande"], "country_profits": [232.29, 101.88, 138.35, 66.11, 117.84, 59.43, 161.65, -1.46, -37.62, -21.18], "reason_labels": [], "reason_values": [], "reason_colors": []}};
 
@@ -4459,7 +4213,7 @@ function printSection(secId) {
         </div>`;
     });
 
-    const now = '06.03.2026 23:28';
+    const now = '07.03.2026 04:04';
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html><html><head>
         <meta charset="utf-8">
